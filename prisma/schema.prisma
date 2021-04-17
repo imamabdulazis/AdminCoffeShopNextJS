@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  id          String    @id @db.Uuid
+  drink_id    String?   @db.Uuid
+  name        String?   @db.VarChar
+  description String?   @db.VarChar
+  image_url   String?   @db.VarChar
+  created_at  DateTime? @db.Timestamp(6)
+  updated_at  DateTime? @db.Timestamp(6)
+  deleted_at  DateTime? @db.Timestamp(6)
+  drink       drink?    @relation(fields: [drink_id], references: [id])
+  product     product[]
+}
+
+model device {
+  id                   String                 @id @db.Uuid
+  user_id              String?                @db.Uuid
+  fcm_token            String?                @db.VarChar
+  manufacture          String?                @db.VarChar
+  system_version       String?                @db.VarChar
+  system_os            String?                @db.VarChar
+  phone_id             String?                @db.VarChar
+  os_name              String?                @db.VarChar
+  app_version          String?                @db.VarChar
+  created_at           DateTime?              @db.Timestamp(6)
+  updated_at           DateTime?              @db.Timestamp(6)
+  deleted_at           DateTime?              @db.Timestamp(6)
+  users                users?                 @relation(fields: [user_id], references: [id])
+  history_notification history_notification[]
+}
+
+model drink {
+  id          String     @id @db.Uuid
+  name        String?    @db.VarChar
+  description String?    @db.VarChar
+  image_url   String?    @db.VarChar
+  price       String?    @db.VarChar
+  created_at  DateTime?  @db.Timestamp(6)
+  updated_at  DateTime?  @db.Timestamp(6)
+  deleted_at  DateTime?  @db.Timestamp(6)
+  category    category[]
+}
+
+model history_notification {
+  id              String        @id @db.Uuid
+  device_id       String?       @db.Uuid
+  notification_id String?       @db.Uuid
+  created_at      DateTime?     @db.Timestamp(6)
+  updated_at      DateTime?     @db.Timestamp(6)
+  deleted_at      DateTime?     @db.Timestamp(6)
+  device          device?       @relation(fields: [device_id], references: [id])
+  notification    notification? @relation(fields: [notification_id], references: [id])
+}
+
+model notification {
+  id                   String                 @id @db.Uuid
+  title                String?                @db.VarChar
+  body                 String?                @db.VarChar
+  event                String?                @db.VarChar
+  created_at           DateTime?              @db.Timestamp(6)
+  updated_at           DateTime?              @db.Timestamp(6)
+  deleted_at           DateTime?              @db.Timestamp(6)
+  history_notification history_notification[]
+}
+
+model order {
+  id          String       @id @db.Uuid
+  product_id  String?      @db.Uuid
+  pickup_date DateTime?    @db.Timestamp(6)
+  amount      Int?
+  total       Int?
+  created_at  DateTime?    @db.Timestamp(6)
+  updated_at  DateTime?    @db.Timestamp(6)
+  deleted_at  DateTime?    @db.Timestamp(6)
+  product     product?     @relation(fields: [product_id], references: [id])
+  report      report[]
+  user_order  user_order[]
+}
+
+model payment_method {
+  id           String         @id @db.Uuid
+  name         String?        @db.VarChar
+  method       String?        @db.VarChar
+  description  String?        @db.VarChar
+  created_at   DateTime?      @db.Timestamp(6)
+  updated_at   DateTime?      @db.Timestamp(6)
+  deleted_at   DateTime?      @db.Timestamp(6)
+  user_payment user_payment[]
+}
+
+model product {
+  id          String    @id @db.Uuid
+  category_id String?   @db.Uuid
+  description String?   @db.VarChar
+  price       String?   @db.VarChar
+  created_at  DateTime? @db.Timestamp(6)
+  updated_at  DateTime? @db.Timestamp(6)
+  deleted_at  DateTime? @db.Timestamp(6)
+  category    category? @relation(fields: [category_id], references: [id])
+  order       order[]
+}
+
+model report {
+  id          String    @id @db.Uuid
+  date_report DateTime? @db.Timestamp(6)
+  order_id    String?   @db.Uuid
+  created_at  DateTime? @db.Timestamp(6)
+  updated_at  DateTime? @db.Timestamp(6)
+  deleted_at  DateTime? @db.Timestamp(6)
+  order       order?    @relation(fields: [order_id], references: [id])
+}
+
+model user_order {
+  id              String        @id @db.Uuid
+  order_id        String?       @db.Uuid
+  user_payment_id String?       @db.Uuid
+  created_at      DateTime?     @db.Timestamp(6)
+  updated_at      DateTime?     @db.Timestamp(6)
+  deleted_at      DateTime?     @db.Timestamp(6)
+  order           order?        @relation(fields: [order_id], references: [id])
+  user_payment    user_payment? @relation(fields: [user_payment_id], references: [id])
+}
+
+model user_payment {
+  id             String          @id @db.Uuid
+  user_id        String?         @db.Uuid
+  payment_id     String?         @db.Uuid
+  date_payment   String?         @db.VarChar
+  due_payment    String?         @db.VarChar
+  status         Boolean?
+  total          Int?
+  created_at     DateTime?       @db.Timestamp(6)
+  updated_at     DateTime?       @db.Timestamp(6)
+  deleted_at     DateTime?       @db.Timestamp(6)
+  payment_method payment_method? @relation(fields: [payment_id], references: [id])
+  users          users?          @relation(fields: [user_id], references: [id])
+  user_order     user_order[]
+}
+
+model users {
+  id           String         @id @db.Uuid
+  name         String?        @db.VarChar
+  username     String?        @db.VarChar
+  email        String?        @db.VarChar
+  password     String?        @db.VarChar
+  image_url    String?        @db.VarChar
+  nomor_telp   String?        @db.VarChar
+  previlage    String?        @db.VarChar
+  created_at   DateTime?      @db.Timestamp(6)
+  updated_at   DateTime?      @db.Timestamp(6)
+  deleted_at   DateTime?      @db.Timestamp(6)
+  device       device[]
+  user_payment user_payment[]
+}
