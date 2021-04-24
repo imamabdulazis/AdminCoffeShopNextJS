@@ -119,7 +119,7 @@ export default async (req, res) => {
 
                 const drink = await prisma.drink.findMany({})
 
-                if (!drink) return res.status(404).json({ status: 404, message: "Kategori tidak ditemukan" })
+                if (!drink) return res.status(404).json({ status: 404, message: "Minuman tidak ditemukan" })
 
                 return res.status(200).json({ status: 200, message: "Ok", data: drink })
             } catch (e) {

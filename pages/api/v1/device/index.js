@@ -1,9 +1,9 @@
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
+const { v4: uuid } = require('uuid');
 import initMiddleware from '../../../../lib/init-middleware';
 import validateMiddleware from '../../../../lib/validate-middleware';
 import { check, validationResult } from 'express-validator';
-const { v4: uuid } = require('uuid');
 import authenticateToken from '../../helper/autenticate_jwt'
 
 
@@ -12,7 +12,7 @@ const validateBody = initMiddleware(
         check('user_id').isLength({ min: 10, max: 40 }),
         check('fcm_token').isLength({ min: 10, max: 1000 }),
         check('phone_id').isLength({ min: 3, max: 1000 }),
-        check('system_os').isLength({ min: 4, max: 40 }),
+        check('system_os').isLength({ min: 4, max: 100 }),
     ], validationResult)
 )
 
@@ -25,17 +25,24 @@ export default async (req, res) => {
 
     switch (method) {
         case "GET":
-            const isAuth = authenticateToken(req, res)
-            if (!isAuth) return res.status(401).json({
-                status: 401,
-                message: "Token expired"
-            })
+            try {
+                const isAuth = authenticateToken(req, res)
+                if (!isAuth) return res.status(401).json({
+                    status: 401,
+                    message: "Token expired"
+                })
 
-            const device = await prisma.device.findMany({})
+                const device = await prisma.device.findMany({})
 
-            if (!device) return res.status(404).json({ status: 404, message: "Kategori tidak ditemukan" })
+                if (!device) return res.status(404).json({ status: 404, message: "Device tidak ditemukan" })
 
-            return res.status(200).json({ status: 200, message: "Ok", data: device })
+                return res.status(200).json({ status: 200, message: "Ok", data: device })
+            } catch (e) {
+                return res.status(500).json({
+                    status: 500,
+                    message: e
+                })
+            }
 
         case "POST":
             try {

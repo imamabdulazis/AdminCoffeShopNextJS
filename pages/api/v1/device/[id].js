@@ -1,8 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 import authenticateToken from '../../helper/autenticate_jwt'
-import { IncomingForm } from 'formidable'
-var util = require('util');
-const { uploadImageToStorage } = require('../../helper/uploader');
+
 
 
 
@@ -10,7 +8,6 @@ const { uploadImageToStorage } = require('../../helper/uploader');
 
 export default async (req, res) => {
     const prisma = new PrismaClient()
-    const form = new IncomingForm()
     const {
         query: { id },
         method,
