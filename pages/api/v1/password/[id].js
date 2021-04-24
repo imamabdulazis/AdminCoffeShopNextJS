@@ -30,8 +30,8 @@ export default async (req, res) => {
                         message: errors.array().map(e => `${e.param} tidak valid`),
                     })
                 }
-                 ///find user
-                 const user = await prisma.users.findUnique({
+                ///find user
+                const user = await prisma.users.findUnique({
                     where: {
                         id: id
                     }
@@ -42,10 +42,10 @@ export default async (req, res) => {
                 if (!isValid) return res.status(401).json({ status: 401, message: 'Username atau password salah' })
 
                 ///validate if not same
-                if(req.body.password==req.body.new_password){
+                if (req.body.password == req.body.new_password) {
                     return res.status(401).json({
-                        status:401,
-                        message:"Password baru tidak boleh sama dengan password lama"
+                        status: 401,
+                        message: "Password baru tidak boleh sama dengan password lama"
                     })
                 }
 

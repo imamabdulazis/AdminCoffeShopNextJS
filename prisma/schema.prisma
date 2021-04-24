@@ -9,15 +9,13 @@ datasource db {
 
 model category {
   id          String    @id @db.Uuid
-  drink_id    String?   @db.Uuid
   name        String?   @db.VarChar
   description String?   @db.VarChar
   image_url   String?   @db.VarChar
   created_at  DateTime? @db.Timestamp(6)
   updated_at  DateTime? @db.Timestamp(6)
   deleted_at  DateTime? @db.Timestamp(6)
-  drink       drink?    @relation(fields: [drink_id], references: [id])
-  product     product[]
+  drink       drink[]
 }
 
 model device {
@@ -38,15 +36,18 @@ model device {
 }
 
 model drink {
-  id          String     @id @db.Uuid
-  name        String?    @db.VarChar
-  description String?    @db.VarChar
-  image_url   String?    @db.VarChar
-  price       String?    @db.VarChar
-  created_at  DateTime?  @db.Timestamp(6)
-  updated_at  DateTime?  @db.Timestamp(6)
-  deleted_at  DateTime?  @db.Timestamp(6)
-  category    category[]
+  id          String    @id @db.Uuid
+  category_id String?   @db.Uuid
+  name        String?   @db.VarChar
+  description String?   @db.VarChar
+  image_url   String?   @db.VarChar
+  price       String?   @db.VarChar
+  stock       Int?
+  created_at  DateTime? @db.Timestamp(6)
+  updated_at  DateTime? @db.Timestamp(6)
+  deleted_at  DateTime? @db.Timestamp(6)
+  category    category? @relation(fields: [category_id], references: [id])
+  order       order[]
 }
 
 model history_notification {
@@ -73,14 +74,15 @@ model notification {
 
 model order {
   id          String       @id @db.Uuid
-  product_id  String?      @db.Uuid
+  drink_id    String?      @db.Uuid
   pickup_date DateTime?    @db.Timestamp(6)
   amount      Int?
+  discount    Int?
   total       Int?
   created_at  DateTime?    @db.Timestamp(6)
   updated_at  DateTime?    @db.Timestamp(6)
   deleted_at  DateTime?    @db.Timestamp(6)
-  product     product?     @relation(fields: [product_id], references: [id])
+  drink       drink?       @relation(fields: [drink_id], references: [id])
   report      report[]
   user_order  user_order[]
 }
@@ -94,18 +96,6 @@ model payment_method {
   updated_at   DateTime?      @db.Timestamp(6)
   deleted_at   DateTime?      @db.Timestamp(6)
   user_payment user_payment[]
-}
-
-model product {
-  id          String    @id @db.Uuid
-  category_id String?   @db.Uuid
-  description String?   @db.VarChar
-  price       String?   @db.VarChar
-  created_at  DateTime? @db.Timestamp(6)
-  updated_at  DateTime? @db.Timestamp(6)
-  deleted_at  DateTime? @db.Timestamp(6)
-  category    category? @relation(fields: [category_id], references: [id])
-  order       order[]
 }
 
 model report {
@@ -152,7 +142,7 @@ model users {
   email        String?        @db.VarChar
   password     String?        @db.VarChar
   image_url    String?        @db.VarChar
-  nomor_telp   String?        @db.VarChar
+  telp_number  String?        @db.VarChar
   previlage    String?        @db.VarChar
   created_at   DateTime?      @db.Timestamp(6)
   updated_at   DateTime?      @db.Timestamp(6)

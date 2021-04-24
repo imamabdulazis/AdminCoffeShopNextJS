@@ -1,9 +1,9 @@
-require('dotenv').config();
-import initMiddleware from '../../../lib/init-middleware';
-import validateMiddleware from '../../../lib/validate-middleware';
+
+import initMiddleware from '../../../../lib/init-middleware';
+import validateMiddleware from '../../../../lib/validate-middleware';
 import { check, validationResult } from 'express-validator';
+import { generateAccessToken } from '../../helper/generate_jwt';
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
 
 const { PrismaClient } = require('@prisma/client');
 
@@ -15,7 +15,6 @@ const validateBody = initMiddleware(
 )
 
 export default async (req, res) => {
-    const expiresIn = '30 day'
     const prisma = new PrismaClient()
     switch (req.method) {
         case "POST":
@@ -32,20 +31,24 @@ export default async (req, res) => {
                     username: req.body.username
                 }
             })
+            //validate password
             if (!user) return res.status(401).json({ status: 401, message: 'Username atau password salah' })
 
             const isValid = await bcrypt.compare(req.body.password, user.password);
             if (!isValid) return res.status(401).json({ status: 401, message: 'Username atau password salah' })
 
+            ///generate jwt
+            const token = generateAccessToken(user.id);
+
+            //return ok
             res.status(200).json({
                 status: 200,
                 message: "Login berhasil",
                 previlage: user.previlage,
-                token: jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET, { expiresIn }),
+                token: token
             })
             break;
         default:
-            res.setHeaders("Allow", ["POST"]);
             res.status(405).json({ status: 405, message: 'Request method tidak di izinkan' })
             break;
     }

@@ -1,7 +1,7 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
 import { hash } from 'bcryptjs';
-import initMiddleware from '../../../lib/init-middleware';
-import validateMiddleware from '../../../lib/validate-middleware';
+import initMiddleware from '../../../../lib/init-middleware';
+import validateMiddleware from '../../../../lib/validate-middleware';
 import { check, validationResult } from 'express-validator';
 const { v4: uuid } = require('uuid');
 
@@ -18,6 +18,7 @@ const validateBody = initMiddleware(
 )
 
 export default async (req, res) => {
+    dotenv.config();
     const prisma = new PrismaClient()
     const imageUrl = process.env.DEFAULT_IMAGE
 
@@ -50,7 +51,8 @@ export default async (req, res) => {
                     if (isNameExist != null || isUsernameExist != null || isEmailExist != null) {
                         return res.status(409).json({ status: 409, message: isNameExist != null ? 'Nama sudah terdaftar' : isUsernameExist != null ? 'Username sudah terdaftar' : 'Email sudah terdaftar' })
                     }
-                    await prisma.users.create({
+
+                    const newUser = await prisma.users.create({
                         data: {
                             id: uuid(),
                             name: req.body.name,
@@ -65,6 +67,13 @@ export default async (req, res) => {
                             deleted_at: new Date(),
                         }
                     });
+
+                    if (!newUser) {
+                        return res.status(403).json({
+                            status: 403,
+                            message: "Terjadi kesalahan"
+                        })
+                    }
                     return res.status(200).json({
                         status: 200,
                         message: `Berhasil register ${req.body.email}`,
