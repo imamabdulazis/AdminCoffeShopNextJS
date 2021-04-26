@@ -115,7 +115,7 @@ export default async (req, res) => {
 
                     if (!category) return res.status(404).json({
                         status: 404,
-                        message: "Gagal hapus category"
+                        message: "Gagal hapus ketegori"
                     })
 
                     return res.status(200).json({
@@ -125,7 +125,7 @@ export default async (req, res) => {
                 }
                 return res.status(404).json({
                     status: 404,
-                    message: "Gagal hapus category"
+                    message: "Kategori tidak ditemukan"
                 })
             } catch (err) {
                 return res.status(500).json({
