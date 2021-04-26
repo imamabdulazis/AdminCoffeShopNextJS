@@ -64,16 +64,15 @@ export default async (req, res) => {
 
 
                 ///validate if userId not exist
-                const isUserExist = await prisma.users.findFirst({
+                const isUserExist = await prisma.users.findUnique({
                     where: { id: req.body.user_id },
                 })
 
-                if (!isUserExist) {
-                    return res.status(404).json({
-                        status: 404,
-                        message: "User tidak tersedia"
-                    })
-                }
+                if (!isUserExist) return res.status(404).json({
+                    status: 404,
+                    message: "User tidak tersedia"
+                })
+
                 ///validate if device exist
                 const isDeviceExist = await prisma.device.findFirst({
                     where: { phone_id: req.body.phone_id },

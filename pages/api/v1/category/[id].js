@@ -86,12 +86,6 @@ export default async (req, res) => {
                     message: "Kategori tidak ditemukan",
                 })
             } catch (error) {
-                if (error.code == "P2025") {
-                    return res.status(404).json({
-                        status: 404,
-                        message: "Kategori tidak ditemukan",
-                    })
-                }
                 return res.status(500).json({
                     status: 500,
                     message: error
@@ -106,25 +100,37 @@ export default async (req, res) => {
                     message: "Token expired"
                 })
 
-                const category = await prisma.category.delete({
+                const isNameExist = await prisma.category.findUnique({
                     where: {
                         id: id
                     }
                 })
 
-                if (!category) return res.status(404).json({
-                    status: 404,
-                    message: "Gagal delete category"
-                })
+                if (isNameExist) {
+                    const category = await prisma.category.delete({
+                        where: {
+                            id: id
+                        }
+                    })
 
-                return res.status(200).json({
-                    status: 200,
-                    message: "Hapus berhasil"
+                    if (!category) return res.status(404).json({
+                        status: 404,
+                        message: "Gagal hapus category"
+                    })
+
+                    return res.status(200).json({
+                        status: 200,
+                        message: "Hapus berhasil"
+                    })
+                }
+                return res.status(404).json({
+                    status: 404,
+                    message: "Gagal hapus category"
                 })
             } catch (err) {
                 return res.status(500).json({
                     status: 500,
-                    message: error
+                    message: err
                 })
             }
         default:

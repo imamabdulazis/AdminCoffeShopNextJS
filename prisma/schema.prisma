@@ -47,7 +47,7 @@ model drink {
   updated_at  DateTime? @db.Timestamp(6)
   deleted_at  DateTime? @db.Timestamp(6)
   category    category? @relation(fields: [category_id], references: [id])
-  order       order[]
+  orders      orders[]
 }
 
 model notification {
@@ -62,31 +62,15 @@ model notification {
   device     device?   @relation(fields: [device_id], references: [id])
 }
 
-model order {
-  id              String        @id @db.Uuid
-  user_payment_id String?       @db.Uuid
-  drink_id        String?       @db.Uuid
-  pickup_date     DateTime?     @db.Timestamp(6)
-  amount          Int?
-  discount        Int?
-  total           Int?
-  created_at      DateTime?     @db.Timestamp(6)
-  updated_at      DateTime?     @db.Timestamp(6)
-  deleted_at      DateTime?     @db.Timestamp(6)
-  drink           drink?        @relation(fields: [drink_id], references: [id])
-  user_payment    user_payment? @relation(fields: [user_payment_id], references: [id])
-  report          report[]
-}
-
 model payment_method {
-  id           String         @id @db.Uuid
-  name         String?        @db.VarChar
-  method       String?        @db.VarChar
-  description  String?        @db.VarChar
-  created_at   DateTime?      @db.Timestamp(6)
-  updated_at   DateTime?      @db.Timestamp(6)
-  deleted_at   DateTime?      @db.Timestamp(6)
-  user_payment user_payment[]
+  id          String    @id @db.Uuid
+  name        String?   @db.VarChar
+  method      String?   @db.VarChar
+  description String?   @db.VarChar
+  created_at  DateTime? @db.Timestamp(6)
+  updated_at  DateTime? @db.Timestamp(6)
+  deleted_at  DateTime? @db.Timestamp(6)
+  orders      orders[]
 }
 
 model report {
@@ -96,37 +80,39 @@ model report {
   created_at  DateTime? @db.Timestamp(6)
   updated_at  DateTime? @db.Timestamp(6)
   deleted_at  DateTime? @db.Timestamp(6)
-  order       order?    @relation(fields: [order_id], references: [id])
-}
-
-model user_payment {
-  id             String          @id @db.Uuid
-  user_id        String?         @db.Uuid
-  payment_id     String?         @db.Uuid
-  date_payment   String?         @db.VarChar
-  due_payment    String?         @db.VarChar
-  status         Boolean?
-  total          Int?
-  created_at     DateTime?       @db.Timestamp(6)
-  updated_at     DateTime?       @db.Timestamp(6)
-  deleted_at     DateTime?       @db.Timestamp(6)
-  payment_method payment_method? @relation(fields: [payment_id], references: [id])
-  users          users?          @relation(fields: [user_id], references: [id])
-  order          order[]
+  orders      orders?   @relation(fields: [order_id], references: [id])
 }
 
 model users {
-  id           String         @id @db.Uuid
-  name         String?        @db.VarChar
-  username     String?        @db.VarChar
-  email        String?        @db.VarChar
-  password     String?        @db.VarChar
-  image_url    String?        @db.VarChar
-  telp_number  String?        @db.VarChar
-  previlage    String?        @db.VarChar
-  created_at   DateTime?      @db.Timestamp(6)
-  updated_at   DateTime?      @db.Timestamp(6)
-  deleted_at   DateTime?      @db.Timestamp(6)
-  device       device[]
-  user_payment user_payment[]
+  id          String    @id @db.Uuid
+  name        String?   @db.VarChar
+  username    String?   @db.VarChar
+  email       String?   @db.VarChar
+  password    String?   @db.VarChar
+  image_url   String?   @db.VarChar
+  telp_number String?   @db.VarChar
+  previlage   String?   @db.VarChar
+  created_at  DateTime? @db.Timestamp(6)
+  updated_at  DateTime? @db.Timestamp(6)
+  deleted_at  DateTime? @db.Timestamp(6)
+  device      device[]
+  orders      orders[]
+}
+
+model orders {
+  id                String          @id @db.Uuid
+  user_id           String?         @db.Uuid
+  payment_method_id String?         @db.Uuid
+  drink_id          String?         @db.Uuid
+  pickup_date       DateTime?       @db.Timestamp(6)
+  amount            Int?
+  discount          Int?
+  total             Int?
+  created_at        DateTime?       @db.Timestamp(6)
+  updated_at        DateTime?       @db.Timestamp(6)
+  deleted_at        DateTime?       @db.Timestamp(6)
+  drink             drink?          @relation(fields: [drink_id], references: [id])
+  payment_method    payment_method? @relation(fields: [payment_method_id], references: [id])
+  users             users?          @relation(fields: [user_id], references: [id])
+  report            report[]
 }
