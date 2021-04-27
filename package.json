@@ -10,6 +10,7 @@
     "build:tailwind": "tailwind build styles/index.css -o styles/tailwind.css"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "@google-cloud/storage": "^5.1.2",
     "@popperjs/core": "^2.9.2",
     "@prisma/client": "^2.21.1",
