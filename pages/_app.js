@@ -7,7 +7,6 @@ import ReactDOM from "react-dom";
 import Head from "next/head";
 import Router from "next/router";
 
-
 import PageChange from "./components/modules/PageChanges/PageChange.js";
 
 Router.events.on("routeChangeStart", (url) => {
@@ -28,6 +27,14 @@ Router.events.on("routeChangeError", () => {
 });
 
 export default class MyApp extends App {
+
+  componentDidMount() {
+    let comment = document.createComment(`
+  `);
+    document.insertBefore(comment, document.documentElement);
+  }
+
+
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
 
