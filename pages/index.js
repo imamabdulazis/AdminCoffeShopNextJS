@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import Admin from './components/layer/admin'
-import Auth from './components/layer/Auth'
+import Admin from './components/layer/Admin.js'
 
 export default function Home() {
   return (

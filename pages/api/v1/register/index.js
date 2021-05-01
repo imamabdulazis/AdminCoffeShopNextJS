@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 import { hash } from 'bcryptjs';
-import initMiddleware from '../../../../lib/init-middleware';
-import validateMiddleware from '../../../../lib/validate-middleware';
+import initMiddleware from '../../helper/middleware';
+import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 const { v4: uuid } = require('uuid');
 

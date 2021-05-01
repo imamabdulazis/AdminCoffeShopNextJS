@@ -1,6 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
-import initMiddleware from '../../../lib/init-middleware';
-import validateMiddleware from '../../../lib/validate-middleware';
+import initMiddleware from '../../helper/middleware';
+import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 import bcrypt, { hash } from 'bcryptjs';
 
@@ -36,7 +36,7 @@ export default async (req, res) => {
                         id: id
                     }
                 })
-                if (!user) return res.status(401).json({ status: 401, message: 'Username atau password salah' })
+                if (!user) return res.status(401).json({ status: 401, message: 'User tidak di temukan' })
 
                 const isValid = await bcrypt.compare(req.body.password, user.password);
                 if (!isValid) return res.status(401).json({ status: 401, message: 'Username atau password salah' })

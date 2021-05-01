@@ -1,66 +1,18 @@
 const { PrismaClient } = require('@prisma/client');
-import authenticateToken from '../../helper/autenticate_jwt'
-import { IncomingForm } from 'formidable'
-var util = require('util');
 const { uploadImageToStorage } = require('../../helper/uploader');
+import authenticateToken from '../../helper/autenticate_jwt'
+import multer from 'multer';
+import initMiddleware from '../../helper/middleware';
 
-export const config = {
-    api: {
-        bodyParser: false,
-    }
-};
 
 export default async (req, res) => {
     const prisma = new PrismaClient()
-    const form = new IncomingForm()
     const {
         query: { id },
         method,
     } = req;
 
     switch (method) {
-        case "PATCH":
-            try {
-                //validate jwt token
-                const isAuth = authenticateToken(req, res)
-                if (!isAuth) return res.status(401).json({
-                    status: 401,
-                    message: "Token expired"
-                })
-                const user = await prisma.users.findUnique({
-                    where: {
-                        id: id
-                    }
-                })
-                if (!user) return res.status(404).json({
-                    status: 404,
-                    message: "User tidak ditemukan"
-                })
-                form.parse(req, (err, fields, files) => {
-                    // res.writeHead(200, { 'content-type': 'text/plain' });
-                    // res.write('received upload:\n\n');
-                    // res.end(util.inspect({ fields: fields, files: files.file.path }));
-                    uploadImageToStorage(files.file).then(success => {
-                        return res.status(200).json({
-                            status: 200,
-                            message: req.success
-                        })
-                    }).catch(error => {
-                        return res.status(500).json({
-                            status: 500,
-                            message: error
-                        })
-                        console.log(error)
-                    })
-                })
-                return
-
-            } catch (error) {
-                return res.status(500).json({
-                    status: 500,
-                    message: error
-                })
-            }
         case "GET":
             try {
                 //validate jwt token
@@ -107,6 +59,7 @@ export default async (req, res) => {
                     }
                 })
 
+
                 if (isExist) {
                     const user = await prisma.users.update({
                         where: {
@@ -138,6 +91,7 @@ export default async (req, res) => {
                     message: "User tidak ditemukan",
                 })
             } catch (error) {
+                console.log(error);
                 if (error.code == "P2025") {
                     return res.status(404).json({
                         status: 404,

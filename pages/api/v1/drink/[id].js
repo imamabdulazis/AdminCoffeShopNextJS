@@ -1,6 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
+const { uploadImageToStorage } = require('../../helper/uploader');
 import authenticateToken from '../../helper/autenticate_jwt'
-
+import multer from 'multer';
+import initMiddleware from '../../helper/middleware';
 
 export default async (req, res) => {
     const prisma = new PrismaClient();
@@ -94,18 +96,6 @@ export default async (req, res) => {
                         message: "Minuman tidak ditemukan",
                     })
                 }
-                return res.status(500).json({
-                    status: 500,
-                    message: error
-                })
-            }
-        case "PATCH":
-            try {
-                return res.status(200).json({
-                    status: 200,
-                    message: "Feature ini belum tersedia"
-                })
-            } catch (e) {
                 return res.status(500).json({
                     status: 500,
                     message: error

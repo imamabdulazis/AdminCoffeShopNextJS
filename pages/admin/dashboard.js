@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Admin from "../components/layer/Admin.js";
+import Admin from "../components/layer/Admin.js.js";
 import HeaderStats from '../components/modules/Headers/HeaderStats.js';
 
 export default function Dashboard() {

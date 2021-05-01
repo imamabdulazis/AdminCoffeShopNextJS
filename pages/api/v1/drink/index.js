@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
-import initMiddleware from '../../../../lib/init-middleware';
-import validateMiddleware from '../../../../lib/validate-middleware';
+import initMiddleware from '../../helper/middleware';
+import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 import authenticateToken from '../../helper/autenticate_jwt';
 const { v4: uuid } = require('uuid');

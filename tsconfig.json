@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "pages/api/v1/users/[id].js", "pages/api/v1/drink/[id].s"  ],
   "exclude": [
     "node_modules"
   ]
