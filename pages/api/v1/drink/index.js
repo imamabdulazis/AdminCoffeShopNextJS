@@ -117,7 +117,24 @@ export default async (req, res) => {
                     message: "Token expired"
                 })
 
-                const drink = await prisma.drink.findMany({})
+                const drink = await prisma.drink.findMany({
+                    select: {
+                        id: true,
+                        name: true,
+                        image_url: true,
+                        price: true,
+                        stock: true,
+                        category: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        },
+                    },
+                    orderBy: {
+                        updated_at: 'asc'
+                    }
+                })
 
                 if (!drink) return res.status(404).json({ status: 404, message: "Minuman tidak ditemukan" })
 

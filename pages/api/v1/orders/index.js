@@ -5,6 +5,7 @@ import initMiddleware from '../../helper/middleware';
 import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 import authenticateToken from '../../helper/autenticate_jwt'
+import moment from 'moment';
 
 
 const validateBody = initMiddleware(
@@ -33,11 +34,48 @@ export default async (req, res) => {
                     message: "Token expired"
                 })
 
-                const order = await prisma.orders.findMany({})
+                const order = await prisma.orders.findMany({
+                    select: {
+                        id: true,
+                        total: true,
+                        amount: true,
+                        pickup_date: true,
+                        updated_at: true,
+                        discount: true,
+                        created_at: true,
+                        deleted_at: true,
+                        status: true,
+                        no_transaction: true,
+                        users: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                            }
+                        },
+                        drink: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        },
+                        payment_method: {
+                            select: {
+                                id: true,
+                                name: true,
+                                method: true,
+                            }
+                        },
+                    }
+                })
 
                 if (!order) return res.status(404).json({ status: 404, message: "Pesanan kosong tidak ditemukan" })
 
-                return res.status(200).json({ status: 200, message: "Ok", data: order })
+                return res.status(200).json({
+                    status: 200,
+                    message: "Ok",
+                    data: order
+                })
             } catch (e) {
                 return res.status(500).json({
                     status: 500,
@@ -120,6 +158,8 @@ export default async (req, res) => {
                         amount: req.body.amount,
                         total: req.body.total,
                         discount: req.body.discount,
+                        status: req.body.status,
+                        no_transaction: `${moment(Date.now()).format('HHmmSS')}`,
                         created_at: new Date(),
                         deleted_at: new Date(),
                         updated_at: new Date(),

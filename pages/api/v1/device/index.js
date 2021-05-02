@@ -32,7 +32,27 @@ export default async (req, res) => {
                     message: "Token expired"
                 })
 
-                const device = await prisma.device.findMany({})
+                const device = await prisma.device.findMany({
+                    select: {
+                        id: true,
+                        users: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        },
+                        fcm_token: true,
+                        manufacture: true,
+                        os_name: true,
+                        phone_id: true,
+                        system_os: true,
+                        system_version: true,
+                        app_version: true,
+                        created_at: true,
+                        deleted_at: true,
+                        updated_at: true,
+                    }
+                })
 
                 if (!device) return res.status(404).json({ status: 404, message: "Device tidak ditemukan" })
 
@@ -86,6 +106,10 @@ export default async (req, res) => {
                         data: {
                             id: uuid(),
                             fcm_token: req.body.fcm_token,
+                            app_version: req.body.app_version,
+                            manufacture: req.body.manufacture,
+                            system_version: req.body.system_version,
+                            system_os: req.body.system_os,
                             updated_at: new Date(),
                         }
                     })

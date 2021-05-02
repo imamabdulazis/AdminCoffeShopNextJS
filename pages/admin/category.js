@@ -4,18 +4,18 @@ import Admin from "../components/layouts/Admin.js";
 import TableDropdown from "../components/elements/Dropdowns/TableDropdown.js";
 import moment from 'moment';
 
-export default function OrderPage({ color = 'light' }) {
-    const router = useRouter()
+export default function CategoryPage({ color = 'light' }) {
 
-    const [orderState, setOrderState] = useState([])
+    const router = useRouter()
+    const [categoryState, setCategoryState] = useState([])
 
     useEffect(() => {
-        getOrder()
+        getCategory()
     }, []);
 
-    // get order
-    const getOrder = () => {
-        fetch('/api/v1/orders', {
+    // get Device
+    const getCategory = () => {
+        fetch('/api/v1/category', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export default function OrderPage({ color = 'light' }) {
 
                 if (res.status == 200) {
                     const data = res.data;
-                    setOrderState(data);
+                    setCategoryState(data);
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
@@ -36,6 +36,7 @@ export default function OrderPage({ color = 'light' }) {
                 console.log(e);
             })
     }
+
 
     return (
         <>
@@ -57,7 +58,7 @@ export default function OrderPage({ color = 'light' }) {
                                                 (color === "light" ? "text-blueGray-700" : "text-white")
                                             }
                                         >
-                                            PEMESANAN
+                                            KATEGORI
                                         </h3>
                                     </div>
                                 </div>
@@ -75,7 +76,7 @@ export default function OrderPage({ color = 'light' }) {
                                                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                                 }
                                             >
-                                                NO. TRANSAKSI
+                                                NAMA
                                             </th>
                                             <th
                                                 className={
@@ -85,7 +86,7 @@ export default function OrderPage({ color = 'light' }) {
                                                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                                 }
                                             >
-                                                TANGGAL
+                                                DESRIPSI
                                             </th>
                                             <th
                                                 className={
@@ -95,38 +96,9 @@ export default function OrderPage({ color = 'light' }) {
                                                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                                 }
                                             >
-                                                CUSTOMER
+                                                UPDATE
                                             </th>
-                                            <th
-                                                className={
-                                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                                                    (color === "light"
-                                                        ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                                                        : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-                                                }
-                                            >
-                                                PRODUK
-                                            </th>
-                                            <th
-                                                className={
-                                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                                                    (color === "light"
-                                                        ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                                                        : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-                                                }
-                                            >
-                                                STATUS
-                                            </th>
-                                            <th
-                                                className={
-                                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                                                    (color === "light"
-                                                        ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                                                        : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-                                                }
-                                            >
-                                                TOTAL
-                                            </th>
+                                            
                                             <th
                                                 className={
                                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
@@ -139,25 +111,16 @@ export default function OrderPage({ color = 'light' }) {
                                     </thead>
                                     <tbody>
                                         {
-                                            orderState.map(e => {
+                                            categoryState.map(e => {
                                                 return <tr key={e.id}>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        <h5 style={{ color: 'black', fontWeight: 'bold' }}>{e.no_transaction}</h5>
+                                                        <h5 style={{ color: 'black', fontWeight: 'bold' }}>{e.name}</h5>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        {moment(e.updated_at).format('HH:mm - DD MMM YYYY')}
+                                                        <h5 style={{ color: 'orange', fontWeight: 'bold' }}> {e.description}</h5>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        {e.users.name}
-                                                    </td>
-                                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        {e.drink.name}
-                                                    </td>
-                                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        <p style={{ color: e.status == 'Waiting' ? 'orange' : e.status == 'Proses' ? 'green' : 'red', fontWeight: 'bold' }}>{e.status}</p>
-                                                    </td>
-                                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        {e.total}
+                                                    <h5 style={{ color: 'black', fontWeight: 'bold' }}> {moment(e.updated_at).format('DD MMM YYYY')}</h5>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                                                         <TableDropdown />
@@ -176,4 +139,5 @@ export default function OrderPage({ color = 'light' }) {
     )
 }
 
-OrderPage.layout = Admin;
+
+CategoryPage.layout = Admin

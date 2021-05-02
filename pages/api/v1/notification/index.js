@@ -34,7 +34,31 @@ export default async (req, res) => {
                     message: "Token expired"
                 })
 
-                const notification = await prisma.notification.findMany({})
+                const notification = await prisma.notification.findMany({
+                    select: {
+                        id: true,
+                        device: {
+                            select: {
+                                id: true,
+                                manufacture: true,
+                                system_os: true,
+                                phone_id: true,
+                                app_version:true,
+                                users: {
+                                    select: {
+                                        name: true,
+                                    }
+                                },
+                            }
+                        },
+                        title: true,
+                        body: true,
+                        event: true,
+                        created_at: true,
+                        updated_at: true,
+                        deleted_at: true,
+                    }
+                })
 
                 if (!notification) return res.status(404).json({ status: 404, message: "Notifikasi tidak ditemukan" })
 
@@ -70,8 +94,6 @@ export default async (req, res) => {
                         id: req.body.device_id
                     }
                 })
-
-                console.log(isExistDevice)
 
                 if (isExistDevice) {
                     const notification = await prisma.notification.create({

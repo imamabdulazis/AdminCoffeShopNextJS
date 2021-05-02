@@ -7,7 +7,7 @@ import TableDropdown from "../Dropdowns/TableDropdown.js";
 
 const data = [1, 2, 3, 4, 5, 6]
 
-export default function CardTable({ color, name }) {
+export default function CardTable({ color, name, data }) {
   return (
     <>
       <div

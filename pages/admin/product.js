@@ -4,18 +4,18 @@ import Admin from "../components/layouts/Admin.js";
 import TableDropdown from "../components/elements/Dropdowns/TableDropdown.js";
 import moment from 'moment';
 
-export default function OrderPage({ color = 'light' }) {
-    const router = useRouter()
+export default function ProuctPage({ color = 'light' }) {
 
-    const [orderState, setOrderState] = useState([])
+    const router = useRouter()
+    const [productState, setProductState] = useState([])
 
     useEffect(() => {
-        getOrder()
+        getProduct()
     }, []);
 
-    // get order
-    const getOrder = () => {
-        fetch('/api/v1/orders', {
+    // get Device
+    const getProduct = () => {
+        fetch('/api/v1/drink', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export default function OrderPage({ color = 'light' }) {
 
                 if (res.status == 200) {
                     const data = res.data;
-                    setOrderState(data);
+                    setProductState(data);
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
@@ -36,6 +36,7 @@ export default function OrderPage({ color = 'light' }) {
                 console.log(e);
             })
     }
+
 
     return (
         <>
@@ -57,7 +58,7 @@ export default function OrderPage({ color = 'light' }) {
                                                 (color === "light" ? "text-blueGray-700" : "text-white")
                                             }
                                         >
-                                            PEMESANAN
+                                            PRODUK
                                         </h3>
                                     </div>
                                 </div>
@@ -75,7 +76,7 @@ export default function OrderPage({ color = 'light' }) {
                                                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                                 }
                                             >
-                                                NO. TRANSAKSI
+                                                NAMA
                                             </th>
                                             <th
                                                 className={
@@ -85,7 +86,7 @@ export default function OrderPage({ color = 'light' }) {
                                                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                                 }
                                             >
-                                                TANGGAL
+                                                HARGA
                                             </th>
                                             <th
                                                 className={
@@ -95,7 +96,7 @@ export default function OrderPage({ color = 'light' }) {
                                                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                                 }
                                             >
-                                                CUSTOMER
+                                                STOK
                                             </th>
                                             <th
                                                 className={
@@ -105,28 +106,9 @@ export default function OrderPage({ color = 'light' }) {
                                                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                                 }
                                             >
-                                                PRODUK
+                                                KATEGORI
                                             </th>
-                                            <th
-                                                className={
-                                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                                                    (color === "light"
-                                                        ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                                                        : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-                                                }
-                                            >
-                                                STATUS
-                                            </th>
-                                            <th
-                                                className={
-                                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                                                    (color === "light"
-                                                        ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                                                        : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
-                                                }
-                                            >
-                                                TOTAL
-                                            </th>
+
                                             <th
                                                 className={
                                                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
@@ -139,25 +121,31 @@ export default function OrderPage({ color = 'light' }) {
                                     </thead>
                                     <tbody>
                                         {
-                                            orderState.map(e => {
+                                            productState.map(e => {
                                                 return <tr key={e.id}>
+                                                    <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                                                        <img
+                                                            src={e.image_url}
+                                                            className="h-12 w-12 bg-white rounded-full border"
+                                                            alt="..."
+                                                        ></img>{" "}
+                                                        <span
+                                                            className={
+                                                                "ml-3 font-bold " +
+                                                                +(color === "light" ? "text-blueGray-600" : "text-white")
+                                                            }
+                                                        >
+                                                            {e.name}
+                                                        </span>
+                                                    </th>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        <h5 style={{ color: 'black', fontWeight: 'bold' }}>{e.no_transaction}</h5>
+                                                        <h5 style={{ color: 'orange', fontWeight: 'bold' }}> {e.price}</h5>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        {moment(e.updated_at).format('HH:mm - DD MMM YYYY')}
+                                                        <h5 style={{ color: 'black', fontWeight: 'bold' }}> {e.stock}</h5>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        {e.users.name}
-                                                    </td>
-                                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        {e.drink.name}
-                                                    </td>
-                                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        <p style={{ color: e.status == 'Waiting' ? 'orange' : e.status == 'Proses' ? 'green' : 'red', fontWeight: 'bold' }}>{e.status}</p>
-                                                    </td>
-                                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        {e.total}
+                                                        <h5 style={{ color: 'black', fontWeight: 'bold' }}> {e.category.name}</h5>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                                                         <TableDropdown />
@@ -176,4 +164,5 @@ export default function OrderPage({ color = 'light' }) {
     )
 }
 
-OrderPage.layout = Admin;
+
+ProuctPage.layout = Admin

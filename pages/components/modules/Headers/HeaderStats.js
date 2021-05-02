@@ -43,7 +43,6 @@ export default function HeaderStats() {
       },
     }).then(res => res.json())
       .then((res) => {
-        setUsername
         if (res.status == 200) {
           const data = res.data;
           setOrderState(data);
@@ -74,7 +73,7 @@ export default function HeaderStats() {
         } else if (res.status == 401) {
           unAutorize();
         } else {
-          toast.error("Terjadi kesalahan data pemesanan")
+          toast.error("Terjadi kesalahan data minuman")
         }
       }).catch(e => {
         console.log(e);
@@ -98,7 +97,7 @@ export default function HeaderStats() {
         } else if (res.status == 401) {
           unAutorize();
         } else {
-          toast.error("Terjadi kesalahan data pemesanan")
+          toast.error("Terjadi kesalahan data pengguna")
         }
       }).catch(e => {
         console.log(e);
@@ -121,7 +120,7 @@ export default function HeaderStats() {
         } else if (res.status == 401) {
           unAutorize();
         } else {
-          toast.error("Terjadi kesalahan data pemesanan")
+          toast.error("Terjadi kesalahan data notifikasi")
         }
       }).catch(e => {
         console.log(e);
@@ -138,7 +137,7 @@ export default function HeaderStats() {
             <div className="flex flex-wrap">
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="PESANAN"
+                  statSubtitle="PEMESANAN"
                   statTitle={`${orderState.length}`}
                   statIconName="far fa-chart-bar"
                   statIconColor="bg-red-500"

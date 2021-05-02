@@ -116,16 +116,64 @@ export default function Sidebar() {
                   >
                     <i
                       className={
-                        "fas fa-tools mr-2 text-sm " +
+                        "fas fa-shopping-cart mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/order") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
                     ></i>{" "}
-                    Pesanan
+                    Pemesanan
                   </a>
                 </Link>
               </li>
+              <li className="items-center">
+                <Link href="/admin/product">
+                  <a
+                    href="#pablo"
+                    className={
+                      "text-xs uppercase py-3 font-bold block " +
+                      (router.pathname.indexOf("/admin/product") !== -1
+                        ? "text-lightBlue-500 hover:text-lightBlue-600"
+                        : "text-blueGray-700 hover:text-blueGray-500")
+                    }
+                  >
+                    <i
+                      className={
+                        "fas fa-coffee mr-2 text-sm " +
+                        (router.pathname.indexOf("/admin/product") !== -1
+                          ? "opacity-75"
+                          : "text-blueGray-300")
+                      }
+                    ></i>{" "}
+                    Produk
+                  </a>
+                </Link>
+              </li>
+
+              <li className="items-center">
+                <Link href="/admin/category">
+                  <a
+                    href="#pablo"
+                    className={
+                      "text-xs uppercase py-3 font-bold block " +
+                      (router.pathname.indexOf("/admin/category") !== -1
+                        ? "text-lightBlue-500 hover:text-lightBlue-600"
+                        : "text-blueGray-700 hover:text-blueGray-500")
+                    }
+                  >
+                    <i
+                      className={
+                        "fas fa-server mr-2 text-sm " +
+                        (router.pathname.indexOf("/admin/category") !== -1
+                          ? "opacity-75"
+                          : "text-blueGray-300")
+                      }
+                    ></i>{" "}
+                    Kategori
+                  </a>
+                </Link>
+              </li>
+
 
               <li className="items-center">
                 <Link href="/admin/user">
@@ -164,7 +212,7 @@ export default function Sidebar() {
                   >
                     <i
                       className={
-                        "fas fa-server mr-2 text-sm " +
+                        "fas fa-tools mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/device") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
