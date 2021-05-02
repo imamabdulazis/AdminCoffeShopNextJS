@@ -1,27 +1,71 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 // layout for page
 
 
-import Auth from "../../components/layouts/Auth.js";
+import Auth from "../components/layouts/Auth.js";
 import { toast } from "react-toastify";
-import options from "../../utils/toas_options.js";
+import options from "../utils/toas_options.js";
+import { useRouter } from "next/router";
 
 export default function Login() {
 
-    useEffect(() => {
+    const [emailState, setUsernameState] = useState("")
+    const [passwordState, setPasswordState] = useState("")
 
+    const router = useRouter();
+
+    useEffect(() => {
+        toast('Selamat Datang Di Admin Coffeshop')
     }, []);
 
 
-    const onLogin = () => {
-        toast.success('hoohoho', options)
-        console.log("IMAM")
+
+    const requestLogin = () => {
+        const body = {
+            "username": emailState.toString(),
+            "password": passwordState.toString()
+        }
+
+        fetch('/api/v1/login',
+            {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
+            }
+        ).then(res => res.json()).then((res) => {
+            console.log(res);
+            if (res.status == 200) {
+                router.replace('/admin/dashboard')
+                toast.success('Berhasil login')
+            } else if (res.status == 422) {
+                res.message.map(e => {
+                    toast.warning(e)
+                    // console.log(e)
+                })
+            } else {
+                toast.error(res.message)
+                // console.log(res.message);
+            }
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
 
+    const onLogin = () => {
+        requestLogin();
+    }
+
+
+    console.log(emailState)
+    console.log(passwordState)
+
     return (
+
         <>
             <div className="container mx-auto px-4 h-full">
                 <div className="flex content-center items-center justify-center h-full">
@@ -38,7 +82,7 @@ export default function Login() {
                             </div>
                             <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                                 <div className="text-blueGray-400 text-center mb-3 font-bold">
-                                    <small>Login hanya bisa menggunakan email</small>
+                                    <small>Di mohon untuk tidak membagikan username dan password kepada orang lain!</small>
                                 </div>
                                 <form>
                                     <div className="relative w-full mb-3">
@@ -46,12 +90,13 @@ export default function Login() {
                                             className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                                             htmlFor="grid-password"
                                         >
-                                            Email
+                                            Username
                                         </label>
                                         <input
-                                            type="email"
+                                            onChange={(e) => setUsernameState(e.target.value)}
+                                            type="username"
                                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                                            placeholder="Email"
+                                            placeholder="Username"
                                         />
                                     </div>
 
@@ -63,6 +108,7 @@ export default function Login() {
                                             Password
                                         </label>
                                         <input
+                                            onChange={(e) => setPasswordState(e.target.value)}
                                             type="password"
                                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                             placeholder="Password"

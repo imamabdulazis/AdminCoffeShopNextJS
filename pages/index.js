@@ -7,12 +7,12 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
-    router.replace('/admin/auth')
+    router.replace('/admin/login')
   }, []);
 
 
   return (
-    <div className={styles.container}>
+    <div>
 
     </div>
   )

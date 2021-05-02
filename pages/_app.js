@@ -6,7 +6,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Head from "next/head";
 import Router from "next/router";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import PageChange from "./components/modules/PageChanges/PageChange.js";
 
@@ -75,7 +76,7 @@ export default class MyApp extends App {
               content="width=device-width, initial-scale=1, shrink-to-fit=no"
             />
             <title>Coffe Shop</title>
-            <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+            {/* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> */}
           </Head>
           <Layout>
             <Component {...pageProps} />
@@ -91,7 +92,6 @@ export default class MyApp extends App {
             draggable
             pauseOnHover
           />
-          {/* Same as */}
         </React.Fragment>
         <ToastContainer />
       </>
