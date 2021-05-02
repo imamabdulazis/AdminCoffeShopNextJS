@@ -1,7 +1,10 @@
 import React from "react";
 import { createPopper } from "@popperjs/core";
+import { useRouter } from "next/router";
 
 const UserDropdown = () => {
+  //router
+  const router = useRouter();
   // dropdown props
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
@@ -15,6 +18,11 @@ const UserDropdown = () => {
   const closeDropdownPopover = () => {
     setDropdownPopoverShow(false);
   };
+
+  const onLogout = (e) => {
+    router.replace('admin/auth')
+  }
+
   return (
     <>
       <a
@@ -48,16 +56,7 @@ const UserDropdown = () => {
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
-          onClick={(e) => e.preventDefault()}
-        >
-          PENGATURAN
-        </a>
-        <a
-          href="#pablo"
-          className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          }
-          onClick={(e) => e.preventDefault()}
+          onClick={onLogout}
         >
           LOG OUT
         </a>

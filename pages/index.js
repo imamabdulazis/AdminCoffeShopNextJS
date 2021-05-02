@@ -1,15 +1,14 @@
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import styles from '../styles/Home.module.css'
 import Admin from './components/layouts/Admin.js'
 
 export default function Home() {
-  const router=useRouter()
+  const router = useRouter()
 
-  useEffect(()=>{
-    router.replace('/admin/dashboard')
-  },[]);
+  useEffect(() => {
+    router.replace('/admin/auth')
+  }, []);
 
 
   return (
@@ -18,6 +17,3 @@ export default function Home() {
     </div>
   )
 }
-
-
-Home.layout = Admin
