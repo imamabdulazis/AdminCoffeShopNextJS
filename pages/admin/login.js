@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 
 export default function Login() {
 
-    const [emailState, setUsernameState] = useState("")
+    const [usernameState, setUsernameState] = useState("")
     const [passwordState, setPasswordState] = useState("")
 
     const router = useRouter();
@@ -20,11 +20,9 @@ export default function Login() {
         toast('Selamat Datang Di Admin Coffeshop')
     }, []);
 
-
-
     const requestLogin = () => {
         const body = {
-            "username": emailState.toString(),
+            "username": usernameState.toString(),
             "password": passwordState.toString()
         }
 
@@ -37,10 +35,15 @@ export default function Login() {
                 body: JSON.stringify(body)
             }
         ).then(res => res.json()).then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.status == 200) {
-                router.replace('/admin/dashboard')
-                toast.success('Berhasil login')
+                if (res.previlage === 'admin') {
+                    window.localStorage.setItem('token', res.token)
+                    router.replace('/admin/dashboard')
+                    toast.success('Berhasil login')
+                }else{
+                    toast.warning('Anda tidak memiliki akses untuk masuk\n silahkan menggunakan aplikasi mobile')
+                }
             } else if (res.status == 422) {
                 res.message.map(e => {
                     toast.warning(e)
@@ -51,18 +54,16 @@ export default function Login() {
                 // console.log(res.message);
             }
         }).catch(err => {
+            toast.error("Internal Server Error")
             console.log(err);
         })
     }
 
 
-    const onLogin = () => {
+    const onLogin = (e) => {
+        e.preventDefault();
         requestLogin();
     }
-
-
-    console.log(emailState)
-    console.log(passwordState)
 
     return (
 

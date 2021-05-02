@@ -69,8 +69,8 @@ export default async (req, res) => {
                             name: req.body.name,
                             username: req.body.username,
                             email: req.body.email,
-                            image_url: req.body.image_url,
                             telp_number: req.body.telp_number,
+                            previlage: req.body.previlage,
                             updated_at: new Date()
                         }
                     })

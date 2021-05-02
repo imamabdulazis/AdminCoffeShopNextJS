@@ -18,7 +18,6 @@ export default async (req, res) => {
     const prisma = new PrismaClient()
     switch (req.method) {
         case "POST":
-            console.log(req.body.username)
             await validateBody(req, res)
             const errors = validationResult(req)
             if (!errors.isEmpty()) {

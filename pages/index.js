@@ -7,7 +7,11 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
-    router.replace('/admin/login')
+    if (localStorage.getItem('token') != null) {
+      router.replace('/admin/dashboard')
+    } else {
+      router.replace('/admin/login')
+    }
   }, []);
 
 

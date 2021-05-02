@@ -20,6 +20,7 @@ const UserDropdown = () => {
   };
 
   const onLogout = (e) => {
+    window.localStorage.removeItem('token')
     router.replace('admin/auth')
   }
 
