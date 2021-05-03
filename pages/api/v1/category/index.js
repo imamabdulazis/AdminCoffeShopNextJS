@@ -16,7 +16,6 @@ const validateBody = initMiddleware(
 
 export default async (req, res) => {
     const prisma = new PrismaClient()
-    const imageUrl = process.env.DEFAULT_CATEGORY_IMAGE
 
     switch (req.method) {
         case "GET":  //validate jwt token
@@ -61,7 +60,6 @@ export default async (req, res) => {
                         id: uuid(),
                         name: req.body.name,
                         description: req.body.description,
-                        image_url: imageUrl,
                         created_at: new Date(),
                         updated_at: new Date(),
                         deleted_at: new Date()

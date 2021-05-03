@@ -49,9 +49,11 @@ export default function HeaderStats() {
         } else if (res.status == 401) {
           unAutorize();
         } else {
+          console.log(res)
           toast.error("Terjadi kesalahan data pemesanan")
         }
       }).catch(e => {
+        toast.error("Terjadi kesalahan data pemesanan")
         console.log(e);
       })
   }
@@ -66,7 +68,7 @@ export default function HeaderStats() {
       },
     }).then(res => res.json())
       .then((res) => {
-        
+
         if (res.status == 200) {
           const data = res.data;
           setDrinkState(data);
@@ -90,7 +92,7 @@ export default function HeaderStats() {
       },
     }).then(res => res.json())
       .then((res) => {
-        
+
         if (res.status == 200) {
           const data = res.data;
           setUserState(data);
@@ -113,7 +115,7 @@ export default function HeaderStats() {
       },
     }).then(res => res.json())
       .then((res) => {
-        
+
         if (res.status == 200) {
           const data = res.data;
           setNotificationState(data);

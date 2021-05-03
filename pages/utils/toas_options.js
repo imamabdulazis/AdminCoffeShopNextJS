@@ -11,7 +11,6 @@ const options = {
     position: toast.POSITION.TOP_RIGHT,
     pauseOnHover: true,
     progress: 0.2
-    // and so on ...
 };
 
 export default options;

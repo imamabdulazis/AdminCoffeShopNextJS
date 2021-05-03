@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import Admin from "../components/layouts/Admin.js";
-import TableDropdown from "../components/elements/Dropdowns/TableDropdown.js";
+import TableDropdown from "../components/elements/Dropdowns/OrderDropdown.js";
 import moment from 'moment';
 
 export default function OrderPage({ color = 'light' }) {
@@ -126,6 +126,16 @@ export default function OrderPage({ color = 'light' }) {
                                                         : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                                                 }
                                             >
+                                                STATUS PEMBAYARAN
+                                            </th>
+                                            <th
+                                                className={
+                                                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                                                    (color === "light"
+                                                        ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                                                        : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+                                                }
+                                            >
                                                 TOTAL
                                             </th>
                                             <th
@@ -156,6 +166,9 @@ export default function OrderPage({ color = 'light' }) {
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                         <p style={{ color: e.status == 'Waiting' ? 'orange' : e.status == 'Proses' ? 'green' : 'red', fontWeight: 'bold' }}>{e.status}</p>
+                                                    </td>
+                                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                                        <h5 style={{ fontWeight: 'bold' }}>{e.payment_status}</h5>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                         <h5 style={{ fontWeight: 'bold' }}>{e.total}</h5>

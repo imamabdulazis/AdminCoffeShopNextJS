@@ -37,6 +37,7 @@ export default async (req, res) => {
                 const order = await prisma.orders.findMany({
                     select: {
                         id: true,
+                        no_transaction: true,
                         total: true,
                         amount: true,
                         pickup_date: true,
@@ -45,7 +46,7 @@ export default async (req, res) => {
                         created_at: true,
                         deleted_at: true,
                         status: true,
-                        no_transaction: true,
+                        payment_status: true,
                         users: {
                             select: {
                                 id: true,
@@ -62,8 +63,7 @@ export default async (req, res) => {
                         payment_method: {
                             select: {
                                 id: true,
-                                name: true,
-                                method: true,
+                                payment_type: true,
                             }
                         },
                     }

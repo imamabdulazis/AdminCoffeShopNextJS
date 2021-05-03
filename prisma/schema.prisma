@@ -62,14 +62,15 @@ model notification {
 }
 
 model payment_method {
-  id          String    @id @db.Uuid
-  name        String?   @db.VarChar
-  method      String?   @db.VarChar
-  description String?   @db.VarChar
-  created_at  DateTime? @db.Timestamp(6)
-  updated_at  DateTime? @db.Timestamp(6)
-  deleted_at  DateTime? @db.Timestamp(6)
-  orders      orders[]
+  id              String    @id @db.Uuid
+  description     String?   @db.VarChar
+  created_at      DateTime? @db.Timestamp(6)
+  updated_at      DateTime? @db.Timestamp(6)
+  deleted_at      DateTime? @db.Timestamp(6)
+  payment_type    String?   @db.VarChar
+  enable_callback Boolean?
+  callback_url    String?   @db.VarChar
+  orders          orders[]
 }
 
 model report {
@@ -112,6 +113,7 @@ model orders {
   deleted_at        DateTime?       @db.Timestamp(6)
   no_transaction    String?         @db.VarChar
   status            String?         @db.VarChar
+  payment_status    String?         @db.VarChar
   drink             drink?          @relation(fields: [drink_id], references: [id])
   payment_method    payment_method? @relation(fields: [payment_method_id], references: [id])
   users             users?          @relation(fields: [user_id], references: [id])
