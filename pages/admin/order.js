@@ -142,7 +142,7 @@ export default function OrderPage({ color = 'light' }) {
                                             orderState.map(e => {
                                                 return <tr key={e.id}>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        <h5 style={{ color: 'black', fontWeight: 'bold' }}>{e.no_transaction}</h5>
+                                                        <h5 style={{ fontWeight: 'bold' }}>{e.no_transaction}</h5>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                         {moment(e.updated_at).format('HH:mm - DD MMM YYYY')}
@@ -157,7 +157,7 @@ export default function OrderPage({ color = 'light' }) {
                                                         <p style={{ color: e.status == 'Waiting' ? 'orange' : e.status == 'Proses' ? 'green' : 'red', fontWeight: 'bold' }}>{e.status}</p>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                                        {e.total}
+                                                        <h5 style={{ fontWeight: 'bold' }}>{e.total}</h5>
                                                     </td>
                                                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                                                         <TableDropdown />
