@@ -2,6 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+Example screenshot page
+![Screen Shot 2021-05-03 at 10 05 19 AM](https://user-images.githubusercontent.com/39134128/116838039-1d31b200-abf7-11eb-9e2b-99ec49d44052.png)
+
+```fix
+Fell free clone or create issue
+```
+
 First, run the development server:
 
 ```bash
@@ -14,7 +21,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/v1/login). This endpoint can be edited in `pages/api/v1/login/index.js`. 
+```json
+"username":"admin1",
+"password":"12345",
+```
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
