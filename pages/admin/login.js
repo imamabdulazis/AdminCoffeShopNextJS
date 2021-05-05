@@ -6,7 +6,6 @@ import Link from "next/link";
 
 import Auth from "../components/layouts/Auth.js";
 import { toast } from "react-toastify";
-import options from "../utils/toas_options.js";
 import { useRouter } from "next/router";
 
 export default function Login() {
