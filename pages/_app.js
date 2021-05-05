@@ -77,6 +77,10 @@ export default class MyApp extends App {
             />
             <title>Coffe Shop</title>
             {/* <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> */}
+            <link
+              rel="stylesheet"
+              href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            />
           </Head>
           <Layout>
             <Component {...pageProps} />
