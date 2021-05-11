@@ -87,8 +87,6 @@ export default function CategoryPage({ color = 'light' }) {
     }
 
     const addCategory = (name, description) => {
-        console.info(`NAME :${name}`)
-        console.info(`DESKRIPSI :${description}`)
         fetch('/api/v1/category', {
             method: "POST",
             headers: {
