@@ -34,7 +34,7 @@ export default async (req, res) => {
                     message: "Token expired"
                 })
 
-                const order = await prisma.orders.findMany({
+                const orderDrink = await prisma.orders.findMany({
                     select: {
                         id: true,
                         no_transaction: true,
@@ -58,6 +58,7 @@ export default async (req, res) => {
                             select: {
                                 id: true,
                                 name: true,
+                                price: true,
                             }
                         },
                         payment_method: {
@@ -69,14 +70,15 @@ export default async (req, res) => {
                     }
                 })
 
-                if (!order) return res.status(404).json({ status: 404, message: "Pesanan kosong tidak ditemukan" })
+                if (!orderDrink) return res.status(404).json({ status: 404, message: "Pesanan tidak ditemukan" })
 
                 return res.status(200).json({
                     status: 200,
                     message: "Ok",
-                    data: order
+                    data: orderDrink
                 })
             } catch (e) {
+                console.log(e)
                 return res.status(500).json({
                     status: 500,
                     message: e
@@ -169,6 +171,23 @@ export default async (req, res) => {
                     status: 403,
                     message: "Gagal menambahkan pesanan"
                 })
+
+                const inputReport = await prisma.report.create({
+                    data: {
+                        id: uuid(),
+                        order_id: addOrder.id,
+                        created_at: new Date(),
+                        updated_at: new Date(),
+                        deleted_at: new Date(),
+                        date_report: new Date(),
+                    }
+                })
+
+                if (!inputReport) return res.status(403).json({
+                    status: 403,
+                    message: "Gagal menambahkan pesanan"
+                })
+
                 return res.status(200).json({
                     status: 200,
                     message: "Berhasil membuat pesanan"

@@ -45,6 +45,7 @@ export default async (req, res) => {
                 status: 200,
                 message: "Login berhasil",
                 previlage: user.previlage,
+                user_id: user.id,
                 token: token
             })
             break;

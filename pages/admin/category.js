@@ -16,7 +16,7 @@ export default function CategoryPage({ color = 'light' }) {
         getCategory()
     }, []);
 
-    // get Device
+    // get Kategori
     const getCategory = () => {
         fetch('/api/v1/category', {
             method: "GET",
@@ -33,7 +33,7 @@ export default function CategoryPage({ color = 'light' }) {
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
-                    toast.error("Terjadi kesalahan data pemesanan")
+                    toast.error("Terjadi kesalahan data Katergori")
                 }
             }).catch(e => {
                 console.log(e);
@@ -105,7 +105,7 @@ export default function CategoryPage({ color = 'light' }) {
                     toast.success("Berhasil tambah kategory")
                     getCategory();
                 } else {
-                    toast.warning("Terjadi kesalahan")
+                    toast.warning("Terjadi kesalahan,  periksa kembali apakah berelasi dengan data lain")
                 }
             }).catch((err) => {
                 toast.error("Internal Server Error")

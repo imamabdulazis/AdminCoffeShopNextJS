@@ -53,7 +53,7 @@ export default function HeaderStats() {
           toast.error("Terjadi kesalahan data pemesanan")
         }
       }).catch(e => {
-        toast.error("Terjadi kesalahan data pemesanan")
+        toast.error("Internal Server Error")
         console.log(e);
       })
   }

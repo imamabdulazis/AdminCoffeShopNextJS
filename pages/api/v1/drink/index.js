@@ -121,9 +121,11 @@ export default async (req, res) => {
                     select: {
                         id: true,
                         name: true,
+                        description:true,
                         image_url: true,
                         price: true,
                         stock: true,
+                        updated_at:true,
                         category: {
                             select: {
                                 id: true,

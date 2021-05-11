@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createPopper } from "@popperjs/core";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const UserDropdown = () => {
+  const [imageState, setImageState] = useState('/img/user.png')
   //router
   const router = useRouter();
   // dropdown props
@@ -24,6 +26,36 @@ const UserDropdown = () => {
     router.replace('/')
   }
 
+  useEffect(() => {
+    getDetailUser();
+  }, [])
+
+  // get user
+  const getDetailUser = (id) => {
+    fetch(`/api/v1/users/${window.localStorage.getItem('user_id')}`, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+      },
+    }).then(res => res.json())
+      .then((res) => {
+
+        if (res.status == 200) {
+          const data = res.data;
+          setImageState(data.image_url);
+        } else if (res.status == 401) {
+          unAutorize();
+        } else {
+          console.info(res)
+          toast.error("Terjadi kesalahan data users, periksa kembali apakah berelasi dengan data lain")
+        }
+      }).catch(e => {
+        toast.error("Internal Server Error")
+        console.log(e);
+      })
+  }
+
   return (
     <>
       <a
@@ -40,7 +72,7 @@ const UserDropdown = () => {
             <img
               alt="..."
               className="w-full rounded-full align-middle border-none shadow-lg"
-              src="/img/team-1-800x800.jpg"
+              src={imageState}
             />
           </span>
         </div>

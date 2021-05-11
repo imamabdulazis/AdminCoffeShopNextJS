@@ -38,9 +38,10 @@ export default function Login() {
             if (res.status == 200) {
                 if (res.previlage === 'admin') {
                     window.localStorage.setItem('token', res.token)
+                    window.localStorage.setItem('user_id', res.user_id)
                     router.replace('/admin/dashboard')
                     toast.success('Berhasil login')
-                }else{
+                } else {
                     toast.warning('Anda tidak memiliki akses untuk masuk\n silahkan menggunakan aplikasi mobile')
                 }
             } else if (res.status == 422) {

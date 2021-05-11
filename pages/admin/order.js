@@ -5,29 +5,13 @@ import TableDropdown from "../components/elements/Dropdowns/OrderDropdown.js";
 import moment from 'moment';
 import MaterialTable from 'material-table';
 import { locale } from '../../utils/locale.js';
+import { toast } from 'react-toastify';
 
 export default function OrderPage({ color = 'light' }) {
     const router = useRouter()
 
     const [orderState, setOrderState] = useState([])
     const [showModal, setShowModal] = React.useState(false);
-
-    const [columns, setColumns] = useState([
-        { title: 'Name', field: 'name', editable: 'true' },
-        { title: 'Surname', field: 'surname', editable: 'never' },
-        { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-        {
-            title: 'Birth Place',
-            field: 'birthCity',
-            lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-        },
-    ]);
-
-    const [data, setData] = useState([
-        { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-        { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
-    ]);
-
 
     useEffect(() => {
         getOrder()
@@ -53,47 +37,66 @@ export default function OrderPage({ color = 'light' }) {
                     toast.error("Terjadi kesalahan data pemesanan")
                 }
             }).catch(e => {
+                toast.error('Internal Server Error')
                 console.log(e);
             })
     }
+
+     // delete order
+     const deleteOrder = (id) => {
+        fetch(`/api/v1/orders/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+        }).then(res => res.json())
+            .then((res) => {
+
+                if (res.status == 200) {
+                    getOrder();
+                    toast.success("Hapus pemesanan berhasil")
+                } else if (res.status == 401) {
+                    unAutorize();
+                } else {
+                    toast.error("Terjadi kesalahan data pemesanan")
+                }
+            }).catch(e => {
+                toast.error('Internal Server Error')
+                console.log(e);
+            })
+    }
+
+    const [columns, setColumns] = useState([
+        { title: 'CUSTOMER', field: 'users.name' },
+        { title: 'MINUMAN', field: 'drink.name' },
+        { title: 'JUMLAH', field: 'amount' },
+        { title: 'HARGA', field: 'drink.price' },
+        { title: 'DISCOUNT', field: 'discount' },
+        { title: 'TOTAL', field: 'total' },
+        {
+            title: 'UPDATE', field: 'updated_at', type: 'date',
+            dateSetting: {
+                format: 'dd/MM/yyyy'
+            },
+            editable: 'never'
+        },
+    ]);
 
     return (
         <>
             <div className="flex flex-wrap mt-12">
                 <div className="w-full mb-12 px-4">
                     <MaterialTable
-                        title="Disable Field Editable Preview"
+                        title="Pemesanan"
                         columns={columns}
-                        data={data}
+                        data={orderState}
                         localization={locale}
                         editable={{
-                            onRowAdd: newData =>
+                            onRowDelete: (rawData, oldData) =>
                                 new Promise((resolve, reject) => {
+                                    deleteOrder(rawData.id);
                                     setTimeout(() => {
-                                        setData([...data, newData]);
-
-                                        resolve();
-                                    }, 1000)
-                                }),
-                            onRowUpdate: (newData, oldData) =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        const dataUpdate = [...data];
-                                        const index = oldData.tableData.id;
-                                        dataUpdate[index] = newData;
-                                        setData([...dataUpdate]);
-
-                                        resolve();
-                                    }, 1000)
-                                }),
-                            onRowDelete: oldData =>
-                                new Promise((resolve, reject) => {
-                                    setTimeout(() => {
-                                        const dataDelete = [...data];
-                                        const index = oldData.tableData.id;
-                                        dataDelete.splice(index, 1);
-                                        setData([...dataDelete]);
-
                                         resolve();
                                     }, 1000)
                                 }),

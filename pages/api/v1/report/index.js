@@ -19,7 +19,35 @@ export default async (req, res) => {
                 message: "Token expired"
             })
 
-            const report = await prisma.report.findMany({})
+            const report = await prisma.report.findMany({
+                select: {
+                    orders: {
+                        select: {
+                            id: true,
+                            drink: {
+                                select: {
+                                    name: true,
+                                    price: true,
+                                }
+                            },
+                            updated_at: true,
+                            amount: true,
+                            discount: true,
+                            total: true,
+                            status: true,
+                            users: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    email: true,
+                                }
+                            }
+                        },
+                    },
+                    date_report: true,
+                    updated_at:true,
+                }
+            })
             if (!report) return res.status(404).json({ status: 404, message: "Laporan tidak ditemukan tidak ditemukan" })
             return res.status(200).json({ status: 200, message: "Ok", data: report })
 
