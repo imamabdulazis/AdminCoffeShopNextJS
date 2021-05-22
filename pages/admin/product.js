@@ -11,9 +11,11 @@ export default function ProuctPage({ color = 'light' }) {
 
     const router = useRouter()
     const [productState, setProductState] = useState([])
+    const [categoryState, setCategoryState] = useState([])
 
     useEffect(() => {
         getProduct()
+        getCategory()
     }, []);
 
     // get Product
@@ -96,6 +98,29 @@ export default function ProuctPage({ color = 'light' }) {
             })
     }
 
+    const getCategory = () => {
+        fetch('/api/v1/category', {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+        }).then(res => res.json())
+            .then((res) => {
+
+                if (res.status == 200) {
+                    const data = res.data;
+                    setCategoryState(data);
+                } else if (res.status == 401) {
+                    unAutorize();
+                } else {
+                    toast.error("Terjadi kesalahan data Katergori")
+                }
+            }).catch(e => {
+                console.log(e);
+            })
+    }
+
     const [columns, setColumns] = useState([
         {
             title: 'Avatar', field: 'image_url', editable: 'true', render: rowData => (
@@ -106,7 +131,17 @@ export default function ProuctPage({ color = 'light' }) {
             ),
         },
         { title: 'NAMA', field: 'name' },
-        { title: 'KATEGORI', field: 'category.name', editable: 'never' },
+        {
+            title: 'KATEGORI', field: 'category.name', render: rowData => (
+                <>
+                    <select className={{}}>
+                        {
+                            categoryState.map((e) => <option>{e}</option>)
+                        }
+                    </select>
+                </>
+            )
+        },
         { title: 'HARGA', field: 'price' },
         { title: 'STOK', field: 'stock' },
         {

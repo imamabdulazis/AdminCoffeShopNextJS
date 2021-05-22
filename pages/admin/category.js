@@ -103,7 +103,8 @@ export default function CategoryPage({ color = 'light' }) {
                     toast.success("Berhasil tambah kategory")
                     getCategory();
                 } else {
-                    toast.warning("Terjadi kesalahan,  periksa kembali apakah berelasi dengan data lain")
+                    console.log(res);
+                    toast.warning("Terjadi kesalahan");
                 }
             }).catch((err) => {
                 toast.error("Internal Server Error")
