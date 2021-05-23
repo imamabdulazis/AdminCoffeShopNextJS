@@ -9,9 +9,7 @@ import authenticateToken from '../../helper/autenticate_jwt'
 const validateBody = initMiddleware(
     validateMiddleware([
         check('user_id').isLength({ min: 10, max: 40 }),
-        check('fcm_token').isLength({ min: 10, max: 1000 }),
-        check('phone_id').isLength({ min: 3, max: 1000 }),
-        check('system_os').isLength({ min: 4, max: 100 }),
+        check('drink_id').isLength({ min: 10, max: 40 }),
     ], validationResult)
 )
 
@@ -31,31 +29,33 @@ export default async (req, res) => {
                     message: "Token expired"
                 })
 
-                const device = await prisma.device.findMany({
+                const favorite = await prisma.favorite.findMany({
                     select: {
                         id: true,
-                        users: {
+                        amount:true,
+                        drink: {
                             select: {
                                 id: true,
                                 name: true,
+                                description: true,
+                                image_url: true,
+                                stock: true,
+                                price: true,
+                                updated_at: true,
+                                category: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                    }
+                                }
                             }
-                        },
-                        fcm_token: true,
-                        manufacture: true,
-                        os_name: true,
-                        phone_id: true,
-                        system_os: true,
-                        system_version: true,
-                        app_version: true,
-                        created_at: true,
-                        deleted_at: true,
-                        updated_at: true,
+                        }
                     }
                 })
 
-                if (!device) return res.status(404).json({ status: 404, message: "Device tidak ditemukan" })
+                if (!favorite) return res.status(404).json({ status: 404, message: "Favorite masih kosong" })
 
-                return res.status(200).json({ status: 200, message: "Ok", data: device })
+                return res.status(200).json({ status: 200, message: "Ok", data: favorite, })
             } catch (e) {
                 return res.status(500).json({
                     status: 500,
@@ -81,7 +81,6 @@ export default async (req, res) => {
                     })
                 }
 
-
                 ///validate if userId not exist
                 const isUserExist = await prisma.users.findUnique({
                     where: { id: req.body.user_id },
@@ -93,62 +92,55 @@ export default async (req, res) => {
                 })
 
                 ///validate if device exist
-                const isDeviceExist = await prisma.device.findFirst({
-                    where: { phone_id: req.body.phone_id },
+                const isFavoriteDrinkExist = await prisma.favorite.findFirst({
+                    where: { drink_id: req.body.drink_id },
                 })
 
-                if (isDeviceExist) {
-                    const device = await prisma.device.update({
+                if (isFavoriteDrinkExist) {
+
+                    const favorite = await prisma.favorite.update({
                         where: {
-                            id: isDeviceExist.id,
+                            id: isFavoriteDrinkExist.id,
                         },
                         data: {
                             id: uuid(),
-                            fcm_token: req.body.fcm_token,
-                            app_version: req.body.app_version,
-                            manufacture: req.body.manufacture,
-                            system_version: req.body.system_version,
-                            system_os: req.body.system_os,
+                            amount: isFavoriteDrinkExist.amount + 1,
                             updated_at: new Date(),
                         }
                     })
-                    if (!device) {
+                    if (!favorite) {
                         return res.status(403).json({
                             status: 403,
-                            message: "Gagal menambahkan device"
+                            message: "Gagal menambahkan favorite"
                         })
                     }
+
                     return res.status(200).json({
                         status: 200,
-                        message: "Berhasil update device",
+                        message: "Berhasil menambahkan ke favorite",
                     })
 
                 }
-                const device = await prisma.device.create({
+                const favorite = await prisma.favorite.create({
                     data: {
                         id: uuid(),
                         user_id: req.body.user_id,
-                        fcm_token: req.body.fcm_token,
-                        manufacture: req.body.manufacture,
-                        system_version: req.body.system_version,
-                        system_os: req.body.system_os,
-                        phone_id: req.body.phone_id,
-                        os_name: req.body.os_name,
-                        app_version: req.body.app_version,
+                        drink_id: req.body.drink_id,
+                        amount: 1,
                         created_at: new Date(),
                         updated_at: new Date(),
                         deleted_at: new Date()
                     }
                 })
-                if (!device) {
+                if (!favorite) {
                     return res.status(403).json({
                         status: 403,
-                        message: "Gagal menambahkan device"
+                        message: "Gagal menambahkan favorite"
                     })
                 }
                 return res.status(200).json({
                     status: 200,
-                    message: "Berhasil menambahkan device",
+                    message: "Berhasil menambahkan favorite",
                 })
 
             } catch (e) {

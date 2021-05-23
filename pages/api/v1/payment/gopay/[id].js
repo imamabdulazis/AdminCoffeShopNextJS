@@ -15,7 +15,6 @@ export default async (req, res) => {
         method,
     } = req;
 
-
     switch (method) {
         case "GET":
             return coreApi.transaction.status(id).then((responseStatus) => {
