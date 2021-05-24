@@ -32,7 +32,7 @@ export default async (req, res) => {
                 const cart = await prisma.cart.findMany({
                     select: {
                         id: true,
-                        amount:true,
+                        amount: true,
                         drink: {
                             select: {
                                 id: true,
@@ -104,7 +104,7 @@ export default async (req, res) => {
                         },
                         data: {
                             id: uuid(),
-                            amount: isCartDrinkExist.amount + 1,
+                            amount: isCartDrinkExist.amount + req.body.amount,
                             updated_at: new Date(),
                         }
                     })

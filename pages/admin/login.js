@@ -54,8 +54,7 @@ export default function Login() {
                 // console.log(res.message);
             }
         }).catch(err => {
-            toast.error("Internal Server Error")
-            console.log(err);
+            toast.error(JSON.stringify(err))
         })
     }
 
