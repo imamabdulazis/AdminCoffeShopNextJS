@@ -25,7 +25,11 @@ export default async (req, res) => {
                 message: "Token expired"
             })
 
-            const category = await prisma.category.findMany({})
+            const category = await prisma.category.findMany({
+                orderBy:{
+                    updated_at: 'desc'
+                },
+            })
             if (!category) return res.status(404).json({ status: 404, message: "Kategori tidak ditemukan" })
             return res.status(200).json({ status: 200, message: "Ok", data: category })
 

@@ -25,6 +25,21 @@ export default async (req, res) => {
                 const drink = await prisma.drink.findUnique({
                     where: {
                         id: id
+                    },
+                    select: {
+                        id: true,
+                        name:true,
+                        category: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        },
+                        description: true,
+                        image_url: true,
+                        price: true,
+                        stock: true,
+                        updated_at:true,
                     }
                 })
                 if (!drink) {

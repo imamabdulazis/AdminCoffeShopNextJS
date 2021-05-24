@@ -134,7 +134,7 @@ export default async (req, res) => {
                         },
                     },
                     orderBy: {
-                        updated_at: 'asc'
+                        updated_at: 'desc'
                     }
                 })
 

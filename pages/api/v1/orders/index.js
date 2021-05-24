@@ -35,6 +35,9 @@ export default async (req, res) => {
                 })
 
                 const orderDrink = await prisma.orders.findMany({
+                    orderBy: {
+                        updated_at: 'asc'
+                    },
                     select: {
                         id: true,
                         no_transaction: true,
@@ -46,7 +49,6 @@ export default async (req, res) => {
                         created_at: true,
                         deleted_at: true,
                         status: true,
-                        payment_status: true,
                         users: {
                             select: {
                                 id: true,

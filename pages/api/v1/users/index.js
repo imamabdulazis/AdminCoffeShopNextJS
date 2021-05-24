@@ -16,6 +16,9 @@ export default async (req, res) => {
                 })
 
                 const users = await prisma.users.findMany({
+                    orderBy:{
+                        updated_at: 'desc'
+                    },
                     select: {
                         id: true,
                         name: true,

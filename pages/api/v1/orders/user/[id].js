@@ -35,7 +35,6 @@ export default async (req, res) => {
                         created_at: true,
                         deleted_at: true,
                         status: true,
-                        payment_status: true,
                         users: {
                             select: {
                                 id: true,
