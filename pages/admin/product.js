@@ -22,6 +22,9 @@ export default function ProuctPage({ color = 'light' }) {
     const [loading, setloading] = useState(false)
 
 
+    const [selectedCategory, setselectedCategory] = useState(null)
+
+
     const [pickImage, setPickImage] = useState(false);
     const [fileFoto, setFileFoto] = useState("");
 
@@ -42,11 +45,11 @@ export default function ProuctPage({ color = 'light' }) {
             },
             { title: 'NAMA', field: 'name' },
             {
-                title: 'KATEGORI', editable: 'never', field: 'category.name', render: rowData => (
+                title: 'KATEGORI', field: 'category.name', render: rowData => (
                     <>
-                        <select className={{}}>
+                        <select value={selectedCategory} onChange={changeCategory}>
                             {
-                                categoryState.map((e) => <option>{e.name}</option>)
+                                categoryState.map((e) => <option value={e.name}>{e.name}</option>)
                             }
                         </select>
                     </>
@@ -63,6 +66,12 @@ export default function ProuctPage({ color = 'light' }) {
             },
         ])
     }, [categoryState])
+
+
+    const changeCategory = (event) => {
+        setselectedCategory(event.target.value)
+        console.log(event.target.value);
+    }
 
     // get Product
     const getProduct = () => {
