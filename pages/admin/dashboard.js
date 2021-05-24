@@ -1,23 +1,20 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import CardTable from '../components/elements/Cards/CardTable.js';
-
 import Admin from "../components/layouts/Admin.js";
-import HeaderStats from '../components/modules/Headers/HeaderStats.js';
+import MaterialTable from 'material-table';
+import { locale } from '../../utils/locale.js';
 
 export default function Dashboard() {
 
     const router = useRouter()
 
     const [orderState, setOrderState] = useState([])
-    const [drinkState, setDrinkState] = useState([])
-    const [userState, setUserState] = useState([])
-    const [notificationState, setNotificationState] = useState([])
 
     useEffect(() => {
         if (!localStorage.getItem('token')) {
             router.replace('/login')
         }
+        getOrder();
     }, []);
 
 
@@ -41,17 +38,42 @@ export default function Dashboard() {
 
     }
 
-    // get drink
-    // get user
-    // get notification
-
-
-
+    const [columns, setColumns] = useState([
+        { title: 'CUSTOMER', field: 'users.name' },
+        { title: 'MINUMAN', field: 'drink.name' },
+        { title: 'JUMLAH', field: 'amount' },
+        { title: 'HARGA', field: 'drink.price' },
+        { title: 'DISCOUNT', field: 'discount' },
+        { title: 'TOTAL', field: 'total' },
+        {
+            title: 'UPDATE', field: 'updated_at', type: 'date',
+            dateSetting: {
+                format: 'dd/MM/yyyy'
+            },
+            editable: 'never'
+        },
+    ]);
 
     return (
         <>
-            <div className="flex flex-wrap mt-4">
-
+            <div className="flex flex-wrap mt-12">
+                <div className="w-full mb-12 px-4">
+                    <MaterialTable
+                        title="Pemesanan Minuman"
+                        columns={columns}
+                        data={orderState}
+                        localization={locale}
+                        editable={{
+                            onRowDelete: (rawData, oldData) =>
+                                new Promise((resolve, reject) => {
+                                    deleteOrder(rawData.id);
+                                    setTimeout(() => {
+                                        resolve();
+                                    }, 1000)
+                                }),
+                        }}
+                    />
+                </div>
             </div>
         </>
     )
