@@ -62,8 +62,7 @@ export default async (req, res) => {
                             id: id
                         },
                         data: {
-                            name: req.body.name,
-                            method: req.body.method,
+                            payment_type: req.body.method,
                             description: req.body.description,
                             updated_at: new Date()
                         }

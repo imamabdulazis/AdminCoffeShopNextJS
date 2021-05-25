@@ -73,6 +73,8 @@ export default function OrderPage({ color = 'light' }) {
         { title: 'JUMLAH', field: 'amount' },
         { title: 'HARGA', field: 'drink.price' },
         { title: 'DISCOUNT', field: 'discount' },
+        { title: 'ORDER STATUS', field: 'order_status' },
+        { title: 'STATUS PEMBAYARAN', field: 'payment_status' },
         { title: 'TOTAL', field: 'total' },
         {
             title: 'UPDATE', field: 'updated_at', type: 'date',

@@ -37,7 +37,7 @@ export default function ProuctPage({ color = 'light' }) {
             {
                 title: 'Avatar', field: 'image_url', editable: 'true', render: rowData => (
                     <img
-                        style={{ height: 36, borderRadius: '50%' }}
+                        style={{ height: 36, borderRadius: '0%' }}
                         src={rowData.image_url}
                     />
                 ),
@@ -56,7 +56,7 @@ export default function ProuctPage({ color = 'light' }) {
             },
             { title: 'HARGA', field: 'price' },
             { title: 'STOK', field: 'stock' },
-            { title: 'DESKRIPSI', field: 'description' },
+            { title: 'DESKRIPSI', field: 'description', cellStyle: { textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: 100 } },
             {
                 title: 'UPDATE', field: 'updated_at', type: 'date',
                 dateSetting: {
@@ -113,6 +113,7 @@ export default function ProuctPage({ color = 'light' }) {
 
     // get Product
     const addProduct = (name, description, stock, price) => {
+        console.log(description)
         setloading(true);
         fetch('/api/v1/drink', {
             method: "POST",
@@ -159,7 +160,7 @@ export default function ProuctPage({ color = 'light' }) {
             },
             body: JSON.stringify({
                 name: newData.name,
-                description: oldData.description,
+                description: newData.description,
                 category_id: oldData.category.id,
                 price: newData.price,
                 stock: parseInt(newData.stock)

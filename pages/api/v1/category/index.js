@@ -10,7 +10,7 @@ import authenticateToken from '../../helper/autenticate_jwt'
 const validateBody = initMiddleware(
     validateMiddleware([
         check('name').isLength({ min: 1, max: 40 }),
-        check('description').isLength({ min: 4, max: 40 }),
+        check('description').isLength({ min: 4 }),
     ], validationResult)
 )
 

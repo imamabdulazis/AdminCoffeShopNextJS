@@ -116,7 +116,7 @@ export default function CategoryPage({ color = 'light' }) {
 
     const [columns, setColumns] = useState([
         { title: 'NAMA', field: 'name' },
-        { title: 'DESKRIPSI', field: 'description' },
+        { title: 'DESKRIPSI', field: 'description', cellStyle: { textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: 100 } },
         {
             title: 'UPDATE', field: 'updated_at', type: 'date',
             dateSetting: {

@@ -9,24 +9,24 @@ export default function ReportPage() {
 
     const router = useRouter();
 
-    const [reportState, setReportState] = useState([])
+    const [paymentState, setpaymentState] = useState([])
     const [loading, setloading] = useState(false)
 
 
 
     const [columns, setColumns] = useState([
-        { title: 'PEMESANAN', field: 'orders.drink.name', editable: 'never' },
-        { title: 'CUSTOMER', field: 'orders.users.email', editable: 'never' },
         {
-            title: 'TANGGAL LAPORAN', field: 'updated_at', type: 'date',
-            dateSetting: {
-                format: 'dd/MM/yyyy'
-            },
-            editable: 'never'
+            title: 'Avatar', field: 'image_url', editable: 'true', render: rowData => (
+                <img
+                    style={{ height: 36, borderRadius: '0%' }}
+                    src={rowData.image_url}
+                />
+            ),
         },
-        { title: 'JUMLAH', field: 'orders.amount', },
+        { title: 'Metode', field: 'payment_type', editable: 'never' },
+        { title: 'DESKRIPSI', field: 'description', },
         {
-            title: 'TANGGAL LAPORAN', field: 'date_report', type: 'date',
+            title: 'UPDATE', field: 'updated_at', type: 'date',
             dateSetting: {
                 format: 'dd/MM/yyyy'
             },
@@ -41,7 +41,7 @@ export default function ReportPage() {
 
     // get Report
     const getReport = () => {
-        fetch('/api/v1/report', {
+        fetch('/api/v1/payment_method', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -51,13 +51,14 @@ export default function ReportPage() {
             .then((res) => {
                 if (res.status == 200) {
                     const data = res.data;
-                    setReportState(data);
+                    setpaymentState(data);
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
-                    toast.error("Terjadi kesalahan data Katergori")
+                    toast.error("Terjadi kesalahan data Pembayaran")
                 }
             }).catch(e => {
+                toast.error("Terjadi kesalahan data Pembayaran")
                 console.log(e);
             })
     }
@@ -68,10 +69,10 @@ export default function ReportPage() {
             <div className="flex flex-wrap mt-12">
                 <div className="w-full mb-12 px-4">
                     <MaterialTable
-                        title="Report"
+                        title="Metode pembayaran"
                         isLoading={loading}
                         columns={columns}
-                        data={reportState}
+                        data={paymentState}
                         localization={locale}
                     />
                 </div>

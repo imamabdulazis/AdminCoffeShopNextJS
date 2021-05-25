@@ -200,6 +200,30 @@ export default function Sidebar() {
               </li>
 
               <li className="items-center">
+                <Link href="/admin/payment">
+                  <a
+                    href="#pablo"
+                    className={
+                      "text-xs uppercase py-3 font-bold block " +
+                      (router.pathname.indexOf("/admin/payment") !== -1
+                        ? "text-lightBlue-500 hover:text-lightBlue-600"
+                        : "text-blueGray-700 hover:text-blueGray-500")
+                    }
+                  >
+                    <i
+                      className={
+                        "fas fa-money-bill-alt mr-2 text-sm " +
+                        (router.pathname.indexOf("/admin/payment") !== -1
+                          ? "opacity-75"
+                          : "text-blueGray-300")
+                      }
+                    ></i>{" "}
+                    Metode pembayaran
+                  </a>
+                </Link>
+              </li>
+
+              <li className="items-center">
                 <Link href="/admin/device">
                   <a
                     href="#pablo"

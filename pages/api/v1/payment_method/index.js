@@ -9,8 +9,8 @@ import authenticateToken from '../../helper/autenticate_jwt'
 
 const validateBody = initMiddleware(
     validateMiddleware([
-        check('name').isLength({ min: 2, max: 40 }),
         check('method').isLength({ min: 2, max: 1000 }),
+        check('description').isLength({ min: 4, max: 1000 }),
     ], validationResult)
 )
 
@@ -58,7 +58,7 @@ export default async (req, res) => {
                     })
                 }
                 const isNameExist = await prisma.payment_method.findFirst({
-                    where: { name: req.body.name },
+                    where: { payment_type: req.body.method },
                 })
                 if (isNameExist != null) {
                     return res.status(403).json({
@@ -69,9 +69,9 @@ export default async (req, res) => {
                 const paymentMethod = await prisma.payment_method.create({
                     data: {
                         id: uuid(),
-                        name: req.body.name,
-                        method: req.body.method,
+                        payment_type: req.body.method,
                         description: req.body.description,
+                        image_url: req.body.image_url,
                         created_at: new Date(),
                         updated_at: new Date(),
                         deleted_at: new Date()
@@ -88,6 +88,7 @@ export default async (req, res) => {
                     message: "Berhasil menambahkan Metode Pembayaran",
                 })
             } catch (error) {
+                console.log(error)
                 return res.status(500).json({
                     status: 500,
                     message: error

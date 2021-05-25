@@ -10,7 +10,7 @@ datasource db {
 model category {
   id          String    @id @db.Uuid
   name        String?   @db.VarChar
-  description String?   @db.VarChar
+  description String?
   created_at  DateTime? @db.Timestamp(6)
   updated_at  DateTime? @db.Timestamp(6)
   deleted_at  DateTime? @db.Timestamp(6)
@@ -38,7 +38,7 @@ model drink {
   id          String     @id @db.Uuid
   category_id String?    @db.Uuid
   name        String?    @db.VarChar
-  description String?    @db.VarChar
+  description String?
   image_url   String?    @db.VarChar
   price       String?    @db.VarChar
   stock       Int?
@@ -64,15 +64,14 @@ model notification {
 }
 
 model payment_method {
-  id              String    @id @db.Uuid
-  payment_type    String?   @db.VarChar
-  description     String?   @db.VarChar
-  enable_callback Boolean?
-  callback_url    String?   @db.VarChar
-  created_at      DateTime? @db.Timestamp(6)
-  updated_at      DateTime? @db.Timestamp(6)
-  deleted_at      DateTime? @db.Timestamp(6)
-  orders          orders[]
+  id           String    @id @db.Uuid
+  payment_type String?   @db.VarChar
+  description  String?
+  created_at   DateTime? @db.Timestamp(6)
+  updated_at   DateTime? @db.Timestamp(6)
+  deleted_at   DateTime? @db.Timestamp(6)
+  image_url    String?
+  orders       orders[]
 }
 
 model report {
@@ -109,11 +108,11 @@ model orders {
   user_id           String?         @db.Uuid
   payment_method_id String?         @db.Uuid
   drink_id          String?         @db.Uuid
-  pickup_date       DateTime?       @db.Timestamp(6)
+  order_status      String?         @db.VarChar
   amount            Int?
   discount          Int?
   total             Int?
-  status            String?         @db.VarChar
+  payment_status    String?         @db.VarChar
   transaction_token String?         @db.VarChar
   created_at        DateTime?       @db.Timestamp(6)
   updated_at        DateTime?       @db.Timestamp(6)
