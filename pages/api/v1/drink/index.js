@@ -64,10 +64,7 @@ export default async (req, res) => {
                     }
 
                     ///find category name
-                    const category = await prisma.category.findUnique({
-                        where: {
-                            id: req.body.category_id,
-                        }
+                    const category = await prisma.category.findMany({
                     })
                     if (!category) {
                         return res.status(404).json({
@@ -85,7 +82,7 @@ export default async (req, res) => {
                             price: req.body.price,
                             image_url: image_url,
                             stock: stock,
-                            category_id: req.body.category_id,
+                            category_id: category[0].id,
                             created_at: new Date(),
                             updated_at: new Date(),
                             deleted_at: new Date()
@@ -121,11 +118,11 @@ export default async (req, res) => {
                     select: {
                         id: true,
                         name: true,
-                        description:true,
+                        description: true,
                         image_url: true,
                         price: true,
                         stock: true,
-                        updated_at:true,
+                        updated_at: true,
                         category: {
                             select: {
                                 id: true,

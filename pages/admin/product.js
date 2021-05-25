@@ -21,7 +21,6 @@ export default function ProuctPage({ color = 'light' }) {
     const [drinkId, setdrinkId] = useState("");
     const [loading, setloading] = useState(false)
 
-
     const [selectedCategory, setselectedCategory] = useState(null)
 
 
@@ -45,11 +44,11 @@ export default function ProuctPage({ color = 'light' }) {
             },
             { title: 'NAMA', field: 'name' },
             {
-                title: 'KATEGORI', field: 'category.name', render: rowData => (
+                title: 'KATEGORI', field: 'category', render: rowData => (
                     <>
-                        <select value={selectedCategory} onChange={changeCategory}>
+                        <select value={selectedCategory} onChange={(e) => changeCategory(e, rowData)}>
                             {
-                                categoryState.map((e) => <option value={e.name}>{e.name}</option>)
+                                categoryState.length > 0 ? categoryState.map((e) => <option value={e.id}>{e.name}</option>) : <options>Kategori Loading</options>
                             }
                         </select>
                     </>
@@ -68,9 +67,17 @@ export default function ProuctPage({ color = 'light' }) {
     }, [categoryState])
 
 
-    const changeCategory = (event) => {
-        setselectedCategory(event.target.value)
-        console.log(event.target.value);
+    useEffect(() => {
+        if (selectedCategory != null) {
+            updateDrinkCategory(drinkId, selectedCategory)
+        }
+    }, [selectedCategory])
+
+
+    const changeCategory = (event, rowData) => {
+        setselectedCategory(event.target.value != null ? event.target.value : rowData.id);
+        setdrinkId(rowData.id);
+        console.info(`DRINK ID :${rowData.id}`);
     }
 
     // get Product
@@ -87,6 +94,7 @@ export default function ProuctPage({ color = 'light' }) {
                 if (res.status == 200) {
                     const data = res.data;
                     setProductState(data);
+                    var elementPos = array.map(function (x) { return x.id; }).indexOf();
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
@@ -153,6 +161,40 @@ export default function ProuctPage({ color = 'light' }) {
             })
     }
 
+    const updateDrinkCategory = (drink, category) => {
+        setloading(true)
+        fetch('/api/v1/drink/category', {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+                "drink_id": drink,
+                "category_id": category,
+            })
+        }).then(res => res.json())
+            .then((res) => {
+                if (res.status == 200) {
+                    const data = res.data;
+                    setCategoryState(data);
+                    toast.success('Berhasil update minuman')
+                    setloading(false)
+
+                } else if (res.status == 401) {
+                    unAutorize();
+                    setloading(false)
+                } else {
+                    toast.error("Terjadi kesalahan data Kategori")
+                    setloading(false)
+                }
+            }).catch(e => {
+                setloading(false)
+                toast.error('Internal Server Error')
+                console.log(e);
+            })
+    }
+
     const getCategory = () => {
         fetch('/api/v1/category', {
             method: "GET",
@@ -173,6 +215,7 @@ export default function ProuctPage({ color = 'light' }) {
                 }
             }).catch(e => {
                 console.log(e);
+                toast.error("Terjadi kesalahan data Katergori")
             })
     }
 

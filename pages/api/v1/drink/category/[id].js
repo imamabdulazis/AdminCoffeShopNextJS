@@ -50,7 +50,6 @@ export default async (req, res) => {
                 })
             }
         default:
-            res.status(405).json({ status: 405, message: 'Request method tidak di izinkan' })
-            break;
+            return res.status(405).json({ status: 405, message: 'Request method tidak di izinkan' })
     }
 }
