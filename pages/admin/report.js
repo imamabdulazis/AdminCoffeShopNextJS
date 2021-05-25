@@ -10,6 +10,7 @@ export default function ReportPage() {
     const router = useRouter();
 
     const [reportState, setReportState] = useState([])
+    const [loading, setloading] = useState(initialState)
 
 
 
@@ -48,7 +49,6 @@ export default function ReportPage() {
             },
         }).then(res => res.json())
             .then((res) => {
-                console.info(res)
                 if (res.status == 200) {
                     const data = res.data;
                     setReportState(data);
@@ -69,6 +69,7 @@ export default function ReportPage() {
                 <div className="w-full mb-12 px-4">
                     <MaterialTable
                         title="Report"
+                        isLoading={loading}
                         columns={columns}
                         data={reportState}
                         localization={locale}

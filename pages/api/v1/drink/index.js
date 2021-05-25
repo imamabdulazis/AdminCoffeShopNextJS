@@ -11,7 +11,6 @@ const validateBody = initMiddleware(
     validateMiddleware([
         check('name').isLength({ min: 1, max: 40 }),
         check('description').isLength({ min: 4, max: 40 }),
-        check('category_id').isLength({ min: 10, max: 40 }),
         check('stock').isLength({ min: 1, max: 40 }),
         check('price').isLength({ min: 3, max: 40 }),
     ], validationResult)

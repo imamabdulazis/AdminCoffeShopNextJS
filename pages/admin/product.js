@@ -44,9 +44,9 @@ export default function ProuctPage({ color = 'light' }) {
             },
             { title: 'NAMA', field: 'name' },
             {
-                title: 'KATEGORI', field: 'category', render: rowData => (
+                title: 'KATEGORI', editable: 'never', field: 'category', render: rowData => (
                     <>
-                        <select value={selectedCategory} onChange={(e) => changeCategory(e, rowData)}>
+                        <select value={selectedCategory != null ? selectedCategory : rowData.category.id} onChange={(e) => changeCategory(e, rowData)}>
                             {
                                 categoryState.length > 0 ? categoryState.map((e) => <option value={e.id}>{e.name}</option>) : <options>Kategori Loading</options>
                             }
@@ -56,6 +56,7 @@ export default function ProuctPage({ color = 'light' }) {
             },
             { title: 'HARGA', field: 'price' },
             { title: 'STOK', field: 'stock' },
+            { title: 'DESKRIPSI', field: 'description' },
             {
                 title: 'UPDATE', field: 'updated_at', type: 'date',
                 dateSetting: {
@@ -82,6 +83,7 @@ export default function ProuctPage({ color = 'light' }) {
 
     // get Product
     const getProduct = () => {
+        setloading(true);
         fetch('/api/v1/drink', {
             method: "GET",
             headers: {
@@ -90,20 +92,62 @@ export default function ProuctPage({ color = 'light' }) {
             },
         }).then(res => res.json())
             .then((res) => {
-
                 if (res.status == 200) {
                     const data = res.data;
                     setProductState(data);
-                    var elementPos = array.map(function (x) { return x.id; }).indexOf();
+                    setloading(false);
                 } else if (res.status == 401) {
                     unAutorize();
+                    setloading(false);
                 } else {
+                    setloading(false);
                     toast.error("Terjadi kesalahan data Minuman,  periksa kembali apakah berelasi dengan data lain")
                 }
             }).catch(e => {
+                setloading(false);
+                toast.error("Internal Server Error");
                 console.log(e);
             })
     }
+
+
+    // get Product
+    const addProduct = (name, description, stock, price) => {
+        setloading(true);
+        fetch('/api/v1/drink', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+                "name": name,
+                "description": description,
+                "stock": parseInt(stock),
+                "price": price,
+            })
+        }).then(res => res.json())
+            .then((res) => {
+                if (res.status == 200) {
+                    const data = res.data;
+                    getProduct();
+                    setloading(false);
+                    window.location.reload();
+                } else if (res.status == 401) {
+                    unAutorize();
+                    setloading(false);
+                } else {
+                    toast.error("Terjadi kesalahan saat tambah Minuman")
+                    setloading(false);
+                }
+            }).catch(e => {
+                console.log(e);
+                toast.error("Terjadi kesalahan saat tambah Minuman")
+                setloading(false);
+            })
+    }
+
+
 
     // update Product
     const updateProduct = (newData, oldData) => {
@@ -125,6 +169,7 @@ export default function ProuctPage({ color = 'light' }) {
                 if (res.status == 200) {
                     getProduct();
                     toast.success('Update data produk berhasil')
+                    window.location.reload()
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
@@ -150,6 +195,7 @@ export default function ProuctPage({ color = 'light' }) {
                 if (res.status == 200) {
                     getProduct();
                     toast.success("Hapus produk berhasil")
+                    window.location.reload()
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
@@ -178,6 +224,7 @@ export default function ProuctPage({ color = 'light' }) {
                 if (res.status == 200) {
                     const data = res.data;
                     setCategoryState(data);
+                    window.location.reload();
                     toast.success('Berhasil update minuman')
                     setloading(false)
 
@@ -291,7 +338,7 @@ export default function ProuctPage({ color = 'light' }) {
                         editable={{
                             onRowAdd: newData =>
                                 new Promise((resolve, reject) => {
-                                    addProduct(newData.name, newData.description)
+                                    addProduct(newData.name, newData.description, newData.stock, newData.price);
                                     setTimeout(() => {
                                         resolve();
                                     }, 1000)

@@ -52,8 +52,9 @@ export default function CategoryPage({ color = 'light' }) {
             .then((res) => {
                 console.log(res)
                 if (res.status == 200) {
-                    toast.success('Berhasil menghapus');
                     getCategory()
+                    toast.success('Berhasil menghapus');
+                    window.location.reload()
                 } else {
                     toast.warning('Gagal menghapus');
                 }
@@ -76,8 +77,9 @@ export default function CategoryPage({ color = 'light' }) {
         }).then((res) => res.json())
             .then((res) => {
                 if (res.status == 200) {
-                    toast.success("Berhasil tambah kategory")
                     getCategory()
+                    toast.success("Berhasil tambah kategory")
+                    window.location.reload()
                 } else {
                     toast.warning("Terjadi kesalahan")
                 }
@@ -100,8 +102,9 @@ export default function CategoryPage({ color = 'light' }) {
         }).then((res) => res.json())
             .then((res) => {
                 if (res.status == 200) {
-                    toast.success("Berhasil tambah kategory")
                     getCategory();
+                    toast.success("Berhasil tambah kategory")
+                    window.location.reload()
                 } else {
                     console.log(res);
                     toast.warning("Terjadi kesalahan");
