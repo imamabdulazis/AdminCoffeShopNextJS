@@ -34,7 +34,8 @@ export default async (req, res) => {
                             amount: true,
                             discount: true,
                             total: true,
-                            status: true,
+                            payment_status: true,
+                            order_status:true,
                             users: {
                                 select: {
                                     id: true,

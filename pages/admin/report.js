@@ -17,14 +17,14 @@ export default function ReportPage() {
     const [columns, setColumns] = useState([
         { title: 'PEMESANAN', field: 'orders.drink.name', editable: 'never' },
         { title: 'CUSTOMER', field: 'orders.users.email', editable: 'never' },
+        { title: 'JUMLAH', field: 'orders.amount', },
         {
-            title: 'TANGGAL LAPORAN', field: 'updated_at', type: 'date',
+            title: 'TANGGAL UDPATE', field: 'updated_at', type: 'date',
             dateSetting: {
                 format: 'dd/MM/yyyy'
             },
             editable: 'never'
         },
-        { title: 'JUMLAH', field: 'orders.amount', },
         {
             title: 'TANGGAL LAPORAN', field: 'date_report', type: 'date',
             dateSetting: {

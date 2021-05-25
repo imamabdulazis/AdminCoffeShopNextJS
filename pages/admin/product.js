@@ -54,8 +54,8 @@ export default function ProuctPage({ color = 'light' }) {
                     </>
                 )
             },
-            { title: 'HARGA', field: 'price' },
-            { title: 'STOK', field: 'stock' },
+            { title: 'HARGA', field: 'price', type: 'numeric' },
+            { title: 'STOK', field: 'stock', type: 'numeric' },
             { title: 'DESKRIPSI', field: 'description', cellStyle: { textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: 100 } },
             {
                 title: 'UPDATE', field: 'updated_at', type: 'date',

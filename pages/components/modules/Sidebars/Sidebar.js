@@ -283,7 +283,7 @@ export default function Sidebar() {
                     <i
                       className={
                         "fas fa-file-word mr-2 text-sm " +
-                        (router.pathname.indexOf("/admin/maps") !== -1
+                        (router.pathname.indexOf("/admin/report") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
                       }
