@@ -113,7 +113,6 @@ export default function ProuctPage({ color = 'light' }) {
 
     // get Product
     const addProduct = (name, description, stock, price) => {
-        console.log(description)
         setloading(true);
         fetch('/api/v1/drink', {
             method: "POST",
@@ -124,11 +123,12 @@ export default function ProuctPage({ color = 'light' }) {
             body: JSON.stringify({
                 "name": name,
                 "description": description,
-                "stock": parseInt(stock),
-                "price": price,
+                "stock": stock,
+                "price": `${price}`,
             })
         }).then(res => res.json())
             .then((res) => {
+                console.info(`RESPONSE :$res`)
                 if (res.status == 200) {
                     const data = res.data;
                     getProduct();
@@ -162,8 +162,8 @@ export default function ProuctPage({ color = 'light' }) {
                 name: newData.name,
                 description: newData.description,
                 category_id: oldData.category.id,
-                price: newData.price,
-                stock: parseInt(newData.stock)
+                price: `${newData.price}`,
+                stock: newData.stock,
             })
         }).then(res => res.json())
             .then((res) => {

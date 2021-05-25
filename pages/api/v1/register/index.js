@@ -64,7 +64,7 @@ export default async (req, res) => {
                                 email: req.body.email,
                                 password: hash,
                                 image_url: imageUrl,
-                                nomor_telp: req.body.nomor_telp,
+                                telp_number: req.body.telp_number,
                                 previlage: req.body.previlage,
                                 created_at: new Date(),
                                 updated_at: new Date(),

@@ -10,7 +10,7 @@ const { v4: uuid } = require('uuid');
 const validateBody = initMiddleware(
     validateMiddleware([
         check('name').isLength({ min: 1, max: 40 }),
-        check('description').isLength({ min: 4 }),
+        check('description').isLength({ min: 2 }),
         check('stock').isLength({ min: 1, max: 40 }),
         check('price').isLength({ min: 1, max: 40 }),
     ], validationResult)
