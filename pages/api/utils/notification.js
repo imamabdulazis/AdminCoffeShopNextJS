@@ -1,5 +1,3 @@
-
-
 const admin = require('./../helper/admin');
 
 function PushNotification(fcm, title, body) {

@@ -10,8 +10,6 @@ const validateBody = initMiddleware(
     validateMiddleware([
         check('user_id').isLength({ min: 10, max: 40 }),
         check('fcm_token').isLength({ min: 10, max: 1000 }),
-        check('phone_id').isLength({ min: 3, max: 1000 }),
-        check('system_os').isLength({ min: 4, max: 100 }),
     ], validationResult)
 )
 

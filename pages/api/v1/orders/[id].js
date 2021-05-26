@@ -38,6 +38,39 @@ export default async (req, res) => {
                 const orders = await prisma.orders.findUnique({
                     where: {
                         id: id
+                    },
+                    select: {
+                        id: true,
+                        no_transaction: true,
+                        total: true,
+                        amount: true,
+                        discount: true,
+                        payment_status: true,
+                        order_status: true,
+                        deeplink_redirect: true,
+                        generate_qr_code: true,
+                        get_status: true,
+                        no_transaction: true,
+                        drink: {
+                            select: {
+                                id: true,
+                                name: true,
+                                price: true,
+                            }
+                        },
+                        payment_method: {
+                            select: {
+                                id: true,
+                                payment_type: true,
+                            }
+                        },
+                        users: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        },
+                        updated_at: true,
                     }
                 })
                 if (!orders) {

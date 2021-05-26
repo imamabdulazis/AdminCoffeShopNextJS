@@ -11,7 +11,7 @@ export const coreApi = new midtransClient.CoreApi({
 });
 
 export function parameterGopay(
-    orderId, total, name, email, telp_number,
+    orderId, total, name, email, telp_number, callback_url
 ) {
     return {
         "payment_type": "gopay",
@@ -21,7 +21,7 @@ export function parameterGopay(
         },
         "gopay": {
             "enable_callback": true,
-            "callback_url": "https://copsychus.page.link/home"
+            "callback_url": callback_url,
         },
         "customer_details": {
             "first_name": name,

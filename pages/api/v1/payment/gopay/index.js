@@ -5,12 +5,6 @@ import { check, validationResult } from 'express-validator';
 import authenticateToken from '../../../helper/autenticate_jwt';
 import { coreApi, parameterGopay } from '../../../../../midtrans';
 
-const validateBody = initMiddleware(
-    validateMiddleware([
-        check('order_id').isLength({ min: 10, max: 40 }),
-    ], validationResult)
-)
-
 
 export default async (req, res) => {
     const prisma = new PrismaClient()
@@ -20,73 +14,144 @@ export default async (req, res) => {
     } = req;
 
     switch (method) {
-
         case "POST":
-
-            //validate jwt token
-            const isAuth = authenticateToken(req, res)
-            if (!isAuth) return res.status(401).json({
-                status: 401,
-                message: "Token expired"
-            })
-
-            //validate tidak kosong
-            await validateBody(req, res)
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(422).json({
-                    status: 422,
-                    message: errors.array().map(e => `${e.param} tidak valid`),
+            try {
+                //validate jwt token
+                const isAuth = authenticateToken(req, res)
+                if (!isAuth) return res.status(401).json({
+                    status: 401,
+                    message: "Token expired"
                 })
-            }
 
-            ///TODO
-            const orders = await prisma.orders.findUnique({
-                where: {
-                    id: req.body.order_id,
-                },
-                select: {
-                    id: true,
-                    total: true,
-                    users: {
-                        select: {
-                            id: true,
-                            email: true,
-                            name: true,
-                            telp_number: true,
-                        }
+                const findOrders = await prisma.orders.findFirst({
+                    where: {
+                        id: req.body.order_id,
                     },
-                    drink: {
+                    select: {
+                        id: true,
+                        total: true,
+                        users: {
+                            select: {
+                                name: true,
+                                email: true,
+                                telp_number: true,
+                            }
+                        },
+                        deeplink_redirect:true,
+                    }
+
+                })
+
+                if (findOrders.deeplink_redirect != null) {
+                    const findOrder = await prisma.orders.findFirst({
+                        where: {
+                            id: findOrders.id
+                        },
                         select: {
                             id: true,
-                            name: true,
-                            price: true,
-                            description: true,
+                            deeplink_redirect: true,
+                            generate_qr_code: true,
+                            get_status: true,
+                            no_transaction: true,
+                            total: true,
+                            payment_method: {
+                                select: {
+                                    id: true,
+                                    payment_type: true,
+                                }
+                            },
                         }
-                    }
+                    })
+                    return res.status(200).json({
+                        status: 200,
+                        message: "Berhasil membuat transaksi gopay",
+                        data: findOrder
+                    })
                 }
-            })
-            if (!orders) {
-                return res.status(404).json({
-                    status: 404,
-                    message: "Pesanan tidak ditemukan"
+
+                return coreApi.charge(parameterGopay(
+                    findOrders.id,
+                    findOrders.total,
+                    findOrders.users.name,
+                    findOrders.users.email,
+                    findOrders.users.telp_number,
+                    req.body.callback_url,
+                ))
+                    .then(async (chargeResponse) => {
+                        var actions = chargeResponse.actions;
+                        var deeplink_redirect;
+                        var generate_qr_code;
+                        var get_status;
+                        var post_cancel_order;
+
+                        for (var i = 0; i < actions.length; i++) {
+                            if (actions[i].name == "generate-qr-code") {
+                                generate_qr_code = actions[i].url;
+                            } else if (actions[i].name == "deeplink-redirect") {
+                                deeplink_redirect = actions[i].url;
+                            } else if (actions[i].name == "get-status") {
+                                get_status = actions[i].url;
+                            } else {
+                                post_cancel_order = actions[i].url;
+                            }
+                        }
+
+                        const ordersUpdate = await prisma.orders.updateMany({
+                            where: {
+                                id: findOrders.id,
+                            },
+                            data: {
+                                deeplink_redirect: deeplink_redirect,
+                                generate_qr_code: generate_qr_code,
+                                get_status: get_status,
+                                post_cancel_order: post_cancel_order,
+                            }
+                        })
+
+                        if (!ordersUpdate) {
+                            return res.status(404).json({
+                                status: 404,
+                                message: "Pesanan tidak ditemukan"
+                            })
+                        }
+
+                        const findOrder = await prisma.orders.findFirst({
+                            where: {
+                                id: findOrders.id
+                            },
+                            select: {
+                                id: true,
+                                deeplink_redirect: true,
+                                generate_qr_code: true,
+                                get_status: true,
+                                no_transaction: true,
+                                total: true,
+                                payment_method: {
+                                    select: {
+                                        id: true,
+                                        payment_type: true,
+                                    }
+                                },
+                            }
+                        })
+                        return res.status(200).json({
+                            status: 200,
+                            message: "Berhasil membuat transaksi gopay",
+                            data: findOrder
+                        })
+
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                        return res.json(e)
+                    });
+            } catch (e) {
+                console.log(e)
+                return res.status(500).json({
+                    status: 500,
+                    message: e
                 })
             }
-
-            return coreApi.charge(parameterGopay(
-                req.body.order_id,
-                orders.total,
-                orders.users.name,
-                orders.users.email,
-                orders.users.telp_number,
-            ))
-                .then((chargeResponse) => {
-                    return res.status(200).json(chargeResponse)
-                })
-                .catch((e) => {
-                    console.log(e)
-                    return res.json(e)
-                });;
         default:
             return res.status(405).json({ status: 405, message: 'Request method tidak di izinkan' })
     }

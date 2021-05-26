@@ -29,19 +29,13 @@ export default async (req, res) => {
                         no_transaction: true,
                         total: true,
                         amount: true,
-                        pickup_date: true,
-                        updated_at: true,
                         discount: true,
-                        created_at: true,
-                        deleted_at: true,
-                        status: true,
-                        users: {
-                            select: {
-                                id: true,
-                                name: true,
-                                email: true,
-                            }
-                        },
+                        payment_status: true,
+                        order_status: true,
+                        deeplink_redirect: true,
+                        generate_qr_code: true,
+                        get_status: true,
+                        no_transaction: true,
                         drink: {
                             select: {
                                 id: true,
@@ -55,6 +49,7 @@ export default async (req, res) => {
                                 payment_type: true,
                             }
                         },
+                        updated_at: true,
                     }
                 })
 
@@ -63,7 +58,7 @@ export default async (req, res) => {
                 return res.status(200).json({
                     status: 200,
                     message: "Ok",
-                    length:orderDrink.length,
+                    length: orderDrink.length,
                     data: orderDrink
                 })
             } catch (e) {

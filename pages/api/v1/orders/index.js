@@ -6,6 +6,7 @@ import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 import authenticateToken from '../../helper/autenticate_jwt'
 import moment from 'moment';
+import { coreApi, parameterGopay } from '../../../../midtrans';
 
 
 const validateBody = initMiddleware(
@@ -49,6 +50,11 @@ export default async (req, res) => {
                         deleted_at: true,
                         order_status: true,
                         payment_status: true,
+                        deeplink_redirect: true,
+                        generate_qr_code: true,
+                        payment_method: true,
+                        post_cancel_order: true,
+                        get_status: true,
                         users: {
                             select: {
                                 id: true,
@@ -141,15 +147,30 @@ export default async (req, res) => {
                 })
 
                 // jike pesanan telah tersedia atas nama user_id
-                const isUserOrerExist = await prisma.orders.findFirst({
+                const isUserOrderExist = await prisma.orders.findFirst({
                     where: {
-                        user_id: req.body.user_id
+                        user_id: req.body.user_id,
+                        drink_id: req.body.drink_id,
                     }
                 })
-                if (isUserOrerExist) return res.status(409).json({
-                    status: 409,
-                    message: `Pesanan telah tersedia atas nama ${isUserExist.name}`
-                })
+                console.log(isUserOrderExist);
+                if (isUserOrderExist != null) {
+                    if (isUserOrderExist.payment_status != "Berhasil") {
+                        return res.status(409).json({
+                            status: 409,
+                            message: `Pesanan telah tersedia atas nama ${isUserExist.name}`,
+                            payment_status: isUserOrderExist.payment_status,
+                        })
+                    }
+                }
+
+                if (isDrinkExist.stock < req.body.amount) {
+                    return res.status(409).json({
+                        status: 409,
+                        message: "Mohon maaf stok belum tersedia",
+                        stock: isDrinkExist.stock
+                    })
+                }
 
                 // masuk order baru
                 const addOrder = await prisma.orders.create({
@@ -167,6 +188,17 @@ export default async (req, res) => {
                         created_at: new Date(),
                         deleted_at: new Date(),
                         updated_at: new Date(),
+                    },
+                    select: {
+                        id: true,
+                        total: true,
+                        users: {
+                            select: {
+                                name: true,
+                                email: true,
+                                telp_number: true,
+                            }
+                        }
                     }
                 })
                 if (!addOrder) return res.status(403).json({
@@ -174,28 +206,46 @@ export default async (req, res) => {
                     message: "Gagal menambahkan pesanan"
                 })
 
-                const inputReport = await prisma.report.create({
-                    data: {
-                        id: uuid(),
-                        order_id: addOrder.id,
-                        created_at: new Date(),
-                        updated_at: new Date(),
-                        deleted_at: new Date(),
-                        date_report: new Date(),
+                // const inputReport = await prisma.report.create({
+                //     data: {
+                //         id: uuid(),
+                //         order_id: addOrder.id,
+                //         created_at: new Date(),
+                //         updated_at: new Date(),
+                //         deleted_at: new Date(),
+                //         date_report: new Date(),
+                //     }
+                // })
+
+                // if (!inputReport) return res.status(403).json({
+                //     status: 403,
+                //     message: "Gagal menambahkan pesanan"
+                // })
+
+                const findOrder = await prisma.orders.findFirst({
+                    where: {
+                        id: addOrder.id
+                    },
+                    select: {
+                        id: true,
+                        no_transaction: true,
+                        total: true,
+                        payment_method: {
+                            select: {
+                                id: true,
+                                payment_type: true,
+                            }
+                        },
                     }
                 })
-
-                if (!inputReport) return res.status(403).json({
-                    status: 403,
-                    message: "Gagal menambahkan pesanan"
-                })
-
                 return res.status(200).json({
                     status: 200,
-                    message: "Berhasil membuat pesanan"
+                    message: "Berhasil membuat pesanan",
+                    data: findOrder
                 })
 
             } catch (e) {
+                console.log(e)
                 return res.status(500).json({
                     status: 500,
                     message: e

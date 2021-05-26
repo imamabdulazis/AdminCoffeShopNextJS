@@ -126,7 +126,7 @@ export default async (req, res) => {
                         id: uuid(),
                         user_id: req.body.user_id,
                         drink_id: req.body.drink_id,
-                        amount: 1,
+                        amount: req.body.amount,
                         created_at: new Date(),
                         updated_at: new Date(),
                         deleted_at: new Date()
