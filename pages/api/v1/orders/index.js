@@ -153,7 +153,6 @@ export default async (req, res) => {
                         drink_id: req.body.drink_id,
                     }
                 })
-                console.log(isUserOrderExist);
                 if (isUserOrderExist != null) {
                     if (isUserOrderExist.payment_status != "Berhasil") {
                         return res.status(409).json({
@@ -204,6 +203,15 @@ export default async (req, res) => {
                 if (!addOrder) return res.status(403).json({
                     status: 403,
                     message: "Gagal menambahkan pesanan"
+                })
+
+                const updateDrink = await prisma.drink.updateMany({
+                    where: {
+                        id: req.body.drink_id,
+                    },
+                    data: {
+                        stock: isDrinkExist.stock - req.body.amount
+                    }
                 })
 
                 // const inputReport = await prisma.report.create({

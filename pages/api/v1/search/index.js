@@ -24,7 +24,25 @@ export default async (req, res) => {
                             contains: req.body.name.toLowerCase(),
                             mode: "insensitive"
                         }
-                    }
+                    },
+                    select: {
+                        id: true,
+                        name: true,
+                        description: true,
+                        image_url: true,
+                        price: true,
+                        stock: true,
+                        updated_at: true,
+                        category: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        },
+                    },
+                    orderBy: {
+                        updated_at: 'asc'
+                    },
                 })
 
                 if (!findDrink) {
@@ -33,7 +51,6 @@ export default async (req, res) => {
                         message: "Minuman tidak ditemukan"
                     })
                 }
-
                 return res.status(200).json({
                     status: 200,
                     message: "Ok",
