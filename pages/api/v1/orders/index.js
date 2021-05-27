@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { PrismaClient } = require('@prisma/client');
+
 const { v4: uuid } = require('uuid');
 import initMiddleware from '../../helper/middleware';
 import validateMiddleware from '../../helper/validate-middleware';
@@ -7,6 +7,7 @@ import { check, validationResult } from 'express-validator';
 import authenticateToken from '../../helper/autenticate_jwt'
 import moment from 'moment';
 import { coreApi, parameterGopay } from '../../../../midtrans';
+import prisma from '../../utils/prisma';
 
 
 const validateBody = initMiddleware(
@@ -21,7 +22,6 @@ const validateBody = initMiddleware(
 )
 
 export default async (req, res) => {
-    const prisma = new PrismaClient();
     const {
         method,
     } = req;

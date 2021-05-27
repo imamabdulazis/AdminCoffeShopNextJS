@@ -1,10 +1,10 @@
-const { PrismaClient } = require('@prisma/client');
+
 const { v4: uuid } = require('uuid');
 import initMiddleware from '../../helper/middleware';
 import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 import authenticateToken from '../../helper/autenticate_jwt'
-
+import prisma from '../../utils/prisma';
 
 const validateBody = initMiddleware(
     validateMiddleware([
@@ -13,9 +13,7 @@ const validateBody = initMiddleware(
     ], validationResult)
 )
 
-
 export default async (req, res) => {
-    const prisma = new PrismaClient();
     const {
         method,
     } = req;

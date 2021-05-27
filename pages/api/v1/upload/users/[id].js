@@ -1,8 +1,9 @@
-const { PrismaClient } = require('@prisma/client');
+
 const { uploadImageToStorage } = require('../../../helper/uploader');
 import authenticateToken from '../../../helper/autenticate_jwt'
 import multer from 'multer';
 import initMiddleware from '../../../helper/middleware';
+import prisma from '../../../utils/prisma';
 
 const upload = multer();
 
@@ -19,7 +20,6 @@ export const config = {
 };
 
 export default async (req, res) => {
-    const prisma = new PrismaClient()
     await multerAny(req, res);
 
     const {

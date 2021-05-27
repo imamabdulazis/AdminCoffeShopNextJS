@@ -1,6 +1,5 @@
 
 require('dotenv').config();
-const { PrismaClient } = require('@prisma/client');
 import initMiddleware from '../../../helper/middleware';
 import validateMiddleware from '../../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
@@ -10,8 +9,6 @@ import { coreApi } from '../../../../../midtrans';
 
 
 export default async (req, res) => {
-
-    const prisma = new PrismaClient();
     const {
         query: { id },
         method,

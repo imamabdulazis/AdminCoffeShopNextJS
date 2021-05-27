@@ -1,8 +1,9 @@
-const { PrismaClient } = require('@prisma/client');
+
 import initMiddleware from '../../helper/middleware';
 import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 import bcrypt, { hash } from 'bcryptjs';
+import prisma from '../../utils/prisma';
 
 const validateBody = initMiddleware(
     validateMiddleware([
@@ -13,7 +14,6 @@ const validateBody = initMiddleware(
 )
 
 export default async (req, res) => {
-    const prisma = new PrismaClient()
     const {
         query: { id },
         method,

@@ -1,9 +1,8 @@
-const { PrismaClient } = require('@prisma/client');
+
 import authenticateToken from '../../helper/autenticate_jwt'
+import prisma from '../../utils/prisma';
 
 export default async (req, res) => {
-    const prisma = new PrismaClient()
-
     switch (req.method) {
         case "GET":
 

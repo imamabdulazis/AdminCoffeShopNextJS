@@ -1,7 +1,7 @@
 
 let midtransClient = require('midtrans-client');
 const { coreApi } = require('../../../../../midtrans');
-const { PrismaClient } = require('@prisma/client');
+
 import authenticateToken from '../../../helper/autenticate_jwt'
 
 export default async () => {

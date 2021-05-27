@@ -3,9 +3,10 @@ import initMiddleware from '../../helper/middleware';
 import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 import { generateAccessToken } from '../../helper/generate_jwt';
+import prisma from '../../utils/prisma';
 const bcrypt = require('bcryptjs');
 
-const { PrismaClient } = require('@prisma/client');
+
 
 const validateBody = initMiddleware(
     validateMiddleware([
@@ -15,7 +16,6 @@ const validateBody = initMiddleware(
 )
 
 export default async (req, res) => {
-    const prisma = new PrismaClient()
     switch (req.method) {
         case "POST":
             await validateBody(req, res)

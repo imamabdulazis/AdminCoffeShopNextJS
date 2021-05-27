@@ -1,12 +1,12 @@
 
 require('dotenv').config();
-const { PrismaClient } = require('@prisma/client');
+
 import { coreApi } from '../../../../../midtrans';
 import { PushNotification } from "../../../utils/notification";
+import prisma from '../../../utils/prisma';
 
 
 export default async (req, res) => {
-    const prisma = new PrismaClient();
     const {
         query: { id },
         method,

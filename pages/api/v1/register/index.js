@@ -7,8 +7,9 @@ import initMiddleware from '../../helper/middleware';
 import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 import { readHTMLFile, smtpTransport } from '../../helper/email';
+import prisma from '../../utils/prisma';
 
-const { PrismaClient } = require('@prisma/client');
+
 
 const validateBody = initMiddleware(
     validateMiddleware([
@@ -22,7 +23,6 @@ const validateBody = initMiddleware(
 
 export default async (req, res) => {
     dotenv.config();
-    const prisma = new PrismaClient()
     const imageUrl = process.env.DEFAULT_IMAGE
 
     switch (req.method) {

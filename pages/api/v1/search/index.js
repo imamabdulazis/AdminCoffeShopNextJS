@@ -1,17 +1,15 @@
-
 import authenticateToken from '../../helper/autenticate_jwt'
 import prisma from '../../utils/prisma';
 
 
+
 export default async (req, res) => {
-    const {
-        query: { id },
-        method,
-    } = req;
+
+    const { method } = req;
 
 
     switch (method) {
-        case "DELETE":
+        case "POST":
             try {
                 //validate jwt token
                 const isAuth = authenticateToken(req, res)
@@ -20,35 +18,37 @@ export default async (req, res) => {
                     message: "Token expired"
                 })
 
-                const notification = await prisma.notification.delete({
+                const findDrink = await prisma.drink.findMany({
                     where: {
-                        id: id
+                        name: {
+                            contains: req.body.name.toLowerCase(),
+                            mode: "insensitive"
+                        }
                     }
                 })
 
-                if (!notification) return res.status(404).json({
-                    status: 404,
-                    message: "Gagal hapus notifikasi"
-                })
+                if (!findDrink) {
+                    return res.status(404).json({
+                        status: 404,
+                        message: "Minuman tidak ditemukan"
+                    })
+                }
 
                 return res.status(200).json({
                     status: 200,
-                    message: "Hapus berhasil"
+                    message: "Ok",
+                    data: findDrink,
                 })
-            } catch (err) {
-                if (err.code == "P2025") {
-                    return res.status(404).json({
-                        status: 404,
-                        message: "Notifikasi tidak ditemukan",
-                    })
-                }
+
+            } catch (e) {
+                console.log(e);
                 return res.status(500).json({
                     status: 500,
-                    message: err
-                })
+                    message: e
+                });
             }
         default:
             return res.status(405).json({ status: 405, message: 'Request method tidak di izinkan' })
-
     }
+
 }
