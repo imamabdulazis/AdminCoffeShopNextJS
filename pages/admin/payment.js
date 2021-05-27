@@ -55,6 +55,7 @@ export default function ReportPage() {
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
+                    toast.error(JSON.stringify(res));
                     toast.error("Terjadi kesalahan data Pembayaran")
                 }
             }).catch(e => {

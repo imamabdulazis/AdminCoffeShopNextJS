@@ -27,14 +27,15 @@ export default function OrderPage({ color = 'light' }) {
             },
         }).then(res => res.json())
             .then((res) => {
-
+                console.info(`RESPONSE ORDER :$res`);
                 if (res.status == 200) {
                     const data = res.data;
                     setOrderState(data);
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
-                    toast.error("Terjadi kesalahan data pemesanan")
+                    toast.error(JSON.stringify(res));
+                    // toast.error("Terjadi kesalahan data pemesanan")
                 }
             }).catch(e => {
                 toast.error('Internal Server Error')
@@ -42,8 +43,8 @@ export default function OrderPage({ color = 'light' }) {
             })
     }
 
-     // delete order
-     const deleteOrder = (id) => {
+    // delete order
+    const deleteOrder = (id) => {
         fetch(`/api/v1/orders/${id}`, {
             method: "DELETE",
             headers: {
