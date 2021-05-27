@@ -214,21 +214,21 @@ export default async (req, res) => {
                     }
                 })
 
-                // const inputReport = await prisma.report.create({
-                //     data: {
-                //         id: uuid(),
-                //         order_id: addOrder.id,
-                //         created_at: new Date(),
-                //         updated_at: new Date(),
-                //         deleted_at: new Date(),
-                //         date_report: new Date(),
-                //     }
-                // })
+                const inputReport = await prisma.report.create({
+                    data: {
+                        id: uuid(),
+                        order_id: addOrder.id,
+                        created_at: new Date(),
+                        updated_at: new Date(),
+                        deleted_at: new Date(),
+                        date_report: new Date(),
+                    }
+                })
 
-                // if (!inputReport) return res.status(403).json({
-                //     status: 403,
-                //     message: "Gagal menambahkan pesanan"
-                // })
+                if (!inputReport) return res.status(403).json({
+                    status: 403,
+                    message: "Gagal menambahkan pesanan"
+                })
 
                 const findOrder = await prisma.orders.findFirst({
                     where: {

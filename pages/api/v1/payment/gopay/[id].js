@@ -2,6 +2,7 @@
 require('dotenv').config();
 
 import { coreApi } from '../../../../../midtrans';
+import formatRupiah from '../../../utils/formater';
 import { PushNotification } from "../../../utils/notification";
 import prisma from '../../../utils/prisma';
 
@@ -45,21 +46,13 @@ export default async (req, res) => {
                             id: findOrder.drink.id
                         }
                     })
-                    // const updateDrink = await prisma.drink.updateMany({
-                    //     where: {
-                    //         id: findOrder.drink.id,
-                    //     },
-                    //     data: {
-                    //         stock: findDrink.stock <= 0 ? 0 : findDrink.stock - findOrder.amount,
-                    //     }
-                    // })
                     const findDevice = await prisma.device.findFirst({
                         where: {
                             user_id: req.body.user_id
                         }
                     });
 
-                    PushNotification(findDevice.fcm_token, "Pembayaran Berhasil", `${findOrder.drink.name} - Total : ${findOrder.total}`).then((responseNotif) => {
+                    PushNotification(findDevice.fcm_token, "Pembayaran Berhasil", `🍮  ${findOrder.drink.name} #️⃣  ${formatRupiah(findOrder.total,'Rp. ')}`).then((responseNotif) => {
                         // console.log(responseNotif);
                         return res.status(200).json(responseStatus);
                     }).catch(err => {
