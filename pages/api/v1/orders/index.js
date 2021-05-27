@@ -6,7 +6,6 @@ import validateMiddleware from '../../helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 import authenticateToken from '../../helper/autenticate_jwt'
 import moment from 'moment';
-import { coreApi, parameterGopay } from '../../../../midtrans';
 import prisma from '../../utils/prisma';
 
 
@@ -37,7 +36,7 @@ export default async (req, res) => {
 
                 const orderDrink = await prisma.orders.findMany({
                     orderBy: {
-                        updated_at: 'asc'
+                        updated_at: 'desc'
                     },
                     select: {
                         id: true,

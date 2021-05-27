@@ -23,6 +23,9 @@ export default async (req, res) => {
                     where: {
                         user_id: id,
                     },
+                    orderBy: {
+                        updated_at: 'desc'
+                    },
                     select: {
                         id: true,
                         no_transaction: true,
