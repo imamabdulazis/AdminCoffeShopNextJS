@@ -10,7 +10,7 @@ export default async (req, res) => {
     switch (method) {
         case "POST":
             try {
-                PushNotification(req.body.fcm, req.body.title, req.body.body).then(res => {
+                PushNotification(req.body.fcm, `Rp. ${formatRupiah(req.body.title)}`, req.body.body).then(res => {
                     return res.status(200).json({
                         status: 200,
                         message: "ok",

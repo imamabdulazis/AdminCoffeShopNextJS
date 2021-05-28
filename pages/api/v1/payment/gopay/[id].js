@@ -2,7 +2,6 @@
 require('dotenv').config();
 
 import { coreApi } from '../../../../../midtrans';
-import formatRupiah from '../../../utils/formater';
 import { PushNotification } from "../../../utils/notification";
 import prisma from '../../../utils/prisma';
 
@@ -52,7 +51,8 @@ export default async (req, res) => {
                         }
                     });
 
-                    PushNotification(findDevice.fcm_token, "Pembayaran Berhasil", `🍮  ${findOrder.drink.name} #️⃣  Rp. ${findOrder.total}`).then((responseNotif) => {
+                    PushNotification(findDevice.fcm_token, "Pembayaran Berhasil", 
+                    `🍮  ${findOrder.drink.name} #️⃣  Rp. ${findOrder.total}`).then((responseNotif) => {
                         // console.log(responseNotif);
                         return res.status(200).json(responseStatus);
                     }).catch(err => {
