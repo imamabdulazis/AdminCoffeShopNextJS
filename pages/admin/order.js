@@ -182,7 +182,7 @@ export default function OrderPage({ color = 'light' }) {
                         options={{
                           // ..other options
                           exportButton: {
-                            csv: true,
+                            csv: false,
                             pdf: true
                           }
                         }}

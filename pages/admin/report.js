@@ -88,7 +88,7 @@ export default function ReportPage() {
                         options={{
                           // ..other options
                           exportButton: {
-                            csv: true,
+                            csv: false,
                             pdf: true
                           }
                        }}

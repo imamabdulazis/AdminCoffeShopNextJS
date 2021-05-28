@@ -157,7 +157,7 @@ export default function Dashboard() {
                         options={{
                           // ..other options
                           exportButton: {
-                            csv: true,
+                            csv: false,
                             pdf: true
                           }
                         }}
