@@ -40,7 +40,7 @@ export default function ReportPage() {
 
 
     useEffect(() => {
-        getReport();
+        getPayment();
     }, []);
 
     const unAutorize = () => {
@@ -48,7 +48,8 @@ export default function ReportPage() {
     }
 
     // get Report
-    const getReport = () => {
+    const getPayment = () => {
+        setloading(true);
         fetch('/api/v1/payment_method', {
                 method: "GET",
                 headers: {
@@ -60,15 +61,19 @@ export default function ReportPage() {
                 if (res.status == 200) {
                     const data = res.data;
                     setpaymentState(data);
+                    setloading(false);
                 } else if (res.status == 401) {
+                    setloading(false);
                     unAutorize();
                 } else {
                     toast.error(JSON.stringify(res));
                     toast.error("Terjadi kesalahan data Pembayaran")
+                    setloading(false);
                 }
             }).catch(e => {
                 toast.error("Terjadi kesalahan data Pembayaran")
                 console.log(e);
+                setloading(false);
             })
     }
 

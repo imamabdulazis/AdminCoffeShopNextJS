@@ -11,6 +11,7 @@ export default function Dashboard() {
     const [orderState, setOrderState] = useState([])
     const [orderStatus, setOrderStatus] = useState(null)
     const [orderId, setOrderId] = useState(null);
+    const [loading, setloading] = useState(false)
 
     useEffect(() => {
         if (!localStorage.getItem('token')) {
@@ -31,6 +32,7 @@ export default function Dashboard() {
 
     // get order
     const getOrder = () => {
+        setloading(true);
         fetch('/api/v1/orders', {
                 method: "GET",
                 headers: {
@@ -41,14 +43,18 @@ export default function Dashboard() {
             .then((res) => {
                 if (res.status == 200) {
                     const data = res.data;
+                    setloading(false);
                     setOrderState(data);
                 } else if (res.status == 401) {
+                    setloading(false);
                     unAutorize();
                 } else {
+                    setloading(false);
                     toast.error(JSON.stringify(res));
                     // toast.error("Terjadi kesalahan data pemesanan")
                 }
             }).catch(e => {
+                setloading(false);
                 toast.error('Internal Server Error')
                 console.log(e);
             })
@@ -56,6 +62,7 @@ export default function Dashboard() {
 
     //update order
     const updateOrder = () => {
+        setloading(true);
         fetch(`/api/v1/orders/status/${orderId}`, {
                 method: "PUT",
                 headers: {
@@ -70,12 +77,16 @@ export default function Dashboard() {
                 if (res.status == 200) {
                     getOrder();
                     window.location.reload();
+                    setloading(false);
                 } else if (res.status == 401) {
+                    setloading(false);
                     unAutorize();
                 } else {
+                    setloading(false);
                     toast.error("Terjadi kesalahan saat update pemesanan")
                 }
             }).catch(e => {
+                setloading(false);
                 toast.error('Internal Server Error')
                 console.log(e);
             })
@@ -98,7 +109,7 @@ export default function Dashboard() {
                         </select>
             )
         },
-        { title: 'STATUS PEMBAYARAN', field: 'payment_status', editable: 'never',color:'red' },
+        { title: 'STATUS PEMBAYARAN', field: 'payment_status', editable: 'never', color: 'red' },
         { title: 'TOTAL', field: 'total', editable: 'never' },
         {
             title: 'JAM',
@@ -142,6 +153,7 @@ export default function Dashboard() {
                         columns={columns}
                         data={orderState}
                         localization={locale}
+                        isLoading={loading}
                         options={{
                           // ..other options
                           exportButton: {

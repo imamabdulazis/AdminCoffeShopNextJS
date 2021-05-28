@@ -14,6 +14,7 @@ export default function OrderPage({ color = 'light' }) {
     const [showModal, setShowModal] = React.useState(false);
     const [orderStatus, setOrderStatus] = useState(null)
     const [orderId, setOrderId] = useState(null);
+    const [loading, setloading] = useState(false)
 
     useEffect(() => {
         getOrder()
@@ -25,6 +26,7 @@ export default function OrderPage({ color = 'light' }) {
 
     // get order
     const getOrder = () => {
+        setloading(true);
         fetch('/api/v1/orders', {
                 method: "GET",
                 headers: {
@@ -37,13 +39,18 @@ export default function OrderPage({ color = 'light' }) {
                 if (res.status == 200) {
                     const data = res.data;
                     setOrderState(data);
+                    setloading(false);
+
                 } else if (res.status == 401) {
                     unAutorize();
+                    setloading(false);
                 } else {
+                    setloading(false);
                     toast.error(JSON.stringify(res));
                     // toast.error("Terjadi kesalahan data pemesanan")
                 }
             }).catch(e => {
+                setloading(false);
                 toast.error('Internal Server Error')
                 console.log(e);
             })
@@ -51,6 +58,7 @@ export default function OrderPage({ color = 'light' }) {
 
     // delete order
     const deleteOrder = (id) => {
+        setloading(true);
         fetch(`/api/v1/orders/${id}`, {
                 method: "DELETE",
                 headers: {
@@ -63,9 +71,12 @@ export default function OrderPage({ color = 'light' }) {
                 if (res.status == 200) {
                     getOrder();
                     toast.success("Hapus pemesanan berhasil")
+                    setloading(false);
                 } else if (res.status == 401) {
+                    setloading(false);
                     unAutorize();
                 } else {
+                    setloading(false);
                     toast.error("Terjadi kesalahan data pemesanan")
                 }
             }).catch(e => {
@@ -76,6 +87,7 @@ export default function OrderPage({ color = 'light' }) {
 
     //update order
     const updateOrder = () => {
+        setloading(true);
         fetch(`/api/v1/orders/status/${orderId}`, {
                 method: "PUT",
                 headers: {
@@ -90,12 +102,16 @@ export default function OrderPage({ color = 'light' }) {
                 if (res.status == 200) {
                     getOrder();
                     window.location.reload();
+                    setloading(false);
                 } else if (res.status == 401) {
                     unAutorize();
+                    setloading(false);
                 } else {
+                    setloading(false);
                     toast.error("Terjadi kesalahan saat update pemesanan")
                 }
             }).catch(e => {
+                setloading(false);
                 toast.error('Internal Server Error')
                 console.log(e);
             })
@@ -162,6 +178,7 @@ export default function OrderPage({ color = 'light' }) {
                         columns={columns}
                         data={orderState}
                         localization={locale}
+                        isLoading={loading}
                         options={{
                           // ..other options
                           exportButton: {

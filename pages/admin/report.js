@@ -12,8 +12,6 @@ export default function ReportPage() {
     const [reportState, setReportState] = useState([])
     const [loading, setloading] = useState(false)
 
-
-
     const [columns, setColumns] = useState([
         { title: 'PEMESANAN', field: 'orders.drink.name', editable: 'never' },
         { title: 'CUSTOMER', field: 'orders.users.email', editable: 'never' },
@@ -49,6 +47,7 @@ export default function ReportPage() {
 
     // get Report
     const getReport = () => {
+        setloading(true);
         fetch('/api/v1/report', {
                 method: "GET",
                 headers: {
@@ -60,12 +59,17 @@ export default function ReportPage() {
                 if (res.status == 200) {
                     const data = res.data;
                     setReportState(data);
+                    setloading(false);
                 } else if (res.status == 401) {
+                    setloading(false);
                     unAutorize();
                 } else {
                     toast.error("Terjadi kesalahan data Katergori")
+                    setloading(false);
                 }
             }).catch(e => {
+                setloading(false);
+                toast.error("Internal Server Error")
                 console.log(e);
             })
     }

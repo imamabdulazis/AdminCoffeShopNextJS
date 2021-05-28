@@ -14,10 +14,13 @@ export default function UserPage({ color = 'light' }) {
     const router = useRouter();
 
     const [userState, setUserState] = useState([])
+    const [loading, setloading] = useState(false)
 
-    const [columns, setColumns] = useState([
-        {
-            title: 'Avatar', field: 'image_url', editable: 'true', render: rowData => (
+    const [columns, setColumns] = useState([{
+            title: 'Avatar',
+            field: 'image_url',
+            editable: 'true',
+            render: rowData => (
                 <img
                     style={{ height: 36, borderRadius: '50%' }}
                     src={rowData.image_url}
@@ -47,25 +50,29 @@ export default function UserPage({ color = 'light' }) {
 
     // get user
     const getUser = () => {
+        setloading(true)
         fetch('/api/v1/users', {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-            },
-        }).then(res => res.json())
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+                },
+            }).then(res => res.json())
             .then((res) => {
-
                 if (res.status == 200) {
                     const data = res.data;
                     setUserState(data);
+                    setloading(false)
                 } else if (res.status == 401) {
+                    setloading(false)
                     unAutorize();
                 } else {
+                    setloading(false)
                     console.info(res)
                     toast.error("Terjadi kesalahan data users, periksa kembali apakah berelasi dengan data lain")
                 }
             }).catch(e => {
+                setloading(false)
                 toast.error("Internal Server Error")
                 console.log(e);
             })
@@ -74,12 +81,12 @@ export default function UserPage({ color = 'light' }) {
     // delete user
     const deleteUser = (id) => {
         fetch(`/api/v1/users/${id}`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-            },
-        }).then(res => res.json())
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+                },
+            }).then(res => res.json())
             .then((res) => {
                 console.info(id);
                 if (res.status == 200) {
@@ -96,9 +103,9 @@ export default function UserPage({ color = 'light' }) {
             })
     }
 
-    return (
-        <>
-            <div className="flex flex-wrap mt-4">
+    return ( <
+        >
+        <div className="flex flex-wrap mt-4">
                 <div className="w-full mb-12 px-4">
                     <MaterialTable
                         title="PENGGUNA"
@@ -116,8 +123,8 @@ export default function UserPage({ color = 'light' }) {
                         }}
                     />
                 </div>
-            </div>
-        </>
+            </div> <
+        />
     )
 }
 

@@ -11,6 +11,7 @@ export default function DevicePage({ color = 'light' }) {
     const router = useRouter()
 
     const [deviceState, setDeviceState] = useState([])
+    const [loading, setloading] = useState(false)
 
     useEffect(() => {
         getDevice()
@@ -22,6 +23,7 @@ export default function DevicePage({ color = 'light' }) {
 
     // get Device
     const getDevice = () => {
+        setloading(true)
         fetch('/api/v1/device', {
             method: "GET",
             headers: {
@@ -30,16 +32,19 @@ export default function DevicePage({ color = 'light' }) {
             },
         }).then(res => res.json())
             .then((res) => {
-
                 if (res.status == 200) {
                     const data = res.data;
                     setDeviceState(data);
+                    setloading(false)
                 } else if (res.status == 401) {
                     unAutorize();
+                    setloading(false)
                 } else {
                     toast.error("Terjadi kesalahan data Device")
+                    setloading(false)
                 }
             }).catch(e => {
+                toast.error("Internal Server Error")
                 console.log(e);
             })
     }
