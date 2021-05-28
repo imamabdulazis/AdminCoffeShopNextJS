@@ -12,20 +12,26 @@ export default function OrderPage({ color = 'light' }) {
 
     const [orderState, setOrderState] = useState([])
     const [showModal, setShowModal] = React.useState(false);
+    const [orderStatus, setOrderStatus] = useState(null)
+    const [orderId, setOrderId] = useState(null);
 
     useEffect(() => {
         getOrder()
     }, []);
 
+    const unAutorize = () => {
+        router.replace('/login')
+    }
+
     // get order
     const getOrder = () => {
         fetch('/api/v1/orders', {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-            },
-        }).then(res => res.json())
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+                },
+            }).then(res => res.json())
             .then((res) => {
                 console.info(`RESPONSE ORDER :$res`);
                 if (res.status == 200) {
@@ -46,12 +52,12 @@ export default function OrderPage({ color = 'light' }) {
     // delete order
     const deleteOrder = (id) => {
         fetch(`/api/v1/orders/${id}`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-            },
-        }).then(res => res.json())
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+                },
+            }).then(res => res.json())
             .then((res) => {
 
                 if (res.status == 200) {
@@ -68,17 +74,65 @@ export default function OrderPage({ color = 'light' }) {
             })
     }
 
+    //update order
+    const updateOrder = () => {
+        fetch(`/api/v1/orders/status/${orderId}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+                },
+                body: JSON.stringify({
+                    order_status: orderStatus == 1 ? "Active" : "Selesai",
+                })
+            }).then(res => res.json())
+            .then((res) => {
+                if (res.status == 200) {
+                    getOrder();
+                    window.location.reload();
+                } else if (res.status == 401) {
+                    unAutorize();
+                } else {
+                    toast.error("Terjadi kesalahan saat update pemesanan")
+                }
+            }).catch(e => {
+                toast.error('Internal Server Error')
+                console.log(e);
+            })
+    }
+
     const [columns, setColumns] = useState([
-        { title: 'CUSTOMER', field: 'users.name' },
-        { title: 'MINUMAN', field: 'drink.name' },
-        { title: 'JUMLAH', field: 'amount' },
-        { title: 'HARGA', field: 'drink.price' },
-        { title: 'DISCOUNT', field: 'discount' },
-        { title: 'ORDER STATUS', field: 'order_status' },
-        { title: 'STATUS PEMBAYARAN', field: 'payment_status' },
-        { title: 'TOTAL', field: 'total' },
+        { title: 'CUSTOMER', field: 'users.name', editable: 'never' },
+        { title: 'MINUMAN', field: 'drink.name', editable: 'never' },
+        { title: 'JUMLAH', field: 'amount', editable: 'never' },
+        { title: 'HARGA', field: 'drink.price', editable: 'never' },
+        { title: 'DISCOUNT', field: 'discount', editable: 'never' },
         {
-            title: 'UPDATE', field: 'updated_at', type: 'date',
+            title: 'ORDER STATUS',
+            editable: 'never',
+            field: 'category',
+            render: rowData => (
+                <select style={{border:0, outline:0}} value={orderStatus != null ? orderStatus : rowData.order_status=="Active"?1:2} onChange={(e) => changeOrderStatus(e, rowData)}>
+                           <option value={1}>Active</option>
+                           <option value={2}>Selesai</option>
+                        </select>
+            )
+        },
+        { title: 'STATUS PEMBAYARAN', field: 'payment_status', editable: 'never' },
+        { title: 'TOTAL', field: 'total', editable: 'never' },
+        {
+            title: 'JAM',
+            field: 'updated_at',
+            type: 'time',
+            dateSetting: {
+                format: 'HH.mm'
+            },
+            editable: 'never'
+        },
+        {
+            title: 'UPDATE',
+            field: 'updated_at',
+            type: 'date',
             dateSetting: {
                 format: 'dd/MM/yyyy'
             },
@@ -86,15 +140,35 @@ export default function OrderPage({ color = 'light' }) {
         },
     ]);
 
-    return (
-        <>
-            <div className="flex flex-wrap mt-12">
+
+    useEffect(() => {
+        if (orderStatus != null) {
+            updateOrder();
+        }
+    }, [orderStatus])
+
+
+    const changeOrderStatus = (event, rowData) => {
+        setOrderStatus(event.target.value != null ? event.target.value : rowData.id);
+        setOrderId(rowData.id);
+    }
+
+    return ( <
+        >
+        <div className="flex flex-wrap mt-12">
                 <div className="w-full mb-12 px-4">
                     <MaterialTable
                         title="Pemesanan"
                         columns={columns}
                         data={orderState}
                         localization={locale}
+                        options={{
+                          // ..other options
+                          exportButton: {
+                            csv: true,
+                            pdf: true
+                          }
+                        }}
                         editable={{
                             onRowDelete: (rawData, oldData) =>
                                 new Promise((resolve, reject) => {
@@ -106,8 +180,8 @@ export default function OrderPage({ color = 'light' }) {
                         }}
                     />
                 </div>
-            </div>
-        </>
+            </div> <
+        />
     )
 }
 

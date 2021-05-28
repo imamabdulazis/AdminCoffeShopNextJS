@@ -26,7 +26,7 @@ export default function Sidebar() {
               href="#pablo"
               className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
             >
-              Admin CoffeShop
+              Admin Copsychus Coffe
             </a>
           </Link>
           {/* User */}
@@ -212,7 +212,7 @@ export default function Sidebar() {
                   >
                     <i
                       className={
-                        "fas fa-money-bill-alt mr-2 text-sm " +
+                        "fas fa-dollar-sign mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/payment") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")
@@ -236,7 +236,7 @@ export default function Sidebar() {
                   >
                     <i
                       className={
-                        "fas fa-tools mr-2 text-sm " +
+                        "fas fa-mobile-alt mr-2 text-sm " +
                         (router.pathname.indexOf("/admin/device") !== -1
                           ? "opacity-75"
                           : "text-blueGray-300")

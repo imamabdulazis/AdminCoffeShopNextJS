@@ -15,15 +15,19 @@ export default function NotificationPage({ color = 'light' }) {
         getNotification()
     }, []);
 
+    const unAutorize = () => {
+        router.replace('/login')
+    }
+
     // get Notification
     const getNotification = () => {
         fetch('/api/v1/notification', {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-            },
-        }).then(res => res.json())
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+                },
+            }).then(res => res.json())
             .then((res) => {
 
                 if (res.status == 200) {
@@ -42,12 +46,12 @@ export default function NotificationPage({ color = 'light' }) {
     // get Notification
     const deleteNotification = (id) => {
         fetch(`/api/v1/notification/${id}`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-            },
-        }).then(res => res.json())
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+                },
+            }).then(res => res.json())
             .then((res) => {
 
                 if (res.status == 200) {
@@ -68,7 +72,9 @@ export default function NotificationPage({ color = 'light' }) {
         { title: 'TITLE', field: 'title' },
         { title: 'DESKRIPSI', field: 'body' },
         {
-            title: 'UPDATE', field: 'updated_at', type: 'date',
+            title: 'UPDATE',
+            field: 'updated_at',
+            type: 'date',
             dateSetting: {
                 format: 'dd/MM/yyyy'
             },
@@ -77,9 +83,9 @@ export default function NotificationPage({ color = 'light' }) {
     ]);
 
 
-    return (
-        <>
-            <div className="flex flex-wrap mt-12">
+    return ( <
+        >
+        <div className="flex flex-wrap mt-12">
                 <div className="w-full mb-12 px-4">
                     <MaterialTable
                         title="NOTIFIKASI"
@@ -97,8 +103,8 @@ export default function NotificationPage({ color = 'light' }) {
                         }}
                     />
                 </div>
-            </div>
-        </>
+            </div> <
+        />
     )
 }
 

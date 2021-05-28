@@ -40,6 +40,11 @@ export default function UserPage({ color = 'light' }) {
         getUser()
     }, []);
 
+
+    const unAutorize = () => {
+        router.replace('/login')
+    }
+
     // get user
     const getUser = () => {
         fetch('/api/v1/users', {

@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
 const UserDropdown = () => {
-  const [imageState, setImageState] = useState('/img/user.png')
+  const [imageState, setImageState] = useState('/img/user.png');
+  const [userState,setUserState]=useState(null);
   //router
   const router = useRouter();
   // dropdown props
@@ -44,6 +45,7 @@ const UserDropdown = () => {
         if (res.status == 200) {
           const data = res.data;
           setImageState(data.image_url);
+          setUserState(data);
         } else if (res.status == 401) {
           unAutorize();
         } else {
@@ -84,6 +86,20 @@ const UserDropdown = () => {
           "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
         }
       >
+       <p
+          className={
+            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+          }
+        >
+          {userState!=null?userState.name:"Nama"}
+        </p>
+         <p
+          className={
+            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+          }
+        >
+        {userState!=null?userState.email:"Email"}
+        </p>
         <a
           href="#pablo"
           className={
@@ -91,7 +107,7 @@ const UserDropdown = () => {
           }
           onClick={onLogout}
         >
-          LOG OUT
+          Log Out
         </a>
       </div>
     </>

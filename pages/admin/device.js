@@ -9,11 +9,16 @@ import { locale } from '../../utils/locale.js';
 export default function DevicePage({ color = 'light' }) {
 
     const router = useRouter()
+
     const [deviceState, setDeviceState] = useState([])
 
     useEffect(() => {
         getDevice()
     }, []);
+
+    const unAutorize = () => {
+        router.replace('/login')
+    }
 
     // get Device
     const getDevice = () => {
@@ -65,8 +70,8 @@ export default function DevicePage({ color = 'light' }) {
     const [columns, setColumns] = useState([
         { title: 'CUSTOMER', field: 'users.name' },
         { title: 'VERSI APLIKASI', field: 'app_version' },
-        { title: 'SISTEM OPERASI', field: 'users.name' },
-        { title: 'BRAND', field: 'system_os' },
+        { title: 'SISTEM OPERASI', field: 'os_name' },
+        { title: 'BRAND', field: 'manufacture' },
         {
             title: 'UPDATE', field: 'updated_at', type: 'date',
             dateSetting: {

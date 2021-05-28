@@ -14,9 +14,11 @@ export default function ReportPage() {
 
 
 
-    const [columns, setColumns] = useState([
-        {
-            title: 'Avatar', field: 'image_url', editable: 'true', render: rowData => (
+    const [columns, setColumns] = useState([{
+            title: 'Avatar',
+            field: 'image_url',
+            editable: 'true',
+            render: rowData => (
                 <img
                     style={{ height: 36, borderRadius: '0%' }}
                     src={rowData.image_url}
@@ -26,7 +28,9 @@ export default function ReportPage() {
         { title: 'Metode', field: 'payment_type', editable: 'never' },
         { title: 'DESKRIPSI', field: 'description', },
         {
-            title: 'UPDATE', field: 'updated_at', type: 'date',
+            title: 'UPDATE',
+            field: 'updated_at',
+            type: 'date',
             dateSetting: {
                 format: 'dd/MM/yyyy'
             },
@@ -39,15 +43,19 @@ export default function ReportPage() {
         getReport();
     }, []);
 
+    const unAutorize = () => {
+        router.replace('/login')
+    }
+
     // get Report
     const getReport = () => {
         fetch('/api/v1/payment_method', {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-            },
-        }).then(res => res.json())
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+                },
+            }).then(res => res.json())
             .then((res) => {
                 if (res.status == 200) {
                     const data = res.data;
@@ -65,9 +73,9 @@ export default function ReportPage() {
     }
 
 
-    return (
-        <>
-            <div className="flex flex-wrap mt-12">
+    return ( <
+        >
+        <div className="flex flex-wrap mt-12">
                 <div className="w-full mb-12 px-4">
                     <MaterialTable
                         title="Metode pembayaran"
@@ -77,8 +85,8 @@ export default function ReportPage() {
                         localization={locale}
                     />
                 </div>
-            </div>
-        </>
+            </div> <
+        />
     )
 }
 

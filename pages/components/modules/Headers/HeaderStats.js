@@ -15,7 +15,7 @@ export default function HeaderStats() {
   const [orderState, setOrderState] = useState([])
   const [drinkState, setDrinkState] = useState([])
   const [userState, setUserState] = useState([])
-  const [notificationState, setNotificationState] = useState([])
+  const [deviceState, setDeviceState] = useState([])
 
 
 
@@ -24,7 +24,7 @@ export default function HeaderStats() {
     getOrder();
     getDrink();
     getUser();
-    getNotification();
+    getDevice();
   }, []);
 
 
@@ -106,8 +106,8 @@ export default function HeaderStats() {
       })
   }
   // get notification
-  const getNotification = () => {
-    fetch('/api/v1/notification', {
+  const getDevice = () => {
+    fetch('/api/v1/device', {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -115,10 +115,9 @@ export default function HeaderStats() {
       },
     }).then(res => res.json())
       .then((res) => {
-
         if (res.status == 200) {
           const data = res.data;
-          setNotificationState(data);
+          setDeviceState(data);
         } else if (res.status == 401) {
           unAutorize();
         } else {
@@ -163,13 +162,13 @@ export default function HeaderStats() {
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="NOTIFIKASI"
-                  statTitle={`${notificationState.length}`}
+                  statSubtitle="PERANGKAT"
+                  statTitle={`${deviceState.length}`}
                   statArrow="up"
                   statPercent="12"
                   statPercentColor="text-emerald-500"
                   statDescripiron="Since last month"
-                  statIconName="fas fa-bell"
+                  statIconName="fas fa-mobile-alt"
                   statIconColor="bg-lightBlue-500"
                 />
               </div>

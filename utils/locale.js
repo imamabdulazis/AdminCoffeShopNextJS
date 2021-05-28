@@ -4,7 +4,9 @@ export const locale = {
     },
     toolbar: {
         nRowsSelected: '{0} row(s) selected',
-        searchPlaceholder: "Cari"
+        searchPlaceholder: "Cari",
+        exportCSVName: "Export as XLS",
+        exportPDFName: "Export as PDF"
     },
     header: {
         actions: 'AKSI'

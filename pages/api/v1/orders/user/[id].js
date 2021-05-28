@@ -1,5 +1,3 @@
-
-
 import authenticateToken from '../../../helper/autenticate_jwt'
 import prisma from '../../../utils/prisma';
 

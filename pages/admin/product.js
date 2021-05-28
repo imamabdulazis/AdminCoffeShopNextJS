@@ -32,6 +32,10 @@ export default function ProuctPage({ color = 'light' }) {
         getCategory()
     }, []);
 
+    const unAutorize = () => {
+        router.replace('/login')
+    }
+
     useEffect(() => {
         setColumns([
             {
@@ -46,7 +50,7 @@ export default function ProuctPage({ color = 'light' }) {
             {
                 title: 'KATEGORI', editable: 'never', field: 'category', render: rowData => (
                     <>
-                        <select value={selectedCategory != null ? selectedCategory : rowData.category.id} onChange={(e) => changeCategory(e, rowData)}>
+                        <select style={{border:0, outline:0}} value={selectedCategory != null ? selectedCategory : rowData.category.id} onChange={(e) => changeCategory(e, rowData)}>
                             {
                                 categoryState.length > 0 ? categoryState.map((e) => <option value={e.id}>{e.name}</option>) : <options>Kategori Loading</options>
                             }
@@ -321,7 +325,7 @@ export default function ProuctPage({ color = 'light' }) {
             <div className="flex flex-wrap mt-12">
                 <div className="w-full mb-12 px-4">
                     <MaterialTable
-                        title="KATEGORI"
+                        title="MINUMAN"
                         columns={columns}
                         data={productState}
                         localization={locale}

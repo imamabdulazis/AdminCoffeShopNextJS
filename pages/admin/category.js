@@ -16,6 +16,10 @@ export default function CategoryPage({ color = 'light' }) {
         getCategory()
     }, []);
 
+    const unAutorize = () => {
+        router.replace('/login')
+    }
+
     // get Kategori
     const getCategory = () => {
         fetch('/api/v1/category', {
