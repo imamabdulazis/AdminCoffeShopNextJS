@@ -1,4 +1,3 @@
-
 const { uploadImageToStorage } = require('../../../helper/uploader');
 import authenticateToken from '../../../helper/autenticate_jwt'
 import multer from 'multer';
@@ -19,7 +18,7 @@ export const config = {
     }
 };
 
-export default async (req, res) => {
+export default async(req, res) => {
     await multerAny(req, res);
 
     const {
@@ -47,9 +46,8 @@ export default async (req, res) => {
                 })
                 const blob = req.files[0];
 
-
                 ///upload image
-                uploadImageToStorage(blob).then(async function (success) {
+                return uploadImageToStorage(blob).then(async function(success) {
                     const drink = await prisma.drink.update({
                         where: {
                             id: id,
@@ -69,8 +67,6 @@ export default async (req, res) => {
                         message: "Berhasil update foto minuman"
                     })
                 });
-                return
-
             } catch (error) {
                 return res.status(500).json({
                     status: 500,

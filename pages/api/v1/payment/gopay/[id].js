@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 
 import { coreApi } from '../../../../../midtrans';
@@ -6,7 +5,7 @@ import { PushNotification } from "../../../utils/notification";
 import prisma from '../../../utils/prisma';
 
 
-export default async (req, res) => {
+export default async(req, res) => {
     const {
         query: { id },
         method,
@@ -14,7 +13,7 @@ export default async (req, res) => {
 
     switch (method) {
         case "GET":
-            return coreApi.transaction.status(id).then(async (responseStatus) => {
+            return coreApi.transaction.status(id).then(async(responseStatus) => {
                 if (responseStatus.transaction_status == "settlement") {
                     const updateOrders = await prisma.orders.updateMany({
                         where: {
@@ -51,9 +50,9 @@ export default async (req, res) => {
                         }
                     });
 
-                    PushNotification(findDevice.fcm_token, "Pembayaran Berhasil", 
-                    `🍮  ${findOrder.drink.name} #️⃣  Rp. ${findOrder.total}`).then((responseNotif) => {
-                        // console.log(responseNotif);
+                    return PushNotification(findDevice.fcm_token, "Pembayaran Berhasil",
+                        `🍮  ${findOrder.drink.name} #️⃣  Rp. ${findOrder.total}`).then((responseNotif) => {
+                        console.log(responseNotif);
                         return res.status(200).json(responseStatus);
                     }).catch(err => {
                         console.log(err);

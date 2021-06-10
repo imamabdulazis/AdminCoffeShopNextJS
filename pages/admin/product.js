@@ -39,7 +39,7 @@ export default function ProuctPage({ color = 'light' }) {
     useEffect(() => {
         setColumns([
             {
-                title: 'Avatar', field: 'image_url', editable: 'true', render: rowData => (
+                title: 'Avatar', field: 'image_url', render: rowData => (
                     <img
                         style={{ height: 36, borderRadius: '0%' }}
                         src={rowData.image_url}

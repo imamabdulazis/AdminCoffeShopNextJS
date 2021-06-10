@@ -49,7 +49,7 @@ export default async (req, res) => {
 
 
                 ///upload image
-                uploadImageToStorage(blob).then(async function (success) {
+                return uploadImageToStorage(blob).then(async function (success) {
                     const user = await prisma.users.update({
                         where: {
                             id: id,
@@ -69,7 +69,6 @@ export default async (req, res) => {
                         message: "Berhasil update foto profil"
                     })
                 });
-                return
 
             } catch (error) {
                 return res.status(500).json({
