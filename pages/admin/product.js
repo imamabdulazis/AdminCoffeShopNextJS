@@ -39,7 +39,7 @@ export default function ProuctPage({ color = 'light' }) {
     useEffect(() => {
         setColumns([
             {
-                title: 'Avatar', field: 'image_url', render: rowData => (
+                title: 'Avatar',editable:'never', field: 'image_url', render: rowData => (
                     <img
                         style={{ height: 36, borderRadius: '0%' }}
                         src={rowData.image_url}
@@ -187,27 +187,31 @@ export default function ProuctPage({ color = 'light' }) {
     }
 
     // delete Product
-    const deleteProduct = () => {
-        fetch('/api/v1/drink', {
-            method: "GET",
+    const deleteProduct = (id) => {
+        setloading(true);
+        fetch(`/api/v1/drink/${id}`, {
+            method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
             },
         }).then(res => res.json())
             .then((res) => {
-
+                console.info(res);
                 if (res.status == 200) {
                     getProduct();
                     toast.success("Hapus produk berhasil")
-                    window.location.reload()
+                    setloading(false);
+                    // window.location.reload()
                 } else if (res.status == 401) {
                     unAutorize();
                 } else {
+                    setloading(false);
                     toast.error("Terjadi kesalahan data Minuman")
                 }
             }).catch(e => {
                 toast.error('Internal Server Error')
+                setloading(false);
                 console.log(e);
             })
     }
@@ -305,6 +309,7 @@ export default function ProuctPage({ color = 'light' }) {
             headers: headers,
             timeout: 10000,
         }).then((res) => {
+            console.info(res);
             if (res.status === 200) {
                 toast.success("Berhasil upload foto")
                 setloading(false)
@@ -315,6 +320,7 @@ export default function ProuctPage({ color = 'light' }) {
             }
         }).catch((err) => {
             setloading(false)
+            console.info(err);
             toast.error("Gagal upload foto");
         });
     }
