@@ -303,7 +303,7 @@ export default function ProuctPage({ color = 'light' }) {
         };
 
         axios({
-            method: "PATCH",
+            method: "PUT",
             url: `/api/v1/upload/drink/${drinkId}`,
             data: formData,
             headers: headers,

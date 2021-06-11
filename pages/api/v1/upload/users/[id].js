@@ -28,7 +28,7 @@ export default async (req, res) => {
     } = req;
 
     switch (method) {
-        case "PATCH":
+        case "PUT":
             try {
                 //validate jwt token
                 const isAuth = authenticateToken(req, res)
@@ -71,6 +71,7 @@ export default async (req, res) => {
                 });
 
             } catch (error) {
+                console.info(`GAGAL :${error}`)
                 return res.status(500).json({
                     status: 500,
                     message: error
