@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import CardTable from '../components/elements/Cards/CardTable.js';
-import Admin from "../components/layouts/Admin.js";
+import CardTable from '@components/elements/Cards/CardTable.js';
+import Admin from "@components/layouts/Admin.js";
 
-import TableDropdown from "../components/elements/Dropdowns/TableDropdown.js";
+import TableDropdown from "@components/elements/Dropdowns/TableDropdown.js";
 import MaterialTable from 'material-table';
 import { toast } from 'react-toastify';
-import { locale } from '../../utils/locale.js';
+import { locale } from '@utils/locale.js';
 
 
 export default function UserPage({ color = 'light' }) {

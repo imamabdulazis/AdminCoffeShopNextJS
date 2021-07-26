@@ -1,32 +1,42 @@
-import '../styles/globals.css'
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "../styles/tailwind.css";
+import '@styles/globals.css'
+import "@styles/tailwind.css";
 import App from "next/app";
 import React from "react";
 import ReactDOM from "react-dom";
 import Head from "next/head";
 import Router from "next/router";
 import { ToastContainer } from 'react-toastify';
+import Nprogress from 'nprogress';
 import 'react-toastify/dist/ReactToastify.min.css';
+import '@styles/nprogress.css';
 
-import PageChange from "./components/modules/PageChanges/PageChange.js";
+/*
+  feature to create line progress indicator top of screen
+  and make smoth loading page
+*/
+Router.events.on('routeChangeStart', () => Nprogress.start());
+Router.events.on('routeChangeComplete', () => Nprogress.done());
+Router.events.on('routeChangeError', () => Nprogress.done());
 
-Router.events.on("routeChangeStart", (url) => {
-  console.log(`Loading: ${url}`);
-  document.body.classList.add("body-page-transition");
-  ReactDOM.render(
-    <PageChange path={url} />,
-    document.getElementById("page-transition")
-  );
-});
-Router.events.on("routeChangeComplete", () => {
-  ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
-  document.body.classList.remove("body-page-transition");
-});
-Router.events.on("routeChangeError", () => {
-  ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
-  document.body.classList.remove("body-page-transition");
-});
+import PageChange from "@components/modules/PageChanges/PageChange.js";
+
+// Router.events.on("routeChangeStart", (url) => {
+//   console.log(`Loading: ${url}`);
+//   document.body.classList.add("body-page-transition");
+//   ReactDOM.render(
+//     // <PageChange path={url} />,
+//     document.getElementById("page-transition")
+//   );
+// });
+// Router.events.on("routeChangeComplete", () => {
+//   ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
+//   document.body.classList.remove("body-page-transition");
+// });
+// Router.events.on("routeChangeError", () => {
+//   ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
+//   document.body.classList.remove("body-page-transition");
+// });
 
 export default class MyApp extends App {
   componentDidMount() {

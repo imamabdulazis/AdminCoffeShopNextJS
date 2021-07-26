@@ -1,11 +1,11 @@
 require('dotenv').config();
 
-import initMiddleware from '../../helper/middleware';
-import validateMiddleware from '../../helper/validate-middleware';
+import initMiddleware from '@helper/middleware';
+import validateMiddleware from '@helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 const { v4: uuid } = require('uuid');
-import authenticateToken from '../../helper/autenticate_jwt'
-import prisma from '../../utils/prisma';
+import authenticateToken from '@helper/autenticate_jwt'
+import prisma from '@utils/prisma';
 
 
 const validateBody = initMiddleware(

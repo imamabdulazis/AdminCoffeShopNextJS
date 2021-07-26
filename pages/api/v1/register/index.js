@@ -3,11 +3,11 @@ const { v4: uuid } = require('uuid');
 var handlebars = require('handlebars');
 var path = require('path');
 import { hash } from 'bcryptjs';
-import initMiddleware from '../../helper/middleware';
-import validateMiddleware from '../../helper/validate-middleware';
+import initMiddleware from '@helper/middleware';
+import validateMiddleware from '@helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
-import { readHTMLFile, smtpTransport } from '../../helper/email';
-import prisma from '../../utils/prisma';
+import { readHTMLFile, smtpTransport } from '@helper/email';
+import prisma from '@utils/prisma';
 
 const validateBody = initMiddleware(
     validateMiddleware([
@@ -74,7 +74,7 @@ export default async (req, res) => {
                             message: "Terjadi kesalahan"
                         })
                     }
-                    const postsDirectory = path.join(process.cwd(), '/pages/api/helper/email.html')
+                    const postsDirectory = path.join(process.cwd(), '/pages/api@helper/email.html')
 
                     return readHTMLFile(postsDirectory, function(err, html) {
                         var template = handlebars.compile(html);

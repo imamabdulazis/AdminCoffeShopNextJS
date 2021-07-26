@@ -11,7 +11,7 @@ const { v4: uuid } = require('uuid');
 
 const storage = new Storage({
     projectId: config.projectId,
-    keyFilename: "./pages/api/helper/service_account.json"
+    keyFilename: "./pages/api@helper/service_account.json"
 });
 
 const bucket = storage.bucket(config.storageBucket);

@@ -1,4 +1,4 @@
-const admin = require('./../helper/admin');
+const admin = require('@helper/admin');
 
 function PushNotification(fcm, title, body) {
     const options = {

@@ -4,7 +4,7 @@ import Link from "next/link";
 // layout for page
 
 
-import Auth from "../components/layouts/Auth.js";
+import Auth from "@components/layouts/Auth.js";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 

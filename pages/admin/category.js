@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import Admin from "../components/layouts/Admin.js";
-import TableDropdown from "../components/elements/Dropdowns/TableDropdown.js";
+import Admin from "@components/layouts/Admin.js";
+import TableDropdown from "@components/elements/Dropdowns/TableDropdown.js";
 import moment from 'moment';
 import MaterialTable from 'material-table';
 import { toast } from 'react-toastify';
-import { locale } from '../../utils/locale.js';
+import { locale } from '@utils/locale.js';
 
 export default function CategoryPage({ color = 'light' }) {
 

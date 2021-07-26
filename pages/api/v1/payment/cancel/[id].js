@@ -1,9 +1,9 @@
 
 require('dotenv').config();
-import initMiddleware from '../../../helper/middleware';
-import validateMiddleware from '../../../helper/validate-middleware';
+import initMiddleware from '@helper/middleware';
+import validateMiddleware from '@helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
-import authenticateToken from '../../../helper/autenticate_jwt';
+import authenticateToken from '@helper/autenticate_jwt';
 import moment from 'moment';
 import { coreApi } from '../../../../../midtrans';
 

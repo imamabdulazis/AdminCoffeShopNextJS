@@ -1,9 +1,9 @@
 
-import initMiddleware from '../../helper/middleware';
-import validateMiddleware from '../../helper/validate-middleware';
+import initMiddleware from '@helper/middleware';
+import validateMiddleware from '@helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
-import { generateAccessToken } from '../../helper/generate_jwt';
-import prisma from '../../utils/prisma';
+import { generateAccessToken } from '@helper/generate_jwt';
+import prisma from '@utils/prisma';
 const bcrypt = require('bcryptjs');
 
 

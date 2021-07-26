@@ -1,7 +1,7 @@
-import authenticateToken from '../../../helper/autenticate_jwt'
-import prisma from '../../../utils/prisma';
-import initMiddleware from '../../../helper/middleware';
-import validateMiddleware from '../../../helper/validate-middleware';
+import authenticateToken from '@helper/autenticate_jwt'
+import prisma from '@utils/prisma';
+import initMiddleware from '@helper/middleware';
+import validateMiddleware from '@helper/validate-middleware';
 import { check, validationResult } from 'express-validator';
 
 export default async (req, res) => {

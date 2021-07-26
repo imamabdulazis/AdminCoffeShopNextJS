@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import Admin from "../components/layouts/Admin.js";
+import Admin from "@components/layouts/Admin.js";
 import MaterialTable from 'material-table';
-import { locale } from '../../utils/locale.js';
+import { locale } from '@utils/locale.js';
 import { toast } from 'react-toastify';
 
 export default function Dashboard() {

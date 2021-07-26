@@ -2,7 +2,7 @@
 let midtransClient = require('midtrans-client');
 const { coreApi } = require('../../../../../midtrans');
 
-import authenticateToken from '../../../helper/autenticate_jwt'
+import authenticateToken from '@helper/autenticate_jwt'
 
 export default async () => {
 

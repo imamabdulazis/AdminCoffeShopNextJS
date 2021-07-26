@@ -1,8 +1,8 @@
 require('dotenv').config();
 
 import { coreApi } from '../../../../../midtrans';
-import { PushNotification } from "../../../utils/notification";
-import prisma from '../../../utils/prisma';
+import { PushNotification } from "@utils/notification";
+import prisma from '@utils/prisma';
 
 
 export default async(req, res) => {

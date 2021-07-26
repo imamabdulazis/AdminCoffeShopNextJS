@@ -1,6 +1,6 @@
 
-import authenticateToken from '../../../helper/autenticate_jwt'
-import prisma from '../../../utils/prisma';
+import authenticateToken from '@helper/autenticate_jwt'
+import prisma from '@utils/prisma';
 
 export default async (req, res) => {
     const {

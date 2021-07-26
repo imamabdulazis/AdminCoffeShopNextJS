@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import Admin from "../components/layouts/Admin.js";
-import { locale } from '../../utils/locale.js';
+import Admin from "@components/layouts/Admin.js";
+import { locale } from '@utils/locale.js';
 import { toast } from 'react-toastify';
 import MaterialTable from 'material-table';
 import Dialog from '@material-ui/core/Dialog';

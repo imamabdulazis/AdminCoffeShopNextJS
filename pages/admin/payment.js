@@ -2,8 +2,8 @@ import MaterialTable from 'material-table';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import { locale } from '../../utils/locale.js';
-import Admin from "../components/layouts/Admin.js";
+import { locale } from '@utils/locale.js';
+import Admin from "@components/layouts/Admin.js";
 
 export default function ReportPage() {
 

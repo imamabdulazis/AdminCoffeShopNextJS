@@ -1,5 +1,5 @@
-import formatRupiah from "../../../utils/formater";
-import { PushNotification } from "../../../utils/notification";
+import formatRupiah from "@utils/formater";
+import { PushNotification } from "@utils/notification";
 
 export default async (req, res) => {
 
