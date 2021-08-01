@@ -49,12 +49,12 @@ export default function ReportPage() {
     const getReport = () => {
         setloading(true);
         fetch('/api/v1/report', {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-            }).then(res => res.json())
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+        }).then(res => res.json())
             .then((res) => {
                 if (res.status == 200) {
                     const data = res.data;
@@ -75,9 +75,9 @@ export default function ReportPage() {
     }
 
 
-    return ( <
-        >
-        <div className="flex flex-wrap mt-12">
+    return (
+        <>
+            <div className="flex flex-wrap mt-12">
                 <div className="w-full mb-12 px-4">
                     <MaterialTable
                         title="Report"
@@ -86,16 +86,16 @@ export default function ReportPage() {
                         data={reportState}
                         localization={locale}
                         options={{
-                          // ..other options
-                          exportButton: {
-                            csv: false,
-                            pdf: true
-                          }
-                       }}
+                            // ..other options
+                            exportButton: {
+                                csv: false,
+                                pdf: true
+                            }
+                        }}
                     />
                 </div>
-            </div> <
-        />
+            </div>
+        </>
     )
 }
 

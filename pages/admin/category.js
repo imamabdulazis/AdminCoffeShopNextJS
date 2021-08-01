@@ -25,12 +25,12 @@ export default function CategoryPage({ color = 'light' }) {
     const getCategory = () => {
         setloading(true);
         fetch('/api/v1/category', {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-            }).then(res => res.json())
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+        }).then(res => res.json())
             .then((res) => {
                 if (res.status == 200) {
                     const data = res.data;
@@ -54,12 +54,12 @@ export default function CategoryPage({ color = 'light' }) {
     const deleteCategory = (id) => {
         setloading(true);
         fetch(`/api/v1/category/${id}`, {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-            }).then((res) => res.json())
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+        }).then((res) => res.json())
             .then((res) => {
                 console.log(res)
                 if (res.status == 200) {
@@ -80,16 +80,16 @@ export default function CategoryPage({ color = 'light' }) {
     const updateCategory = (name, description, id) => {
         setloading(true);
         fetch(`/api/v1/category/${id}`, {
-                method: "PUT",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-                body: JSON.stringify({
-                    name: name,
-                    description: description
-                })
-            }).then((res) => res.json())
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+                name: name,
+                description: description
+            })
+        }).then((res) => res.json())
             .then((res) => {
                 if (res.status == 200) {
                     getCategory()
@@ -109,16 +109,16 @@ export default function CategoryPage({ color = 'light' }) {
     const addCategory = (name, description) => {
         setloading(true);
         fetch('/api/v1/category', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-                body: JSON.stringify({
-                    name: name,
-                    description: description
-                })
-            }).then((res) => res.json())
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+                name: name,
+                description: description
+            })
+        }).then((res) => res.json())
             .then((res) => {
                 if (res.status == 200) {
                     getCategory();
@@ -150,44 +150,42 @@ export default function CategoryPage({ color = 'light' }) {
         },
     ]);
 
-    return ( <
-        >
+    return (
         <div className="flex flex-wrap mt-12">
-                <div className="w-full mb-12 px-4">
-                    <MaterialTable
-                        title="KATEGORI"
-                        columns={columns}
-                        data={categoryState}
-                        localization={locale}
-                        isLoading={loading}
-                        editable={{
-                            onRowAdd: newData =>
-                                new Promise((resolve, reject) => {
-                                    addCategory(newData.name, newData.description)
-                                    setTimeout(() => {
-                                        resolve();
-                                    }, 1000)
-                                }),
-                            onRowUpdate: (newData, oldData) =>
-                                new Promise((resolve, reject) => {
-                                    updateCategory(newData.name, newData.description, oldData.id);
-                                    setTimeout(() => {
+            <div className="w-full mb-12 px-4">
+                <MaterialTable
+                    title="KATEGORI"
+                    columns={columns}
+                    data={categoryState}
+                    localization={locale}
+                    isLoading={loading}
+                    editable={{
+                        onRowAdd: newData =>
+                            new Promise((resolve, reject) => {
+                                addCategory(newData.name, newData.description)
+                                setTimeout(() => {
+                                    resolve();
+                                }, 1000)
+                            }),
+                        onRowUpdate: (newData, oldData) =>
+                            new Promise((resolve, reject) => {
+                                updateCategory(newData.name, newData.description, oldData.id);
+                                setTimeout(() => {
 
-                                        resolve();
-                                    }, 1000)
-                                }),
-                            onRowDelete: (rawData, oldData) =>
-                                new Promise((resolve, reject) => {
-                                    deleteCategory(rawData.id);
-                                    setTimeout(() => {
-                                        resolve();
-                                    }, 1000)
-                                }),
-                        }}
-                    />
-                </div>
-            </div> <
-        />
+                                    resolve();
+                                }, 1000)
+                            }),
+                        onRowDelete: (rawData, oldData) =>
+                            new Promise((resolve, reject) => {
+                                deleteCategory(rawData.id);
+                                setTimeout(() => {
+                                    resolve();
+                                }, 1000)
+                            }),
+                    }}
+                />
+            </div>
+        </div>
     )
 }
 

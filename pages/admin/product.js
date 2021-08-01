@@ -338,7 +338,7 @@ export default function ProuctPage({ color = 'light' }) {
                         isLoading={loading}
                         actions={[
                             {
-                                icon: 'queue',
+                                icon: 'add_a_photo',
                                 tooltip: 'Upload Foto',
                                 onClick: (event, rowData) => {
                                     setPickImage(true);

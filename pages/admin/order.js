@@ -28,12 +28,12 @@ export default function OrderPage({ color = 'light' }) {
     const getOrder = () => {
         setloading(true);
         fetch('/api/v1/orders', {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-            }).then(res => res.json())
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+        }).then(res => res.json())
             .then((res) => {
                 console.info(`RESPONSE ORDER :$res`);
                 if (res.status == 200) {
@@ -60,12 +60,12 @@ export default function OrderPage({ color = 'light' }) {
     const deleteOrder = (id) => {
         setloading(true);
         fetch(`/api/v1/orders/${id}`, {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-            }).then(res => res.json())
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+        }).then(res => res.json())
             .then((res) => {
 
                 if (res.status == 200) {
@@ -89,15 +89,15 @@ export default function OrderPage({ color = 'light' }) {
     const updateOrder = () => {
         setloading(true);
         fetch(`/api/v1/orders/status/${orderId}`, {
-                method: "PUT",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-                body: JSON.stringify({
-                    order_status: orderStatus == 1 ? "Active" : "Selesai",
-                })
-            }).then(res => res.json())
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+                order_status: orderStatus == 1 ? "Active" : "Selesai",
+            })
+        }).then(res => res.json())
             .then((res) => {
                 if (res.status == 200) {
                     getOrder();
@@ -128,10 +128,10 @@ export default function OrderPage({ color = 'light' }) {
             editable: 'never',
             field: 'category',
             render: rowData => (
-                <select style={{border:0, outline:0}} value={orderStatus != null ? orderStatus : rowData.order_status=="Active"?1:2} onChange={(e) => changeOrderStatus(e, rowData)}>
-                           <option value={1}>Active</option>
-                           <option value={2}>Selesai</option>
-                        </select>
+                <select style={{ border: 0, outline: 0 }} value={orderStatus != null ? orderStatus : rowData.order_status == "Active" ? 1 : 2} onChange={(e) => changeOrderStatus(e, rowData)}>
+                    <option value={1}>Active</option>
+                    <option value={2}>Selesai</option>
+                </select>
             )
         },
         { title: 'STATUS PEMBAYARAN', field: 'payment_status', editable: 'never' },
@@ -169,36 +169,34 @@ export default function OrderPage({ color = 'light' }) {
         setOrderId(rowData.id);
     }
 
-    return ( <
-        >
+    return (
         <div className="flex flex-wrap mt-12">
-                <div className="w-full mb-12 px-4">
-                    <MaterialTable
-                        title="Pemesanan"
-                        columns={columns}
-                        data={orderState}
-                        localization={locale}
-                        isLoading={loading}
-                        options={{
-                          // ..other options
-                          exportButton: {
+            <div className="w-full mb-12 px-4">
+                <MaterialTable
+                    title="Pemesanan"
+                    columns={columns}
+                    data={orderState}
+                    localization={locale}
+                    isLoading={loading}
+                    options={{
+                        // ..other options
+                        exportButton: {
                             csv: false,
                             pdf: true
-                          }
-                        }}
-                        editable={{
-                            onRowDelete: (rawData, oldData) =>
-                                new Promise((resolve, reject) => {
-                                    deleteOrder(rawData.id);
-                                    setTimeout(() => {
-                                        resolve();
-                                    }, 1000)
-                                }),
-                        }}
-                    />
-                </div>
-            </div> <
-        />
+                        }
+                    }}
+                    editable={{
+                        onRowDelete: (rawData, oldData) =>
+                            new Promise((resolve, reject) => {
+                                deleteOrder(rawData.id);
+                                setTimeout(() => {
+                                    resolve();
+                                }, 1000)
+                            }),
+                    }}
+                />
+            </div>
+        </div>
     )
 }
 

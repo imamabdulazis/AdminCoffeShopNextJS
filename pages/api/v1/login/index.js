@@ -7,7 +7,6 @@ import prisma from '@utils/prisma';
 const bcrypt = require('bcryptjs');
 
 
-
 const validateBody = initMiddleware(
     validateMiddleware([
         check('username').isLength({ min: 3, max: 40 }),

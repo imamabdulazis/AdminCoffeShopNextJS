@@ -14,3 +14,12 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+.c-card img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.c-card:hover img {
+  transform: scale(1.05);
+}

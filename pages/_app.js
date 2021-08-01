@@ -1,9 +1,11 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import '@styles/globals.css'
-import "@styles/tailwind.css";
+// import "@styles/tailwind.css";
+import '@styles/Home.module.css'
+import '@styles/index.css'
+import 'tailwindcss/tailwind.css'
 import App from "next/app";
 import React from "react";
-import ReactDOM from "react-dom";
 import Head from "next/head";
 import Router from "next/router";
 import { ToastContainer } from 'react-toastify';
@@ -91,6 +93,7 @@ export default class MyApp extends App {
               rel="stylesheet"
               href="https://fonts.googleapis.com/icon?family=Material+Icons"
             />
+            <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
           </Head>
           <Layout>
             <Component {...pageProps} />

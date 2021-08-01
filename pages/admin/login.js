@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
-// layout for page
-
-
 import Auth from "@components/layouts/Auth.js";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
@@ -39,9 +35,17 @@ export default function Login() {
                 if (res.previlage === 'admin') {
                     window.localStorage.setItem('token', res.token)
                     window.localStorage.setItem('user_id', res.user_id)
+                    window.localStorage.setItem('@previlage', res.previlage)
                     router.replace('/admin/dashboard')
                     toast.success('Berhasil login')
-                } else {
+                } else if (res.previlage == 'kasir') {
+                    window.localStorage.setItem('token', res.token)
+                    window.localStorage.setItem('user_id', res.user_id)
+                    window.localStorage.setItem('@previlage', res.previlage)
+                    router.replace('/admin/kasir')
+                    toast.success('Berhasil login')
+                }
+                else {
                     toast.warning('Anda tidak memiliki akses untuk masuk\n silahkan menggunakan aplikasi mobile')
                 }
             } else if (res.status == 422) {
@@ -81,9 +85,9 @@ export default function Login() {
                                 <hr className="mt-6 border-b-1 border-blueGray-300" />
                             </div>
                             <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                                <div className="text-blueGray-400 text-center mb-3 font-bold">
+                                {/* <div className="text-blueGray-400 text-center mb-3 font-bold">
                                     <small>Di mohon untuk tidak membagikan username dan password kepada orang lain!</small>
-                                </div>
+                                </div> */}
                                 <form>
                                     <div className="relative w-full mb-3">
                                         <label
@@ -117,8 +121,8 @@ export default function Login() {
                                     <div className="text-center mt-6">
                                         <button
                                             onClick={onLogin}
-                                            className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                                            type="button"
+                                            className="bg-blue-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                                            type="submit"
                                         >
                                             Login
                                         </button>

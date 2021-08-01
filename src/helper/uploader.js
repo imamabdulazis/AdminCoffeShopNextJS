@@ -5,13 +5,13 @@
 
 // const { format } = require('util');
 const { Storage } = require('@google-cloud/storage');
-const config = require('../utils/firebase');
+const config = require('@utils/firebase');
 const { v4: uuid } = require('uuid');
 
 
 const storage = new Storage({
     projectId: config.projectId,
-    keyFilename: "./pages/api@helper/service_account.json"
+    keyFilename: "./src/helper/service_account.json"
 });
 
 const bucket = storage.bucket(config.storageBucket);

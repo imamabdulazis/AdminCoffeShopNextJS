@@ -24,6 +24,7 @@ const UserDropdown = () => {
 
   const onLogout = (e) => {
     window.localStorage.removeItem('token')
+    window.localStorage.removeItem('@previlage')
     router.replace('/')
   }
 

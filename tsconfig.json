@@ -6,6 +6,8 @@
       "@utils/*":["src/utils/*"],
       "@helper/*":["src/helper/*"],
       "@styles/*":["styles/*"],
+      "@context/*":["src/context/*"],
+      "@hooks/*":["src/hooks/*"],
     },
     "target": "es5",  
     "lib": [

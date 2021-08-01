@@ -74,7 +74,8 @@ export default async (req, res) => {
                             message: "Terjadi kesalahan"
                         })
                     }
-                    const postsDirectory = path.join(process.cwd(), '/pages/api@helper/email.html')
+                    
+                    const postsDirectory = path.join(process.cwd(), '/src/helper/email.html')
 
                     return readHTMLFile(postsDirectory, function(err, html) {
                         var template = handlebars.compile(html);
@@ -105,6 +106,7 @@ export default async (req, res) => {
                         });
                     });
                 } catch (e) {
+                    console.info(e);
                     res.status(500).json({
                         status: 500,
                         message: e

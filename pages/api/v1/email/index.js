@@ -10,7 +10,7 @@ export default async (req, res) => {
     switch (method) {
         case "POST":
             if (req.body.email) {
-                const postsDirectory = path.join(process.cwd(), '/pages/api@helper/email.html')
+                const postsDirectory = path.join(process.cwd(), '/src/helper/email.html')
                 return readHTMLFile(postsDirectory, function (err, html) {
                     var template = handlebars.compile(html);
                     var replacements = {
