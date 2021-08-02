@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 import NotificationDropdown from "../../elements/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "../../elements/Dropdowns/UserDropdown.js";
 
