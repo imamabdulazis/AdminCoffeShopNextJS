@@ -39,7 +39,6 @@ const uploadImageToStorage = (file) => {
         });
 
         blobStream.on('finish', (response) => {
-            //untuk google cloude
             // const url = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
             const url = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${fileUpload.name}?alt=media&token=${generatedToken}`;
             resolve(url);
