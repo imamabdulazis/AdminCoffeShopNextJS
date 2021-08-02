@@ -15,7 +15,7 @@ export default function Navbar() {
             onClick={(e) => e.preventDefault()}
           >
           </a>
-          {/* User */}
+          {/* User components yeah*/}
           <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
             <UserDropdown />
           </ul>

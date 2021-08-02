@@ -17,10 +17,6 @@ export default function SidebarKasir() {
 
   const { stateDialog, dispatchDialog } = useContext(ToggleDialogContext);
 
-  // useEffect(() => {
-  //   alert(stateDialog)
-  // }, [state]);
-
   return (
     <>
       <AddCartContext.Consumer>
