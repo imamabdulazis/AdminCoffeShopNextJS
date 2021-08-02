@@ -12,7 +12,11 @@ export default function NotificationPage({ color = 'light' }) {
     const [notificationState, setNotificationState] = useState([])
 
     useEffect(() => {
-        getNotification()
+        if (window.localStorage.getItem("@previlage") === 'kasir') {
+            router.replace('/admin/kasir')
+        } else {
+            getNotification()
+        }
     }, []);
 
     const unAutorize = () => {
@@ -22,12 +26,12 @@ export default function NotificationPage({ color = 'light' }) {
     // get Notification
     const getNotification = () => {
         fetch('/api/v1/notification', {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-            }).then(res => res.json())
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+        }).then(res => res.json())
             .then((res) => {
 
                 if (res.status == 200) {
@@ -46,12 +50,12 @@ export default function NotificationPage({ color = 'light' }) {
     // get Notification
     const deleteNotification = (id) => {
         fetch(`/api/v1/notification/${id}`, {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
-                },
-            }).then(res => res.json())
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+            },
+        }).then(res => res.json())
             .then((res) => {
 
                 if (res.status == 200) {
@@ -83,28 +87,26 @@ export default function NotificationPage({ color = 'light' }) {
     ]);
 
 
-    return ( <
-        >
+    return (
         <div className="flex flex-wrap mt-12">
-                <div className="w-full mb-12 px-4">
-                    <MaterialTable
-                        title="NOTIFIKASI"
-                        columns={columns}
-                        data={notificationState}
-                        localization={locale}
-                        editable={{
-                            onRowDelete: (rawData, oldData) =>
-                                new Promise((resolve, reject) => {
-                                    deleteNotification(rawData.id);
-                                    setTimeout(() => {
-                                        resolve();
-                                    }, 1000)
-                                }),
-                        }}
-                    />
-                </div>
-            </div> <
-        />
+            <div className="w-full mb-12 px-4">
+                <MaterialTable
+                    title="NOTIFIKASI"
+                    columns={columns}
+                    data={notificationState}
+                    localization={locale}
+                    editable={{
+                        onRowDelete: (rawData, oldData) =>
+                            new Promise((resolve, reject) => {
+                                deleteNotification(rawData.id);
+                                setTimeout(() => {
+                                    resolve();
+                                }, 1000)
+                            }),
+                    }}
+                />
+            </div>
+        </div>
     )
 }
 

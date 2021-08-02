@@ -23,8 +23,9 @@ const UserDropdown = () => {
   };
 
   const onLogout = (e) => {
-    window.localStorage.removeItem('token')
-    window.localStorage.removeItem('@previlage')
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('@previlage');
+    window.localStorage.removeItem('user_id');
     router.replace('/')
   }
 
@@ -63,7 +64,7 @@ const UserDropdown = () => {
     <>
       <a
         className="text-blueGray-500 block"
-        href="#pablo"
+        href="#"
         ref={btnDropdownRef}
         onClick={(e) => {
           e.preventDefault();
@@ -102,7 +103,7 @@ const UserDropdown = () => {
         {userState!=null?userState.email:"Email"}
         </p>
         <a
-          href="#pablo"
+          href="#"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }

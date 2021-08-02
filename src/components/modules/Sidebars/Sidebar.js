@@ -24,7 +24,7 @@ export default function Sidebar() {
           {/* Brand */}
           <Link href="/">
             <a
-              href="#pablo"
+              href="#"
               className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
             >
               Admin Copsychus Coffe
@@ -52,7 +52,7 @@ export default function Sidebar() {
                 <div className="w-6/12">
                   <Link href="/">
                     <a
-                      href="#pablo"
+                      href="#"
                       className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
                     >Admin Copsychus
                     </a>
@@ -82,7 +82,7 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link href="/admin/dashboard">
                   <a
-                    href="#pablo"
+                    href="#"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/dashboard") !== -1
@@ -106,7 +106,7 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link href="/admin/order">
                   <a
-                    href="#pablo"
+                    href="#"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/order") !== -1
@@ -129,7 +129,7 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link href="/admin/product">
                   <a
-                    href="#pablo"
+                    href="#"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/product") !== -1
@@ -153,7 +153,7 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link href="/admin/category">
                   <a
-                    href="#pablo"
+                    href="#"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/category") !== -1
@@ -178,7 +178,7 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link href="/admin/user">
                   <a
-                    href="#pablo"
+                    href="#"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/user") !== -1
@@ -202,7 +202,7 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link href="/admin/payment">
                   <a
-                    href="#pablo"
+                    href="#"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/payment") !== -1
@@ -226,7 +226,7 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link href="/admin/device">
                   <a
-                    href="#pablo"
+                    href="#"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/device") !== -1
@@ -250,7 +250,7 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link href="/admin/report">
                   <a
-                    href="#pablo"
+                    href="#"
                     className={
                       "text-xs uppercase py-3 font-bold block " +
                       (router.pathname.indexOf("/admin/report") !== -1

@@ -14,7 +14,11 @@ export default function CategoryPage({ color = 'light' }) {
     const [loading, setloading] = useState(false)
 
     useEffect(() => {
-        getCategory()
+        if (window.localStorage.getItem("@previlage") === 'kasir') {
+            router.replace('/admin/kasir')
+        } else {
+            getCategory()
+        }
     }, []);
 
     const unAutorize = () => {

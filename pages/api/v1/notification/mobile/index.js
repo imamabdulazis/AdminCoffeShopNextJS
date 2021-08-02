@@ -1,5 +1,5 @@
-import formatRupiah from "@utils/formater";
 import { PushNotification } from "@utils/notification";
+import formatCurrency from "../../../../../src/utils/formater";
 
 export default async (req, res) => {
 
@@ -10,7 +10,7 @@ export default async (req, res) => {
     switch (method) {
         case "POST":
             try {
-                PushNotification(req.body.fcm, `Rp. ${formatRupiah(req.body.title)}`, req.body.body).then(res => {
+                PushNotification(req.body.fcm, `Rp. ${formatCurrency(req.body.title)}`, req.body.body).then(res => {
                     return res.status(200).json({
                         status: 200,
                         message: "ok",

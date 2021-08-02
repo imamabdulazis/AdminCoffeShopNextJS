@@ -38,7 +38,11 @@ export default function ReportPage() {
 
 
     useEffect(() => {
-        getReport();
+        if (window.localStorage.getItem("@previlage") === 'kasir') {
+            router.replace('/admin/kasir')
+        } else {
+            getReport();
+        }
     }, []);
 
     const unAutorize = () => {

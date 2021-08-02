@@ -28,8 +28,12 @@ export default function ProuctPage({ color = 'light' }) {
     const [fileFoto, setFileFoto] = useState("");
 
     useEffect(() => {
-        getProduct()
-        getCategory()
+        if (window.localStorage.getItem("@previlage") === 'kasir') {
+            router.replace('/admin/kasir')
+        } else {
+            getProduct()
+            getCategory()
+        }
     }, []);
 
     const unAutorize = () => {

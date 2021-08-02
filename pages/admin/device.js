@@ -14,7 +14,11 @@ export default function DevicePage({ color = 'light' }) {
     const [loading, setloading] = useState(false)
 
     useEffect(() => {
-        getDevice()
+        if (window.localStorage.getItem("@previlage") === 'kasir') {
+            router.replace('/admin/kasir')
+        } else {
+            getDevice()
+        }
     }, []);
 
     const unAutorize = () => {
