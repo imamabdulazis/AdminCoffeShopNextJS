@@ -35,7 +35,7 @@ const AddCartProvider = ({ children }) => {
     const value = { state, dispatch };
 
     return (
-        <AddCartContext.Provider value={{ state, dispatch }}>
+        <AddCartContext.Provider value={value}>
             {children}
         </AddCartContext.Provider>
     )
