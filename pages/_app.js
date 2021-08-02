@@ -22,6 +22,7 @@ Router.events.on('routeChangeComplete', () => Nprogress.done());
 Router.events.on('routeChangeError', () => Nprogress.done());
 
 import PageChange from "@components/modules/PageChanges/PageChange.js";
+import { AddCartProvider } from "../src/context/addCartContext";
 
 // Router.events.on("routeChangeStart", (url) => {
 //   console.log(`Loading: ${url}`);
