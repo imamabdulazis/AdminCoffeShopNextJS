@@ -19,8 +19,6 @@ function toggleReducer(state = initialState, action) {
     }
 }
 
-
-
 const ToggleDialogProvider = ({ children }) => {
     const { stateDialog, dispatchDialog } = useReducer(toggleReducer, initialState);
 
@@ -32,5 +30,4 @@ const ToggleDialogProvider = ({ children }) => {
         </ToggleDialogContext.Provider>
     )
 }
-
 export { ToggleDialogContext, ToggleDialogProvider }
