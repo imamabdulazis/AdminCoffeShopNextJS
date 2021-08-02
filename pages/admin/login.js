@@ -38,7 +38,7 @@ export default function Login() {
                     window.localStorage.setItem('@previlage', res.previlage)
                     router.replace('/admin/dashboard')
                     toast.success('Berhasil login')
-                } else if (res.previlage == 'kasir') {
+                } else if (res.previlage === 'kasir') {
                     window.localStorage.setItem('token', res.token)
                     window.localStorage.setItem('user_id', res.user_id)
                     window.localStorage.setItem('@previlage', res.previlage)

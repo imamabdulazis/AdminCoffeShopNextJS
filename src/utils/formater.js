@@ -14,4 +14,4 @@ function formatCurrency(number, prefix) {
 	return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
 }
 
-export default formatRupiah;
+export default formatCurrency;

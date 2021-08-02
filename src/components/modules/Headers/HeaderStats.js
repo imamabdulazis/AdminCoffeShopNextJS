@@ -168,8 +168,8 @@ export default function HeaderStats() {
                   statPercent="12"
                   statPercentColor="text-emerald-500"
                   statDescripiron="Since last month"
-                  statIconName="fas fa-mobile-alt"
-                  statIconColor="bg-lightBlue-500"
+                  statIconName="fas fa-tools"
+                  statIconColor="bg-blue-500"
                 />
               </div>
             </div>

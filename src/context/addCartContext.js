@@ -20,7 +20,7 @@ function cartReducer(state = initialState, action) {
         }
         case "DELETE_CART": {
             return {
-                ...initial
+                ...initialState
             }
         }
         default:

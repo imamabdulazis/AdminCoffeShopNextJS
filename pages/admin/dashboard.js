@@ -20,9 +20,11 @@ export default function Dashboard() {
     }, []);
 
     useEffect(() => {
-
-        getOrder();
-
+        if (window.localStorage.getItem("@previlage") === 'kasir') {
+            router.replace('/admin/kasir')
+        } else {
+            getOrder();
+        }
     }, []);
 
     const unAutorize = () => {
@@ -130,7 +132,6 @@ export default function Dashboard() {
             editable: 'never'
         },
     ]);
-
 
     useEffect(() => {
         if (orderStatus != null) {

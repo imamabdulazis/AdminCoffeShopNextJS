@@ -17,7 +17,11 @@ export default function OrderPage({ color = 'light' }) {
     const [loading, setloading] = useState(false)
 
     useEffect(() => {
-        getOrder()
+        if (window.localStorage.getItem("@previlage") === 'kasir') {
+            router.replace('/admin/kasir')
+        } else {
+            getOrder()
+        }
     }, []);
 
     const unAutorize = () => {

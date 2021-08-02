@@ -53,7 +53,11 @@ export default function UserPage({ color = 'light' }) {
     ]);
 
     useEffect(() => {
-        getUser()
+        if (window.localStorage.getItem("@previlage") === 'kasir') {
+            router.replace('/admin/kasir')
+        } else {
+            getUser()
+        }
     }, []);
 
 
