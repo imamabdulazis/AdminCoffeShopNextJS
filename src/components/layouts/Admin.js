@@ -5,7 +5,6 @@ import HeaderStats from "../modules/Headers/HeaderStats.js";
 import SidebarKasir from "../modules/Sidebars/SidebarKasir.js";
 import { AddCartProvider } from "../../context/addCartContext.js";
 import { ToggleDialogProvider } from "../../context/toggleDialogContext.js";
-// import FooterAdmin from "../modules/Footers/FooterAdmin.js";
 
 export default function Admin({ children }) {
 

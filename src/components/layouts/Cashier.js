@@ -1,7 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CashierNavbar from "@components/modules/Navbars/CashierNavbar";
-import Sidebar from "@components/modules/Sidebars/Sidebar";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "@components/modules/Headers/Header";
 import CashierSidebar from "../modules/Sidebars/CashierSidebar";
