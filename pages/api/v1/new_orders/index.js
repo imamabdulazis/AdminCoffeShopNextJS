@@ -63,18 +63,17 @@ export default async (req, res) => {
             })),
             skipDuplicates: true,
           });
+          const report = await prisma.report.create({
+            data: {
+              id: uuid(),
+              order_id: orders.id,
+              date_report: new Date(),
+              created_at: new Date(),
+              updated_at: new Date(),
+            },
+          });
 
           if (addOrderItems) {
-            const report = await prisma.report.create({
-              data: {
-                id: uuid(),
-                order_id: orders.id,
-                date_report: new Date(),
-                created_at: new Date(),
-                updated_at: new Date(),
-              },
-            });
-
             const updateDinks = req.body.drinks.map(async (drink) => {
               const curDrink = await prisma.drink.findUnique({
                 where: {
