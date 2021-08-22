@@ -22,7 +22,9 @@ export default function Kasir() {
   const [loading, setloading] = useState(false);
 
   const [temDrink, settemDrink] = useState([]);
-  const [total, settotal] = useState(0);
+  // const [total, settotal] = useState(0);
+
+  var temTotal = 0;
 
   useEffect(() => {
     if (window.localStorage.getItem("token")) {
@@ -41,13 +43,12 @@ export default function Kasir() {
   const AddCart = (el) => {
     // upsert(temDrink, { id: el.id, quantity: 1 });
     var objIndex = temDrink.findIndex((e) => e.id == el.id);
-    var temTotal = total;
     console.info(objIndex);
 
     if (objIndex == -1) {
       temTotal += el.price;
       settotal(parseInt(temTotal));
-      console.log(`IMUNNN :${temTotal}`);
+      console.log(`NEW TOTAL :${temTotal}`);
       temDrink.push({
         id: el.id,
         image_url: el.image_url,
@@ -58,11 +59,10 @@ export default function Kasir() {
       });
     } else {
       temDrink[objIndex].quantity += 1;
-      temTotal = temDrink[objIndex].price * temDrink[objIndex].quantity;
-      settotal(temTotal);
-      console.log(total);
+      temTotal += temDrink[objIndex].price;
+      settotal(parseInt(temTotal));
+      console.log(`UPDATE TOTAL :${temTotal}`);
     }
-    // console.info(temDrink);
 
     dispatch({
       type: "ADD_CART",
