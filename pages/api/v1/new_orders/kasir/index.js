@@ -22,7 +22,7 @@ export default async (req, res) => {
         const orders = await prisma.orders.create({
           data: {
             id: uuid(),
-            no_transaction: `${moment(Date.now()).format("HHmmMMMSS")}`,
+            no_transaction: `${moment(Date.now()).format("HHmmMMSS")}`,
             user_id: req.body.user_id,
             payment_method_id: req.body.payment_method_id,
             payment_status: "Waiting",
