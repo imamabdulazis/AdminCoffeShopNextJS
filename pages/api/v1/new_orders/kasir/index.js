@@ -3,13 +3,11 @@ import initMiddleware from "@helper/middleware";
 import validateMiddleware from "@helper/validate-middleware";
 import { check, validationResult } from "express-validator";
 import authenticateToken from "@helper/autenticate_jwt";
-import { PrismaClient } from "@prisma/client";
 import moment from "moment";
-// import prisma from "@utils/prisma";
+import prisma from "@utils/prisma";
 
 export default async (req, res) => {
   const { method } = req;
-  const prisma = new PrismaClient();
 
   switch (method) {
     case "POST":
@@ -47,6 +45,16 @@ export default async (req, res) => {
           skipDuplicates: true,
         });
 
+        const report = await prisma.report.create({
+          data: {
+            id: uuid(),
+            order_id: orders.id,
+            date_report: new Date(),
+            created_at: new Date(),
+            updated_at: new Date(),
+          },
+        });
+
         if (addOrderItems) {
           const updateDinks = req.body.drinks.map(async (drink) => {
             const curDrink = await prisma.drink.findUnique({
@@ -65,15 +73,6 @@ export default async (req, res) => {
                     : curDrink.stock - drink.quantity,
               },
             });
-          });
-          const report = await prisma.report.create({
-            data: {
-              id: uuid(),
-              order_id: orders.id,
-              date_report: new Date(),
-              created_at: new Date(),
-              updated_at: new Date(),
-            },
           });
 
           ///berhasil orders

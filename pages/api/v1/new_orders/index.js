@@ -64,6 +64,16 @@ export default async (req, res) => {
             skipDuplicates: true,
           });
 
+          const report = await prisma.report.create({
+            data: {
+              id: uuid(),
+              order_id: orders.id,
+              date_report: new Date(),
+              created_at: new Date(),
+              updated_at: new Date(),
+            },
+          });
+
           if (addOrderItems) {
             const updateDinks = req.body.drinks.map(async (drink) => {
               const curDrink = await prisma.drink.findUnique({
@@ -84,15 +94,7 @@ export default async (req, res) => {
               });
             });
 
-            const report = await prisma.report.create({
-              data: {
-                id: uuid(),
-                order_id: orders.id,
-                date_report: new Date(),
-                created_at: new Date(),
-                updated_at: new Date(),
-              },
-            });
+            
 
             const deleteCartItems = await prisma.cart_items.deleteMany({
               where: {
@@ -100,7 +102,7 @@ export default async (req, res) => {
               },
             });
             ///berhasil orders
-            if (updateDinks && deleteCartItems && report)
+            if (updateDinks && deleteCartItems)
               return res.status(200).json({
                 status: 200,
                 message: "Berhasil membuat pesanan",
