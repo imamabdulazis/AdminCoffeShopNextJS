@@ -7,17 +7,16 @@
 const { Storage } = require("@google-cloud/storage");
 const config = require("@utils/firebase");
 const { v4: uuid } = require("uuid");
-import fileJson from "./service_account.json";
+
+const storage = new Storage({
+  projectId: config.projectId,
+  keyFilename: "./src/helper/service_account.json",
+});
+
+const bucket = storage.bucket(config.storageBucket);
 
 const uploadImageToStorage = (file) => {
-
-  const storage = new Storage({
-    projectId: config.projectId,
-    keyFilename: "./src/helper/service_account.json",
-  });
-
-  const bucket = storage.bucket(config.storageBucket);
-
+    
   return new Promise((resolve, reject) => {
     let generatedToken = uuid();
     if (!file) {
