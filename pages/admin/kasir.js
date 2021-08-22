@@ -13,6 +13,9 @@ function upsert(array, item) {
   else array.push(item);
 }
 
+var temTotal = 0;
+var curdrink = "";
+
 export default function Kasir() {
   const router = useRouter();
 
@@ -22,9 +25,6 @@ export default function Kasir() {
   const [loading, setloading] = useState(false);
 
   const [temDrink, settemDrink] = useState([]);
-  // const [total, settotal] = useState(0);
-
-  var temTotal = 0;
 
   useEffect(() => {
     if (window.localStorage.getItem("token")) {
@@ -41,14 +41,16 @@ export default function Kasir() {
   }, []);
 
   const AddCart = (el) => {
+    curdrink = el.id;
     // upsert(temDrink, { id: el.id, quantity: 1 });
     var objIndex = temDrink.findIndex((e) => e.id == el.id);
     console.info(objIndex);
 
+    console.info(`CURRENT TOTAL ${temTotal}`);
+
     if (objIndex == -1) {
-      temTotal += el.price;
-      settotal(parseInt(temTotal));
-      console.log(`NEW TOTAL :${temTotal}`);
+      temTotal = temTotal + parseInt(el.price);
+      console.info(`NEW TOTAL :${parseInt(temTotal)}`);
       temDrink.push({
         id: el.id,
         image_url: el.image_url,
@@ -59,16 +61,26 @@ export default function Kasir() {
       });
     } else {
       temDrink[objIndex].quantity += 1;
-      temTotal += temDrink[objIndex].price;
-      settotal(parseInt(temTotal));
-      console.log(`UPDATE TOTAL :${temTotal}`);
+      if (el.id == temDrink[objIndex].id) {
+        temTotal = temDrink[objIndex].price * temDrink[objIndex].quantity;
+      } else {
+        temTotal += temDrink[objIndex].price * temDrink[objIndex].quantity;
+      }
+      console.info(
+        `UPDATE TOTAL :${parseInt(
+          temDrink[objIndex].price * temDrink[objIndex].quantity
+        )}`
+      );
     }
+
+    console.info(`---->SEMUA TOTAL $${temTotal}`);
 
     dispatch({
       type: "ADD_CART",
       drinks: temDrink,
       user: window.localStorage.getItem("user_id"),
-      payment: "asdfsdfdsf",
+      payment: "060443dc-dea4-464d-aea2-2bb2206d44c7",
+      total: temTotal,
     });
   };
 

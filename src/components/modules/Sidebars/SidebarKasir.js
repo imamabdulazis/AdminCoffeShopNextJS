@@ -31,7 +31,13 @@ export default function SidebarKasir() {
 
   const [visible, setvisible] = useState(false);
 
+  const [sumary, setSumary] = useState(false);
+
   const [isAdmin, setIsAdmin] = useState(false);
+
+  const [drinks, setdrinks] = useState();
+
+  const [total, settotal] = useState();
 
   useEffect(() => {
     setIsAdmin(
@@ -47,53 +53,49 @@ export default function SidebarKasir() {
     }
   }, [isAdmin]);
 
-  const addOrder = () => {
+  const addOrder = (state) => {
     setloading(true);
     const body = {
-      // user_id: window.localStorage.getItem("user_id"), //kasir
-      // drink_id: state?.drinks[0].id,
-      // payment_method_id: paymentMethod,
-      // payment_status: "Berhasil",
-      // quantity: totalOrder,
-      // total: parseInt(state?.drinks[0].price),
-      // order_status: "Selesai",
+      user_id: window.localStorage.getItem("user_id"),
+      drinks: drinks,
+      payment_method_id: "060443dc-dea4-464d-aea2-2bb2206d44c7",
+      total: total,
     };
-    // alert(JSON.stringify(body));
 
-    fetch("/api/v1/new_orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + window.localStorage.getItem("token"),
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.info(`RESPONSE :${res.data}`);
-        if (res.status == 200) {
-          const data = res.data;
-          window.location.reload();
-          setloading(false);
-          setvisible(false);
-          window.location.reload();
-          toast.success("Pesanan berhasil");
-        } else if (res.status == 401) {
-          unAutorize();
-          setloading(false);
-          window.location.reload();
-        } else {
-          toast.warning(res.message);
-          setloading(false);
-          window.location.reload();
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-        toast.error("Internal Server Error");
-        setloading(false);
-        window.location.reload();
-      });
+    //   fetch("/api/v1/new_orders", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer " + window.localStorage.getItem("token"),
+    //     },
+    //     body: JSON.stringify(body),
+    //   })
+    //     .then((res) => res.json())
+    //     .then((res) => {
+    //       console.info(`RESPONSE :${res.data}`);
+    //       if (res.status == 200) {
+    //         const data = res.data;
+    //         window.location.reload();
+    //         setloading(false);
+    //         setvisible(false);
+    //         window.location.reload();
+    //         toast.success("Pesanan berhasil");
+    //       } else if (res.status == 401) {
+    //         unAutorize();
+    //         setloading(false);
+    //         window.location.reload();
+    //       } else {
+    //         toast.warning(res.message);
+    //         setloading(false);
+    //         window.location.reload();
+    //       }
+    //     })
+    //     .catch((e) => {
+    //       console.log(e);
+    //       toast.error("Internal Server Error");
+    //       setloading(false);
+    //       window.location.reload();
+    //     });
   };
 
   const getPayment = () => {
@@ -123,6 +125,10 @@ export default function SidebarKasir() {
       alert("Mohon pilih produk");
     } else {
       setvisible(true);
+      setdrinks(state?.drinks);
+      settotal(state?.total);
+      console.info(drinks);
+      console.info(total);
     }
   };
 
@@ -242,6 +248,74 @@ export default function SidebarKasir() {
                 </button>
               </div>
             </nav>
+            <Dialog
+              open={visible}
+              fullWidth
+              maxWidth="sm"
+              onClose={() => setvisible(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle
+                id="alert-dialog-title"
+                className="bg-blue-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+              >
+                Detail pesanan
+              </DialogTitle>
+              <DialogContent className="w-full">
+                <DialogContentText id="alert-dialog-description">
+                  <div style={{ display: "flex", justifyContent: "start" }}>
+                    <h3 style={{ width: 100 }}>JUMLAH</h3>
+                    <h3 style={{ width: 15 }}>:</h3>
+                    <h1>1</h1>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "start" }}>
+                    <h3 style={{ width: 100 }}>TOTAL</h3>
+                    <h3 style={{ width: 15 }}>:</h3>
+                    <h1 style={{ color: "green" }}>{state?.total}</h1>
+                  </div>
+                  {state?.drinks.map((el) => (
+                    <div className="w-full lg:w-1/1 p-1">
+                      <div className="flex flex-col lg:flex-row rounded overflow-hidden h-auto lg:h-32 border shadow shadow-lg">
+                        <div className="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                          <div className="text-black font-bold text-xl mb-0 leading-tight">
+                            {el.name}
+                          </div>
+                          <div className="inline-block py-1 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">
+                            {el?.category}
+                          </div>
+                          <span
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <p className="text-green-darker text-base">
+                              {formatCurrency(el?.price)}
+                            </p>
+                            <p>X {el?.quantity}</p>
+                          </span>
+                          {/* <Button variant="contained" color="primary">
+                            Primary
+                          </Button> */}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => addOrder(state)}
+                  className="bottom-0 bg-blue-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                  variant="contained"
+                  color="primary"
+                >
+                  {loading ? "LOADING...." : "BAYAR"}
+                </Button>
+              </DialogActions>
+            </Dialog>
+
             <Dialog
               open={visible}
               fullWidth
