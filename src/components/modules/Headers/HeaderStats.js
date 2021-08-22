@@ -35,7 +35,7 @@ export default function HeaderStats() {
 
   // get order
   const getOrder = () => {
-    fetch('/api/v1/orders', {
+    fetch('/api/v1/new_orders', {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',

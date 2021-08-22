@@ -13,9 +13,9 @@ export default function ReportPage() {
     const [loading, setloading] = useState(false)
 
     const [columns, setColumns] = useState([
-        { title: 'PEMESANAN', field: 'orders.drink.name', editable: 'never' },
+        { title: 'PEMESANAN', field: 'orders.no_transaction', editable: 'never' },
         { title: 'CUSTOMER', field: 'orders.users.email', editable: 'never' },
-        { title: 'JUMLAH', field: 'orders.amount', },
+        { title: 'JUMLAH', field: 'orders.order_items.length', },
         {
             title: 'TANGGAL UDPATE',
             field: 'updated_at',

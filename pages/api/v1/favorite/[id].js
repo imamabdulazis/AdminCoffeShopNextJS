@@ -24,7 +24,6 @@ export default async (req, res) => {
                     },
                     select: {
                         id: true,
-                        amount: true,
                         drink: {
                             select: {
                                 id: true,

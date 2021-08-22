@@ -44,7 +44,6 @@ export default async (req, res) => {
                         system_version: true,
                         app_version: true,
                         created_at: true,
-                        deleted_at: true,
                         updated_at: true,
                     }
                 })
@@ -133,7 +132,7 @@ export default async (req, res) => {
                         app_version: req.body.app_version,
                         created_at: new Date(),
                         updated_at: new Date(),
-                        deleted_at: new Date()
+                        
                     }
                 })
                 if (!device) {

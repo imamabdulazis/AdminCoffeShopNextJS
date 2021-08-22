@@ -65,7 +65,7 @@ export default async (req, res) => {
                         description: req.body.description,
                         created_at: new Date(),
                         updated_at: new Date(),
-                        deleted_at: new Date()
+                        
                     }
                 })
                 if (!category) {

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import Image from 'next/image';
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 import NotificationDropdown from "../../elements/Dropdowns/NotificationDropdown.js";
@@ -8,12 +8,12 @@ import UserDropdown from "../../elements/Dropdowns/UserDropdown.js";
 import { AddCartContext } from "../../../context/addCartContext.js";
 import { useAddCart } from "../../../hooks/useCartContext.js";
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
 import formatCurrency from "../../../utils/formater.js";
 import { toast } from "react-toastify";
 
@@ -25,7 +25,7 @@ export default function SidebarKasir() {
 
   const [loading, setloading] = useState(false);
 
-  const [totalOrder, settotalOrder] = useState(1)
+  const [totalOrder, settotalOrder] = useState(1);
 
   const [paymentMethod, setpaymentMethod] = useState(null);
 
@@ -34,45 +34,46 @@ export default function SidebarKasir() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    setIsAdmin(window.localStorage.getItem('@previlage') === 'admin' ? true : false);
+    setIsAdmin(
+      window.localStorage.getItem("@previlage") === "admin" ? true : false
+    );
   }, []);
 
   useEffect(() => {
     if (isAdmin) {
-      router.replace('dashboard');
+      router.replace("dashboard");
     } else {
       getPayment();
     }
   }, [isAdmin]);
 
-
   const addOrder = () => {
     setloading(true);
     const body = {
-      "user_id": window.localStorage.getItem('user_id'),//kasir
-      "drink_id": state?.drinks[0].id,
-      "payment_method_id": paymentMethod,
-      "payment_status": "Berhasil",
-      "amount": totalOrder,
-      "total": parseInt(state?.drinks[0].price),
-      "discount": 0,
-      "order_status": "Selesai",
-    }
+      // user_id: window.localStorage.getItem("user_id"), //kasir
+      // drink_id: state?.drinks[0].id,
+      // payment_method_id: paymentMethod,
+      // payment_status: "Berhasil",
+      // quantity: totalOrder,
+      // total: parseInt(state?.drinks[0].price),
+      // order_status: "Selesai",
+    };
     // alert(JSON.stringify(body));
 
-    fetch('/api/v1/orders', {
+    fetch("/api/v1/new_orders", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
       },
-      body: JSON.stringify(body)
-    }).then(res => res.json())
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
       .then((res) => {
-        console.info(`RESPONSE :${res.data}`)
+        console.info(`RESPONSE :${res.data}`);
         if (res.status == 200) {
           const data = res.data;
-          window.location.reload()
+          window.location.reload();
           setloading(false);
           setvisible(false);
           window.location.reload();
@@ -80,48 +81,50 @@ export default function SidebarKasir() {
         } else if (res.status == 401) {
           unAutorize();
           setloading(false);
-          window.location.reload()
+          window.location.reload();
         } else {
-          toast.warning(res.message)
+          toast.warning(res.message);
           setloading(false);
-          window.location.reload()
+          window.location.reload();
         }
-      }).catch(e => {
-        console.log(e);
-        toast.error("Internal Server Error")
-        setloading(false);
-        window.location.reload()
       })
-  }
+      .catch((e) => {
+        console.log(e);
+        toast.error("Internal Server Error");
+        setloading(false);
+        window.location.reload();
+      });
+  };
 
   const getPayment = () => {
-    fetch('/api/v1/payment_method', {
+    fetch("/api/v1/payment_method", {
       method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + window.localStorage.getItem('token'),
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
       },
-    }).then((res) => res.json())
+    })
+      .then((res) => res.json())
       .then((res) => {
         if (res.status == 200) {
-          const index = res?.data.findIndex(item => item.payment_type === "Cash");
+          const index = res?.data.findIndex(
+            (item) => item.payment_type === "Cash"
+          );
           setpaymentMethod(res?.data[index]?.id);
         }
-      }).catch((e) => {
-        console.log(e)
       })
-  }
-
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const openOrder = (state) => {
     if (state?.drinks.length == 0) {
-      alert('Mohon pilih produk');
+      alert("Mohon pilih produk");
     } else {
       setvisible(true);
     }
-  }
-
-
+  };
 
   return (
     <>
@@ -171,7 +174,8 @@ export default function SidebarKasir() {
                           <a
                             href="#"
                             className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                          >Admin Copsychus
+                          >
+                            Admin Copsychus
                           </a>
                         </Link>
                       </div>
@@ -188,21 +192,34 @@ export default function SidebarKasir() {
                   </div>
                   {/* Minuman */}
                   {/* <div className="space-y-6"> */}
-                  {
-                    state?.drinks.map((el) => (
-                      <div className="w-full lg:w-1/1 p-1">
-                        <div className="flex flex-col lg:flex-row rounded overflow-hidden h-auto lg:h-32 border shadow shadow-lg">
-                          <div className="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-                            <div className="text-black font-bold text-xl mb-0 leading-tight">{el.name}</div>
-                            <div className="inline-block px-2 py-1 leading-none bg-orange-200 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">
-                              {el?.category?.name}
-                            </div>
-                            <p className="text-green-darker text-base">{formatCurrency(el?.price)}</p>
+                  {state?.drinks.map((el) => (
+                    <div className="w-full lg:w-1/1 p-1">
+                      <div className="flex flex-col lg:flex-row rounded overflow-hidden h-auto lg:h-32 border shadow shadow-lg">
+                        <div className="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                          <div className="text-black font-bold text-xl mb-0 leading-tight">
+                            {el.name}
                           </div>
+                          <div className="inline-block py-1 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">
+                            {el?.category}
+                          </div>
+                          <span
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <p className="text-green-darker text-base">
+                              {formatCurrency(el?.price)}
+                            </p>
+                            <p>X {el?.quantity}</p>
+                          </span>
+                          {/* <Button variant="contained" color="primary">
+                            Primary
+                          </Button> */}
                         </div>
                       </div>
-                    ))
-                  }
+                    </div>
+                  ))}
                   {/* </div> */}
 
                   {/* Divider */}
@@ -221,7 +238,7 @@ export default function SidebarKasir() {
                   className="bottom-0 bg-blue-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="button"
                 >
-                  PESAN  {state?.drinks[0]?.price != undefined ? formatCurrency(state?.drinks[0]?.price) : ""}
+                  PESAN {state?.total}
                 </button>
               </div>
             </nav>
@@ -231,30 +248,65 @@ export default function SidebarKasir() {
               maxWidth="sm"
               onClose={() => setvisible(false)}
               aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description">
-              <DialogTitle id="alert-dialog-title" className="bg-blue-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150">Detail pesanan</DialogTitle>
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle
+                id="alert-dialog-title"
+                className="bg-blue-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+              >
+                Detail pesanan
+              </DialogTitle>
               <DialogContent className="w-full">
                 <DialogContentText id="alert-dialog-description">
-                  <div className="relative pb-48 overflow-hidden">
-                    <Image className="absolute inset-0 h-full w-full object-cover" layout="fill" objectFit="contain" src={state?.drinks[0]?.image_url} alt="" />
+                  <div style={{ display: "flex", justifyContent: "start" }}>
+                    <h3 style={{ width: 100 }}>JUMLAH</h3>
+                    <h3 style={{ width: 15 }}>:</h3>
+                    <h1>1</h1>
                   </div>
-                  <div className="p-4">
-                    <span className="inline-block px-2 py-1 leading-none bg-orange-200 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">{state?.drinks[0]?.category.name}</span>
-                    <h2 className="mt-2 mb-2  font-bold">{state?.drinks[0]?.name}</h2>
-                    <div className="mt-3 flex items-center">
-                      <span className="text-sm font-semibold">TOTAL :</span>&nbsp;<span className="font-bold text-xl">{state?.drinks[0]?.price != undefined ? formatCurrency(state?.drinks[0]?.price) : ""}</span>&nbsp;<span className="text-sm font-semibold">,-</span>
+                  <div style={{ display: "flex", justifyContent: "start" }}>
+                    <h3 style={{ width: 100 }}>TOTAL</h3>
+                    <h3 style={{ width: 15 }}>:</h3>
+                    <h1 style={{ color: "green" }}>{state?.total}</h1>
+                  </div>
+                  {state?.drinks.map((el) => (
+                    <div className="w-full lg:w-1/1 p-1">
+                      <div className="flex flex-col lg:flex-row rounded overflow-hidden h-auto lg:h-32 border shadow shadow-lg">
+                        <div className="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                          <div className="text-black font-bold text-xl mb-0 leading-tight">
+                            {el.name}
+                          </div>
+                          <div className="inline-block py-1 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">
+                            {el?.category}
+                          </div>
+                          <span
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <p className="text-green-darker text-base">
+                              {formatCurrency(el?.price)}
+                            </p>
+                            <p>X {el?.quantity}</p>
+                          </span>
+                          {/* <Button variant="contained" color="primary">
+                            Primary
+                          </Button> */}
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={addOrder}
+                <Button
+                  onClick={addOrder}
                   className="bottom-0 bg-blue-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                  variant='contained'
-                  color="primary">
+                  variant="contained"
+                  color="primary"
+                >
                   {loading ? "LOADING...." : "BAYAR"}
                 </Button>
-
               </DialogActions>
             </Dialog>
           </>

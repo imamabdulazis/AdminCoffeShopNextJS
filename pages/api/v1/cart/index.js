@@ -10,7 +10,6 @@ import prisma from '@utils/prisma';
 const validateBody = initMiddleware(
     validateMiddleware([
         check('user_id').isLength({ min: 10, max: 40 }),
-        check('drink_id').isLength({ min: 10, max: 40 }),
     ], validationResult)
 )
 
@@ -91,45 +90,42 @@ export default async (req, res) => {
                     message: "User tidak tersedia"
                 })
 
-                ///validate if device exist
-                const isCartDrinkExist = await prisma.cart.findFirst({
-                    where: { drink_id: req.body.drink_id },
-                })
+                // ///validate if device exist
+                // const isCartDrinkExist = await prisma.cart.findFirst({
+                //     where: { drink_id: req.body.drink_id },
+                // })
 
-                if (isCartDrinkExist) {
+                // if (isCartDrinkExist) {
+                //     const cart = await prisma.cart.update({
+                //         where: {
+                //             id: isCartDrinkExist.id,
+                //         },
+                //         data: {
+                //             id: uuid(),
+                //             amount: isCartDrinkExist.amount + req.body.amount,
+                //             updated_at: new Date(),
+                //         }
+                //     })
+                //     if (!cart) {
+                //         return res.status(403).json({
+                //             status: 403,
+                //             message: "Gagal menambahkan keranjang"
+                //         })
+                //     }
 
-                    const cart = await prisma.cart.update({
-                        where: {
-                            id: isCartDrinkExist.id,
-                        },
-                        data: {
-                            id: uuid(),
-                            amount: isCartDrinkExist.amount + req.body.amount,
-                            updated_at: new Date(),
-                        }
-                    })
-                    if (!cart) {
-                        return res.status(403).json({
-                            status: 403,
-                            message: "Gagal menambahkan keranjang"
-                        })
-                    }
+                //     return res.status(200).json({
+                //         status: 200,
+                //         message: "Berhasil menambahkan ke keranjang",
+                //     })
 
-                    return res.status(200).json({
-                        status: 200,
-                        message: "Berhasil menambahkan ke keranjang",
-                    })
-
-                }
+                // }
                 const cart = await prisma.cart.create({
                     data: {
                         id: uuid(),
                         user_id: req.body.user_id,
-                        drink_id: req.body.drink_id,
-                        amount: req.body.amount,
                         created_at: new Date(),
                         updated_at: new Date(),
-                        deleted_at: new Date()
+                        
                     }
                 })
                 if (!cart) {

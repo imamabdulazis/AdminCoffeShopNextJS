@@ -27,7 +27,6 @@ export default async (req, res) => {
                         telp_number: true,
                         image_url: true,
                         created_at: true,
-                        deleted_at: true,
                         updated_at: true,
                     }
                 })

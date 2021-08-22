@@ -6,6 +6,7 @@ const initialState = {
     drinks: [],
     user: null,
     payment: null,
+    total:0,
 }
 
 function cartReducer(state = initialState, action) {
@@ -16,6 +17,7 @@ function cartReducer(state = initialState, action) {
                 drinks: action.drinks,
                 user: action.user,
                 payment: action.payment,
+                total:action.total,
             }
         }
         case "DELETE_CART": {

@@ -22,33 +22,12 @@ export default async (req, res) => {
                 const cart = await prisma.cart.findMany({
                     where: {
                         user_id: id
-                    },
-                    select: {
-                        id: true,
-                        amount: true,
-                        drink: {
-                            select: {
-                                id: true,
-                                name: true,
-                                description: true,
-                                image_url: true,
-                                stock: true,
-                                price: true,
-                                updated_at: true,
-                                category: {
-                                    select: {
-                                        id: true,
-                                        name: true,
-                                    }
-                                }
-                            }
-                        }
                     }
                 })
 
                 if (!cart) return res.status(404).json({ status: 404, message: "Keranjang masih kosong" })
 
-                return res.status(200).json({ status: 200, message: cart.length <= 0 ? "Keranjangmu masih kosong" : "Ok", data: cart, })
+                return res.status(200).json({ status: 200, message: cart.length <= 0 ? "Keranjang masih kosong" : "Ok", data: cart, })
             } catch (e) {
                 return res.status(500).json({
                     status: 500,

@@ -74,7 +74,7 @@ export default async (req, res) => {
                         image_url: req.body.image_url,
                         created_at: new Date(),
                         updated_at: new Date(),
-                        deleted_at: new Date()
+                        
                     }
                 })
                 if (!paymentMethod) {

@@ -56,7 +56,6 @@ export default async (req, res) => {
                         event: true,
                         created_at: true,
                         updated_at: true,
-                        deleted_at: true,
                     }
                 })
 
@@ -105,7 +104,7 @@ export default async (req, res) => {
                             event: req.body.event,
                             created_at: new Date(),
                             updated_at: new Date(),
-                            deleted_at: new Date()
+                            
                         }
                     })
                     if (!notification) {

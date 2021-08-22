@@ -64,7 +64,7 @@ export default async (req, res) => {
                             previlage: req.body.previlage,
                             created_at: new Date(),
                             updated_at: new Date(),
-                            deleted_at: new Date(),
+                            
                         }
                     });
 
