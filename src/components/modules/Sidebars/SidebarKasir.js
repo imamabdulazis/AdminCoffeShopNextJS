@@ -53,7 +53,7 @@ export default function SidebarKasir() {
     }
   }, [isAdmin]);
 
-  const addOrder = (state) => {
+  const addOrder = (drinks) => {
     setloading(true);
     const body = {
       user_id: window.localStorage.getItem("user_id"),
@@ -62,40 +62,40 @@ export default function SidebarKasir() {
       total: total,
     };
 
-    //   fetch("/api/v1/new_orders", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Bearer " + window.localStorage.getItem("token"),
-    //     },
-    //     body: JSON.stringify(body),
-    //   })
-    //     .then((res) => res.json())
-    //     .then((res) => {
-    //       console.info(`RESPONSE :${res.data}`);
-    //       if (res.status == 200) {
-    //         const data = res.data;
-    //         window.location.reload();
-    //         setloading(false);
-    //         setvisible(false);
-    //         window.location.reload();
-    //         toast.success("Pesanan berhasil");
-    //       } else if (res.status == 401) {
-    //         unAutorize();
-    //         setloading(false);
-    //         window.location.reload();
-    //       } else {
-    //         toast.warning(res.message);
-    //         setloading(false);
-    //         window.location.reload();
-    //       }
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //       toast.error("Internal Server Error");
-    //       setloading(false);
-    //       window.location.reload();
-    //     });
+    console.log(body);
+
+    fetch("/api/v1/new_orders/kasir", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.info(`RESPONSE :${res.data}`);
+        if (res.status == 200) {
+          const data = res.data;
+
+          setloading(false);
+          setvisible(false);
+          setSumary(true);
+
+          toast.success("Pesanan berhasil");
+        } else if (res.status == 401) {
+          unAutorize();
+          setloading(false);
+        } else {
+          toast.warning(res.message);
+          setloading(false);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.error("Internal Server Error");
+        setloading(false);
+      });
   };
 
   const getPayment = () => {
@@ -125,10 +125,6 @@ export default function SidebarKasir() {
       alert("Mohon pilih produk");
     } else {
       setvisible(true);
-      setdrinks(state?.drinks);
-      settotal(state?.total);
-      console.info(drinks);
-      console.info(total);
     }
   };
 
@@ -267,7 +263,7 @@ export default function SidebarKasir() {
                   <div style={{ display: "flex", justifyContent: "start" }}>
                     <h3 style={{ width: 100 }}>JUMLAH</h3>
                     <h3 style={{ width: 15 }}>:</h3>
-                    <h1>1</h1>
+                    <h1>{state.drinks.length}</h1>
                   </div>
                   <div style={{ display: "flex", justifyContent: "start" }}>
                     <h3 style={{ width: 100 }}>TOTAL</h3>
@@ -306,7 +302,7 @@ export default function SidebarKasir() {
               </DialogContent>
               <DialogActions>
                 <Button
-                  onClick={() => addOrder(state)}
+                  onClick={() => addOrder(state?.drinks, state.total)}
                   className="bottom-0 bg-blue-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   variant="contained"
                   color="primary"
@@ -317,10 +313,13 @@ export default function SidebarKasir() {
             </Dialog>
 
             <Dialog
-              open={visible}
+              open={sumary}
               fullWidth
               maxWidth="sm"
-              onClose={() => setvisible(false)}
+              onClose={() => {
+                setSumary(false);
+                window.location.reload();
+              }}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
@@ -332,54 +331,56 @@ export default function SidebarKasir() {
               </DialogTitle>
               <DialogContent className="w-full">
                 <DialogContentText id="alert-dialog-description">
-                  <div style={{ display: "flex", justifyContent: "start" }}>
-                    <h3 style={{ width: 100 }}>JUMLAH</h3>
-                    <h3 style={{ width: 15 }}>:</h3>
-                    <h1>1</h1>
+                  <h1 style={{ fontSize: 20, color: "black" }}>
+                    <strong>List Produk Minuman</strong>
+                  </h1>
+                  <div style={{ height: 20 }}></div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    {/* <div>No</div> */}
+                    <div style={{ fontSize: 14, color: "black" }}>Minuman</div>
+                    <div style={{ fontSize: 14, color: "black" }}>
+                      Harga satuan
+                    </div>
+                    <div style={{ fontSize: 14, color: "black" }}>Quantity</div>
+                    <div style={{ fontSize: 14, color: "black" }}>
+                      Harga Total
+                    </div>
                   </div>
-                  <div style={{ display: "flex", justifyContent: "start" }}>
-                    <h3 style={{ width: 100 }}>TOTAL</h3>
-                    <h3 style={{ width: 15 }}>:</h3>
-                    <h1 style={{ color: "green" }}>{state?.total}</h1>
-                  </div>
-                  {state?.drinks.map((el) => (
-                    <div className="w-full lg:w-1/1 p-1">
-                      <div className="flex flex-col lg:flex-row rounded overflow-hidden h-auto lg:h-32 border shadow shadow-lg">
-                        <div className="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-                          <div className="text-black font-bold text-xl mb-0 leading-tight">
-                            {el.name}
-                          </div>
-                          <div className="inline-block py-1 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">
-                            {el?.category}
-                          </div>
-                          <span
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <p className="text-green-darker text-base">
-                              {formatCurrency(el?.price)}
-                            </p>
-                            <p>X {el?.quantity}</p>
-                          </span>
-                          {/* <Button variant="contained" color="primary">
-                            Primary
-                          </Button> */}
-                        </div>
-                      </div>
+                  {state?.drinks.map((el, index) => (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      {/* <h1>{index + 1}</h1> */}
+                      <h1>{el.name}</h1>
+                      <div>{el.price}</div>
+                      <h1>{el.quantity}</h1>
+                      <div>{el.price * el.quantity}</div>
                     </div>
                   ))}
+                  <div style={{ height: 20 }}></div>
+                  <h1 style={{ color: "black", fontSize: 15 }}>
+                    TOTAL BAYAR : <strong>{state.total}</strong>
+                  </h1>
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
                 <Button
-                  onClick={addOrder}
+                  onClick={() => window.print()}
                   className="bottom-0 bg-blue-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                  variant="contained"
+                  // variant=""
                   color="primary"
                 >
-                  {loading ? "LOADING...." : "BAYAR"}
+                  PRINT
                 </Button>
               </DialogActions>
             </Dialog>
