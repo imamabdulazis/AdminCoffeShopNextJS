@@ -5,11 +5,11 @@ import { check, validationResult } from "express-validator";
 import authenticateToken from "@helper/autenticate_jwt";
 import { PrismaClient } from "@prisma/client";
 import moment from "moment";
-import prisma from "@utils/prisma";
+// import prisma from "@utils/prisma";
 
 export default async (req, res) => {
   const { method } = req;
-  // const prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   switch (method) {
     case "POST":
@@ -66,6 +66,15 @@ export default async (req, res) => {
               },
             });
           });
+          await prisma.report.create({
+            data: {
+              id: uuid(),
+              order_id: orders.id,
+              date_report: new Date(),
+              created_at: new Date(),
+              updated_at: new Date(),
+            },
+          });
           ///berhasil orders
           if (updateDinks)
             return res.status(200).json({
@@ -83,7 +92,6 @@ export default async (req, res) => {
           status: 403,
           message: "Gagal membuat pesanan",
         });
-        
       } catch (e) {
         console.log(e);
         return res.status(500).json({

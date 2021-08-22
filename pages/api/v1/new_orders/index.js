@@ -84,6 +84,16 @@ export default async (req, res) => {
               });
             });
 
+            await prisma.report.create({
+              data: {
+                id: uuid(),
+                order_id: orders.id,
+                date_report: new Date(),
+                created_at: new Date(),
+                updated_at: new Date(),
+              },
+            });
+
             const deleteCartItems = await prisma.cart_items.deleteMany({
               where: {
                 drink_id: { in: req.body.drinks.map(({ id }) => id) },
