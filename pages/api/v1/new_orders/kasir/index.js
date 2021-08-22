@@ -46,16 +46,6 @@ export default async (req, res) => {
           })),
           skipDuplicates: true,
         });
-        
-        const report = await prisma.report.create({
-          data: {
-            id: uuid(),
-            order_id: orders.id,
-            date_report: new Date(),
-            created_at: new Date(),
-            updated_at: new Date(),
-          },
-        });
 
         if (addOrderItems) {
           const updateDinks = req.body.drinks.map(async (drink) => {
@@ -76,9 +66,18 @@ export default async (req, res) => {
               },
             });
           });
+          const report = await prisma.report.create({
+            data: {
+              id: uuid(),
+              order_id: orders.id,
+              date_report: new Date(),
+              created_at: new Date(),
+              updated_at: new Date(),
+            },
+          });
 
           ///berhasil orders
-          if (updateDinks)
+          if (updateDinks && report)
             return res.status(200).json({
               status: 200,
               message: "Berhasil membuat pesanan",
