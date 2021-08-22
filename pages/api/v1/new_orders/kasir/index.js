@@ -48,6 +48,16 @@ export default async (req, res) => {
         });
 
         if (addOrderItems) {
+          await prisma.report.create({
+            data: {
+              id: uuid(),
+              order_id: orders.id,
+              date_report: new Date(),
+              created_at: new Date(),
+              updated_at: new Date(),
+            },
+          });
+          
           const updateDinks = req.body.drinks.map(async (drink) => {
             const curDrink = await prisma.drink.findUnique({
               where: {
@@ -66,15 +76,7 @@ export default async (req, res) => {
               },
             });
           });
-          await prisma.report.create({
-            data: {
-              id: uuid(),
-              order_id: orders.id,
-              date_report: new Date(),
-              created_at: new Date(),
-              updated_at: new Date(),
-            },
-          });
+
           ///berhasil orders
           if (updateDinks)
             return res.status(200).json({
