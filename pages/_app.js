@@ -1,5 +1,7 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import '@styles/globals.css'
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 // import "@styles/tailwind.css";
 import '@styles/Home.module.css'
 import '@styles/index.css'
