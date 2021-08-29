@@ -4,23 +4,20 @@ import validateMiddleware from "@helper/validate-middleware";
 import { check, validationResult } from "express-validator";
 import authenticateToken from "@helper/autenticate_jwt";
 import moment from "moment";
-// import prisma from "@utils/prisma";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@utils/prisma";
 
 export default async (req, res) => {
   const { method } = req;
 
-  const prisma = new PrismaClient();
-
   switch (method) {
     case "POST":
       try {
-        const isAuth = authenticateToken(req, res);
-        if (!isAuth)
-          return res.status(401).json({
-            status: 401,
-            message: "Token expired",
-          });
+        // const isAuth = authenticateToken(req, res);
+        // if (!isAuth)
+        //   return res.status(401).json({
+        //     status: 401,
+        //     message: "Token expired",
+        //   });
 
         const orders = await prisma.orders.create({
           data: {
