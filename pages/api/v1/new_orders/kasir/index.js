@@ -4,10 +4,13 @@ import validateMiddleware from "@helper/validate-middleware";
 import { check, validationResult } from "express-validator";
 import authenticateToken from "@helper/autenticate_jwt";
 import moment from "moment";
-import prisma from "@utils/prisma";
+// import prisma from "@utils/prisma";
+import { PrismaClient } from "@prisma/client";
 
 export default async (req, res) => {
   const { method } = req;
+
+  const prisma = new PrismaClient();
 
   switch (method) {
     case "POST":
@@ -75,12 +78,55 @@ export default async (req, res) => {
             });
           });
 
+          const orderDetail = await prisma.orders.findUnique({
+            where: {
+              id: orders.id,
+            },
+            select: {
+              id: true,
+              order_items: {
+                select: {
+                  id: true,
+                  quantity: true,
+                  drink: {
+                    select: {
+                      id: true,
+                      name: true,
+                      price: true,
+                      image_url: true,
+                      category: {
+                        select: {
+                          id: true,
+                          name: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              no_transaction: true,
+              payment_method: true,
+              pickup_date: true,
+              status: true,
+              payment_status: true,
+              total: true,
+              users: true,
+              transaction_token: true,
+              deeplink_redirect: true,
+              generate_qrcode: true,
+              get_status_order: true,
+              post_cancel_order: true,
+              created_at: true,
+              updated_at: true,
+            },
+          });
+
           ///berhasil orders
           if (updateDinks && report)
             return res.status(200).json({
               status: 200,
               message: "Berhasil membuat pesanan",
-              // data: addOrderItems,
+              data: orderDetail,
             });
           //gagal orders
           return res.status(403).json({

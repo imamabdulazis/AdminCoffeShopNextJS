@@ -5,11 +5,11 @@ import validateMiddleware from "@helper/validate-middleware";
 import { check, validationResult } from "express-validator";
 const { v4: uuid } = require("uuid");
 import authenticateToken from "@helper/autenticate_jwt";
-import { PrismaClient } from "@prisma/client";
-// import prisma from '@utils/prisma';
+// import { PrismaClient } from "@prisma/client";
+import prisma from '@utils/prisma';
 
 export default async (req, res) => {
-  const prisma = new PrismaClient();
+  // const prisma = new PrismaClient();
   switch (req.method) {
     case "POST":
       try {
