@@ -80,7 +80,7 @@ export default async (req, res) => {
             return res.status(200).json({
               status: 200,
               message: "Berhasil membuat pesanan",
-              id: orders.id,
+              data: orders,
               // data: await prisma.orders.findUnique({
               //   where: {
               //     id: orders.id,
