@@ -27,11 +27,11 @@ export default function ReportPage() {
   });
 
   const [columns, setColumns] = useState([
-    { title: "PEMESANAN", field: "orders.no_transaction", editable: "never" },
+    { title: "NO TRANSAKSI", field: "orders.no_transaction", editable: "never" },
     { title: "CUSTOMER", field: "orders.users.email", editable: "never" },
     { title: "JUMLAH", field: "orders.order_items.length" },
     {
-      title: "TANGGAL UDPATE",
+      title: "TGL UDPATE",
       field: "updated_at",
       type: "date",
       dateSetting: {
@@ -40,13 +40,18 @@ export default function ReportPage() {
       editable: "never",
     },
     {
-      title: "TANGGAL LAPORAN",
-      field: "date_report",
+      title: "TGL PEMESANAN",
+      field: "orders.created_at",
       type: "date",
       dateSetting: {
         format: "dd/MM/yyyy",
       },
       editable: "never",
+    },
+    {
+      title: "TOTAL",
+      field: "orders.total",
+      type: "number",
     },
   ]);
 
@@ -87,7 +92,7 @@ export default function ReportPage() {
           const data = res.data;
           setReportState(data);
           setloading(false);
-          if (data?.length == 0 ) {
+          if (data?.length == 0) {
             toast.dismiss();
             toast.warn("Laporan masih kosong");
           }

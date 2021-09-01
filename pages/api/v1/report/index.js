@@ -5,11 +5,11 @@ import validateMiddleware from "@helper/validate-middleware";
 import { check, validationResult } from "express-validator";
 const { v4: uuid } = require("uuid");
 import authenticateToken from "@helper/autenticate_jwt";
-// import { PrismaClient } from "@prisma/client";
-import prisma from '@utils/prisma';
+import { PrismaClient } from "@prisma/client";
+// import prisma from '@utils/prisma';
 
 export default async (req, res) => {
-  // const prisma = new PrismaClient();
+  const prisma = new PrismaClient();
   switch (req.method) {
     case "POST":
       try {
@@ -21,7 +21,7 @@ export default async (req, res) => {
             message: "Token expired",
           });
 
-          console.log(req.body);
+        console.log(req.body);
 
         const report = await prisma.report.findMany({
           where: {
@@ -37,6 +37,8 @@ export default async (req, res) => {
                 no_transaction: true,
                 users: true,
                 order_items: true,
+                created_at: true,
+                total: true,
               },
             },
             date_report: true,
